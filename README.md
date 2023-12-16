@@ -1,4 +1,4 @@
-# mental_health_app
+# MentalHeathApp
 
 Bachelor Project.
 
