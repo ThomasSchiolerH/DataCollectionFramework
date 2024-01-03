@@ -60,7 +60,7 @@ dist
 *.iml
 *.ipr
 *.iws
-#.vscode/   # Uncomment if you don't want to include VS Code settings
+.vscode/
 
 # Miscellaneous
 *.pyc
