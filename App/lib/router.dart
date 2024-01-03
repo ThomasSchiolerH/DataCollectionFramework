@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/features/auth/screens/auth_screen.dart';
 import 'package:mental_health_app/main.dart';
-import 'package:mental_health_app/testScreen.dart';
-
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch(routeSettings.name) {
