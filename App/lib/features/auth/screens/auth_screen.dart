@@ -26,7 +26,7 @@ class _AuthScreenState extends State<AuthScreen> {
         title: Text('Authentication'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(26.0),
         child: Column(
           children: <Widget>[
             ListTile(
