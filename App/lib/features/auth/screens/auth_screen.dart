@@ -47,6 +47,9 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
             if (_authMode == 'createAccount') ...[
               TextFormField(
+                decoration: InputDecoration(labelText: 'Name'),
+              ),
+              TextFormField(
                 decoration: InputDecoration(labelText: 'Email Address'),
                 keyboardType: TextInputType.emailAddress,
               ),
