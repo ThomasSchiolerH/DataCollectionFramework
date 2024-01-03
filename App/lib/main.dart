@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
+import 'package:mental_health_app/features/auth/screens/auth_screen.dart';
 import 'package:mental_health_app/router.dart';
 import 'package:mental_health_app/testScreen.dart';
 
@@ -30,28 +31,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text("Hello."),
-        ),
-        body: Column(
-          children: [
-            const Center(
-              child: Text('Home Page'),
-            ),
-            Builder(
-              builder: (context) {
-                return ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, testScreen.routeName);
-                  },
-                  child: const Text("Click"),
-                );
-              }
-            ),
-          ],
-        ),
-      ),
+      home: const AuthScreen(),
     );
   }
 }
