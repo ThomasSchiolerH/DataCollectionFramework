@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
 import 'package:mental_health_app/features/auth/screens/auth_screen.dart';
 import 'package:mental_health_app/router.dart';
-import 'package:mental_health_app/testScreen.dart';
+
 
 void main() {
   runApp(const MyApp());
