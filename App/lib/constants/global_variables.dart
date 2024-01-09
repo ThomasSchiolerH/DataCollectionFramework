@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+String uri = 'https://localhost:3001';
 class GlobalVariables {
 
   static const secondaryColor = Color.fromRGBO(132, 53, 189, 1);
