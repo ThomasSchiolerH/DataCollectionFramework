@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mental_health_app/features/auth/services/auth_services.dart';
 
 class AuthScreen extends StatefulWidget {
   static const String routeName = '/auth-screen';
@@ -9,7 +10,21 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  final _signUpFormKey = GlobalKey<FormState>();
+  final _signInFormKey = GlobalKey<FormState>();
+  final AuthServices authServices = AuthServices();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   String _authMode = 'createAccount';
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   void _handleAuthModeChange(String? value) {
     if (value != null) {
@@ -19,73 +34,128 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
+  void signUpUser() {
+    authServices.signUpUser(
+      context: context,
+      name: _nameController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+  }
+
+  void signInUser() {
+    authServices.signInUser(
+      context: context,
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+  }
+
+  String? _validateName(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Name cannot be empty';
+    }
+    return null;
+  }
+
+  String? _validateEmail(String? value) {
+    // This regex should match the one used in your backend
+    final regex = RegExp(
+        r'^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$');
+    if (value == null || !regex.hasMatch(value)) {
+      return 'Please enter a valid email address.';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password cannot be empty';
+    }
+    // You can add more conditions for password validation here if needed
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Authentication'),
+        title: const Text('Authentication'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(26.0),
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              title: const Text('Create Account'),
-              leading: Radio<String>(
-                value: 'createAccount',
-                groupValue: _authMode,
-                onChanged: _handleAuthModeChange,
+        child: Form(
+          key: _authMode == 'createAccount' ? _signUpFormKey : _signInFormKey,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                title: const Text('Create Account'),
+                leading: Radio<String>(
+                  value: 'createAccount',
+                  groupValue: _authMode,
+                  onChanged: _handleAuthModeChange,
+                ),
               ),
-            ),
-            ListTile(
-              title: const Text('Login'),
-              leading: Radio<String>(
-                value: 'login',
-                groupValue: _authMode,
-                onChanged: _handleAuthModeChange,
+              ListTile(
+                title: const Text('Login'),
+                leading: Radio<String>(
+                  value: 'login',
+                  groupValue: _authMode,
+                  onChanged: _handleAuthModeChange,
+                ),
               ),
-            ),
-            if (_authMode == 'createAccount') ...[
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Name'),
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Email Address'),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Confirm Password'),
-                obscureText: true,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Add sign-up logic
-                },
-                child: Text('Sign Up'),
-              ),
-            ] else if (_authMode == 'login') ...[
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Email Address'),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Add login logic
-                },
-                child: Text('Login'),
-              ),
+              if (_authMode == 'createAccount') ...[
+                TextFormField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(labelText: 'Name'),
+                  validator: _validateName,
+                ),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(labelText: 'Email Address'),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: _validateEmail,
+                ),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                  validator: _validatePassword,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_signUpFormKey.currentState!.validate()) {
+                      signUpUser();
+                    }
+                  },
+                  child: const Text('Sign Up'),
+                ),
+              ] else if (_authMode == 'login') ...[
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(labelText: 'Email Address'),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: _validateEmail,
+                ),
+                TextFormField(
+                  controller: _passwordController, 
+                  decoration: const InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                  validator: _validatePassword,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_signInFormKey.currentState!.validate()) {
+                      signInUser();
+                    }
+                  },
+                  child: const Text('Login'),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
