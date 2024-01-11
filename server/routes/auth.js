@@ -1,8 +1,10 @@
 const express = require("express");
 const User = require("../models/user");
-
+const bcryptjs = require("bcryptjs");
+const jWebToken = require("jsonwebtoken");
 const authRouter = express.Router();
 
+// Sign up route
 authRouter.post("/api/signup", async (req, res) => {
   //{
   // 'name': name, 'email': email, 'password': password
@@ -15,15 +17,40 @@ authRouter.post("/api/signup", async (req, res) => {
       return res.status(400).json({ msg: "Another user is using this email" });
     }
 
+    const hashedPassword = await bcryptjs.hash(password, 8);
+
     let user = new User({
       name,
       email,
-      password,
+      password: hashedPassword,
     });
     user = await user.save();
     res.json(user);
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    return res.status(500).json({ error: e.message });
+  }
+});
+
+// Sign in route
+authRouter.post("/api/signin", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ msg: "User does not exist." });
+    }
+    const isPwMatch = await bcryptjs.compare(password, user.password);
+    console.log(password);
+    console.log(user.password);
+    console.log(isPwMatch);
+    if (!isPwMatch) {
+      return res.status(400).json({ msg: "Incorrect password!" });
+    }
+    const token = jWebToken.sign({id: user._id}, "pwKey");
+    res.json({token, ...user._doc});
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
   }
 });
 
