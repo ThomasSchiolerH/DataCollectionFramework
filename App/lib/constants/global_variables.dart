@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-String uri = 'https://localhost:3001';
+String IP = "0.0.0.0"; // Enter your IP
+String uri = "http://$IP:3000";
 class GlobalVariables {
 
   static const secondaryColor = Color.fromRGBO(132, 53, 189, 1);

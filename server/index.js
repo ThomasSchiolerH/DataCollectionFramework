@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const authRouter = require("./routes/auth");
 
 // INIT
-const PORT = 3001;
+const PORT = 3000;
 const app = express();
 const DB = "mongodb+srv://thomas:u5jCaLhzbXFHkGUm@bachelorframework.dhooq54.mongodb.net/?retryWrites=true&w=majority"
 
