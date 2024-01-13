@@ -1,7 +1,25 @@
-Bachelor Project by Andreas Bardram and Thomas Schiøler Hansen
+# Bachelor Project by Andreas Bardram and Thomas Schiøler Hansen
 
-Add your IP adress in global_variables.dart, for the login to work.
+This repository contains the code for our Bachelor Project. Follow the steps below to set up and run the project on your local machine.
 
-Create a .env in webApp folder with "PORT=3001".
+## Configuration
 
-Start server with "Npm run dev", so it refreshed by itself when changes are made.
+1. **Set IP Address**:
+   - Open the `global_variables.dart` file.
+   - Replace the placeholder with your IP address. This is necessary for the login functionality to work correctly.
+
+2. **Create Environment File**:
+   - Navigate to the `webApp` folder.
+   - Create a file named `.env`.
+   - Add the following content to the file:
+     ```
+     PORT=3001
+     ```
+
+## Running the Server
+
+- To start the server, use the following command:
+     ```
+     npm run dev
+     ```
+- This command will start the server in development mode. The server will automatically refresh when changes are made to the code.
