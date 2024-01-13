@@ -1,6 +1,6 @@
 # Bachelor Project by Andreas Bardram and Thomas Schiøler Hansen
 
-This repository contains the code for our Bachelor Project. Follow the steps below to set up and run the project on your local machine.
+Follow the steps below to set up and run the project.
 
 ## Configuration
 
