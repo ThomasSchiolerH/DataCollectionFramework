@@ -19,9 +19,12 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('Welcome ${user.name}!'),
       ),
       body: Center(
-          child: Text(
-        user.toJson(),
-      )),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(
+                    user.toJson(),
+                  ),
+          )),
     );
   }
 }
