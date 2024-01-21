@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 // Imports from files
-const authRouter = require("./routes/auth");
+const authRouter = require("./routes/app/auth");
 
 // INIT
 const PORT = 3000;
