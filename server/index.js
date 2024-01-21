@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 // Imports from files
 const authRouter = require("./routes/app/auth");
+const getUserRouter = require("./routes/webApp/getUsers");
 
 // INIT
 const PORT = 3000;
@@ -13,6 +14,7 @@ const DB = "mongodb+srv://thomas:u5jCaLhzbXFHkGUm@bachelorframework.dhooq54.mong
 // Middleware
 app.use(express.json());
 app.use(authRouter);
+app.use(getUserRouter);
 
 // Connections
 mongoose
