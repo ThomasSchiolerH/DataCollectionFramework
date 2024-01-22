@@ -14,7 +14,9 @@ Follow the steps below to set up and run the project.
    - Add the following content to the file:
      ```
      PORT=3001
+     REACT_APP_SERVER_URL=http://YourIP:3000
      ```
+     Replacing "YourIP" with your machine's IP address
 
 ## Running the Server
 
