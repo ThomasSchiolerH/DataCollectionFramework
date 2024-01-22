@@ -1,6 +1,7 @@
 // Imports from packages
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require('cors');
 
 // Imports from files
 const authRouter = require("./routes/app/auth");
@@ -12,6 +13,9 @@ const app = express();
 const DB = "mongodb+srv://thomas:u5jCaLhzbXFHkGUm@bachelorframework.dhooq54.mongodb.net/?retryWrites=true&w=majority"
 
 // Middleware
+app.use(cors({
+  origin: 'http://localhost:3001'
+}));
 app.use(express.json());
 app.use(authRouter);
 app.use(getUserRouter);
