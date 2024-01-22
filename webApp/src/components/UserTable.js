@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/UserTable.css';
 
 const UserTable = ({ users }) => {
@@ -13,7 +14,9 @@ const UserTable = ({ users }) => {
             <tbody>
                 {users.map((user, index) => (
                     <tr key={index}>
-                        <td>{user.name}</td>
+                        <td>
+                            <Link to={`/user/${user._id}`}>{user.name}</Link>
+                        </td>
                         <td>{user.email}</td>
                         {/* Add more user details as needed */}
                     </tr>
