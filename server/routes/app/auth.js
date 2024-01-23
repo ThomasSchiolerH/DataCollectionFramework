@@ -17,7 +17,7 @@ authRouter.post("/api/signup", async (req, res) => {
       return res.status(400).json({ msg: "Another user is using this email" });
     }
 
-    const hashedPassword = await bcryptjs.hash(password, 8);
+    //const hashedPassword = await bcryptjs.hash(password, 8);
 
     let user = new User({
       name,
