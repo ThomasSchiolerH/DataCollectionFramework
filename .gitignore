@@ -11,6 +11,7 @@ pubspec.lock
 .pub/
 /build/
 lib/generated_plugin_registrant.dart
+App/lib/constants/global_variables.dart
 
 # Node.js specific
 node_modules/
