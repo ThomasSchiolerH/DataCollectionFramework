@@ -80,7 +80,7 @@ class HomeScreenContent extends StatelessWidget {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   // Display the actual step count
-                  return _buildInfoCard('Steps', '${GetStepsService.last24HourSteps}');
+                  return _buildInfoCard('Steps', '${GetStepsService.getSteps}');
                 } else {
                   // Show a loading indicator while waiting for the data
                   return const CircularProgressIndicator();

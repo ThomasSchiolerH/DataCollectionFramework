@@ -1,10 +1,11 @@
 import 'package:health/health.dart';
 
 class GetStepsService {
-  static int last24HourSteps = 0;
+  static int getSteps = 0;
 
   static Future<void> fetchStepsData() async {
     HealthFactory health = HealthFactory();
+    // Choose data to fetch
     List<HealthDataType> types = [HealthDataType.STEPS];
 
     try {
@@ -12,8 +13,12 @@ class GetStepsService {
       if (accessGranted) {
         DateTime now = DateTime.now();
         DateTime startOfDay = DateTime(now.year, now.month, now.day);
-        List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(startOfDay, now, types);
-        last24HourSteps = healthData.fold(0, (sum, item) => sum + (item.value as int));
+
+        // Fetch steps
+        int? steps = await health.getTotalStepsInInterval(startOfDay, now);
+
+        // Update step count
+        getSteps = steps ?? 0;
       } else {
         print("Authorization not granted");
       }
