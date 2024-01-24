@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'calendar_screen.dart';
+import 'package:mental_health_app/features/home/services/get_steps.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/home";
@@ -56,8 +57,6 @@ class HomeScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Replace with actual data
-    int steps = 5000; // Example steps count
     String screenTime = '2h 30m'; // Example screen time
     String socialMediaTime = '1h 15m'; // Example social media time
 
@@ -76,11 +75,22 @@ class HomeScreenContent extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-            _buildInfoCard('Steps', '5000'),
+            FutureBuilder(
+              future: GetStepsService.fetchStepsData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  // Display the actual step count
+                  return _buildInfoCard('Steps', '${GetStepsService.last24HourSteps}');
+                } else {
+                  // Show a loading indicator while waiting for the data
+                  return const CircularProgressIndicator();
+                }
+              },
+            ),
             const SizedBox(height: 10),
-            _buildInfoCard('Screen Time', '2h 30m'),
+            _buildInfoCard('Screen Time', screenTime),
             const SizedBox(height: 10),
-            _buildInfoCard('Social Media', '1h 15m'),
+            _buildInfoCard('Social Media', socialMediaTime),
           ],
         ),
       ),
