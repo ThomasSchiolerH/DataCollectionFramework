@@ -3,6 +3,7 @@ import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'calendar_screen.dart';
 import 'package:mental_health_app/features/home/services/get_steps.dart';
+import 'package:mental_health_app/provider/step_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/home";
@@ -52,11 +53,24 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class HomeScreenContent extends StatelessWidget {
+class HomeScreenContent extends StatefulWidget {
   const HomeScreenContent({Key? key}) : super(key: key);
+  @override
+  HomeScreenContentState createState() => HomeScreenContentState();
+}
+
+class HomeScreenContentState extends State<HomeScreenContent> {
+  @override
+  void initState() {
+    super.initState();
+    // Use Future.microtask to ensure fetchSteps is called after the build method
+    Future.microtask(
+        () => Provider.of<StepProvider>(context, listen: false).fetchSteps());
+  }
 
   @override
   Widget build(BuildContext context) {
+    final stepProvider = Provider.of<StepProvider>(context);
     String screenTime = '2h 30m'; // Example screen time
     String socialMediaTime = '1h 15m'; // Example social media time
 
@@ -75,29 +89,26 @@ class HomeScreenContent extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-            FutureBuilder(
-              future: GetStepsService.fetchStepsData(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  // Display the actual step count
-                  return _buildInfoCard('Steps', '${GetStepsService.getSteps}');
-                } else {
-                  // Show a loading indicator while waiting for the data
+            Consumer<StepProvider>(
+              builder: (context, stepProvider, child) {
+                if (stepProvider.isLoading) {
                   return const CircularProgressIndicator();
+                } else {
+                  return buildInfoCard('Steps', '${stepProvider.steps}');
                 }
               },
             ),
             const SizedBox(height: 10),
-            _buildInfoCard('Screen Time', screenTime),
+            buildInfoCard('Screen Time', screenTime),
             const SizedBox(height: 10),
-            _buildInfoCard('Social Media', socialMediaTime),
+            buildInfoCard('Social Media', socialMediaTime),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoCard(String title, String value) {
+  Widget buildInfoCard(String title, String value) {
     return Card(
       elevation: 4.0,
       child: Padding(
