@@ -6,6 +6,8 @@ const cors = require('cors');
 // Imports from files
 const authRouter = require("./routes/app/auth");
 const getUserRouter = require("./routes/webApp/getUsers");
+const healthRouter = require("./routes/app/health_data");
+const authenticate = require("./middleware/authenticate");
 
 // INIT
 const PORT = 3000;
@@ -19,6 +21,7 @@ app.use(cors({
 app.use(express.json());
 app.use(authRouter);
 app.use(getUserRouter);
+app.use(healthRouter);
 
 // Connections
 mongoose

@@ -4,7 +4,7 @@ const userSchema = mongoose.Schema({
   name: {
     required: true,
     type: String,
-    trim: true, //Remove leading and trailing spaces
+    trim: true, // Remove leading and trailing spaces
   },
   email: {
     required: true,
@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
     validate: {
       validator: (value) => {
         const re =
-          /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+          /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$/i;
         return value.match(re);
       },
       message: "Please specify a valid email address.",
@@ -27,7 +27,16 @@ const userSchema = mongoose.Schema({
     type: String,
     default: "user",
   },
-  // Add data gathered from user
+  healthData: [{
+    steps: { 
+      type: Number, 
+      required: true 
+    },
+    date: { 
+      type: Date, 
+      required: true 
+    },
+  }],
 });
 
 const User = mongoose.model("User", userSchema);
