@@ -102,12 +102,17 @@ class HomeScreenContentState extends State<HomeScreenContent> {
             buildInfoCard('Screen Time', screenTime),
             const SizedBox(height: 10),
             buildInfoCard('Social Media', socialMediaTime),
-            ElevatedButton(
-              onPressed: () async {
-                await Provider.of<StepProvider>(context, listen: false)
-                    .uploadSteps(context);
-              },
-              child: const Text('Upload Data'),
+            Padding(
+              padding: const EdgeInsets.only(top: 40.0),
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await Provider.of<StepProvider>(context, listen: false)
+                        .uploadSteps(context);
+                  },
+                  child: const Text('Upload Data'),
+                ),
+              ),
             )
           ],
         ),
