@@ -39,6 +39,7 @@ dependencies:
   #shared_preferences: ^2.2.2
   http: ^1.1.2
   health: ^8.1.0
+  flutter_heatmap_calendar: ^1.0.5
 
 dev_dependencies:
   flutter_test:
