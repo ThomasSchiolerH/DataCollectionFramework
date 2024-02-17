@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-//String IP = "192.168.1.14"; // Enter your IP
-String IP = "10.209.162.133"; // Enter your IP
+String IP = "192.168.1.14"; // Enter your IP
+//String IP = "10.209.162.133"; // Enter your IP
 String uri = "http://$IP:3000";
 class GlobalVariables {
 
