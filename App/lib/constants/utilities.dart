@@ -16,7 +16,7 @@ void showSnackBar2(BuildContext context, String text, {bool isError = false}) {
           ? Colors.red
           : Colors.green, // Change color based on error status
       behavior: SnackBarBehavior.floating, // Optional: Makes snackbar floating
-      duration: Duration(seconds: 3), // Duration can be adjusted
+      duration: const Duration(seconds: 3), // Duration can be adjusted
     ),
   );
 }
