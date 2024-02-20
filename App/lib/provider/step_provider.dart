@@ -29,7 +29,9 @@ class StepProvider with ChangeNotifier {
     // Call HealthDataService to upload the steps
     HealthDataService().postHealthData(
       context: context,
-      steps: _steps,
+      type: 'steps',
+      value: _steps,
+      unit: 'steps',
       date: DateTime.now(),
     );
   }
