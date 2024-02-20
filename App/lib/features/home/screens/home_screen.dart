@@ -69,7 +69,7 @@ class HomeScreenContentState extends State<HomeScreenContent> {
         () => Provider.of<StepProvider>(context, listen: false).fetchSteps());
   }
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     final stepProvider = Provider.of<StepProvider>(context);
     String screenTime = '2h 30m'; // Example screen time
