@@ -12,14 +12,21 @@ class HealthDataService {
   // Post health data
   void postHealthData({
     required BuildContext context,
-    required int steps,
+    required String type,
+    required num value,
+    required String unit,
     required DateTime date,
   }) async {
     try {
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       final userId = userProvider.user.id;
 
-      HealthData healthData = HealthData(steps: steps, date: date);
+      HealthData healthData = HealthData(
+        type: type,
+        value: value,
+        unit: unit,
+        date: date,
+      );
 
       http.Response res = await http.post(
         Uri.parse("$uri/api/users/$userId/healthData"),
@@ -34,11 +41,11 @@ class HealthDataService {
         response: res,
         context: context,
         onSuccess: () {
-          showSnackBar2(context, 'Steps uploaded successfully');
+          showSnackBar2(context, '$type data uploaded successfully');
         },
       );
     } catch (e) {
-      showSnackBar2(context, 'Error uploading steps: ${e.toString()}', isError: true);
+      showSnackBar2(context, 'Error uploading $type data: ${e.toString()}', isError: true);
     }
   }
 }

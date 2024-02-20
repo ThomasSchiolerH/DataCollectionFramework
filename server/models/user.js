@@ -28,9 +28,17 @@ const userSchema = mongoose.Schema({
     default: "user",
   },
   healthData: [{
-    steps: { 
-      type: Number, 
+    type: { 
+      type: String, 
       required: true 
+    },
+    value : {
+      type: Number,
+      required: true
+    },
+    unit : {
+      type: String,
+      required: true
     },
     date: { 
       type: Date, 

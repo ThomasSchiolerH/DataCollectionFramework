@@ -4,24 +4,30 @@ const healthRouter = express.Router();
 const authenticate = require("../../middleware/authenticate");
 
 
-const validateHealthData = (steps, date) => {
-    if (!Number.isInteger(steps) || steps < 0) {
-      return 'Invalid steps count. Steps must be a non-negative integer.';
-    }
-    if (isNaN(Date.parse(date))) {
-      return 'Invalid date format. Date must be in a valid ISO format.';
-    }
-    return null;
-  };
+const validateHealthData = (type, value, unit, date) => {
+  if (typeof type !== 'string' || type.length === 0) {
+    return 'Invalid type. Type must be a non-empty string.';
+  }
+  if (typeof value !== 'number' || value < 0) {
+    return 'Invalid value. Value must be a non-negative number.';
+  }
+  if (typeof unit !== 'string' || unit.length === 0) {
+    return 'Invalid unit. Unit must be a non-empty string.';
+  }
+  if (isNaN(Date.parse(date))) {
+    return 'Invalid date format. Date must be in a valid ISO format.';
+  }
+  return null;
+};
 
 // Upload health data
 // TODO: Fix the upload logic
 healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res) => {
   const { userId } = req.params;
-  const { steps, date } = req.body;
-
+  const { type, value, unit, date } = req.body;
+  console.log(req.body); // Add this line before the validation logic
   // Validation
-  const validationError = validateHealthData(steps, date);
+  const validationError = validateHealthData(type, value, unit, date);
   if (validationError) {
     return res.status(400).json({ msg: validationError });
   }
@@ -47,7 +53,7 @@ healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res
     }
 
     // Add the new health data
-    user.healthData.push({ steps, date: new Date(date) });
+    user.healthData.push({ type, value, unit, date: new Date(date) });
     await user.save();
 
     res.status(200).json({ msg: 'Health data added successfully' });
