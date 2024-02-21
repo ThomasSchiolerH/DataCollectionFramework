@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mental_health_app/features/auth/screens/auth_screen.dart';
 import 'package:mental_health_app/features/home/screens/home_screen.dart';
 import 'package:mental_health_app/features/home/screens/calendar_screen.dart';
+import 'package:mental_health_app/features/home/screens/analyze_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -36,6 +37,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const CalendarScreen(),
+      );
+    case AnalyseScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const AnalyseScreen(),
       );
     default:
       return MaterialPageRoute(
