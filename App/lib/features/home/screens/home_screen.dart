@@ -3,6 +3,7 @@ import 'package:mental_health_app/provider/health_data_providers/bmi_provider.da
 import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'calendar_screen.dart';
+import 'analyze_screen.dart';
 import 'package:mental_health_app/provider/health_data_providers/step_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/exercise_time_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/sleep_provider.dart';
@@ -19,8 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _screens = [
-    HomeScreenContent(),
     CalendarScreen(),
+    HomeScreenContent(),
+    AnalyseScreen(),
   ];
 
   @override
@@ -34,12 +36,16 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
             label: 'Calendar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Overview',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.analytics),
+             label: 'Analyse',
           ),
         ],
         currentIndex: _selectedIndex,
