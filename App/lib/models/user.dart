@@ -5,7 +5,8 @@ class User {
   final String id;
   final String name;
   final String email;
-  final String password; // TODO: Consider security implications of handling passwords
+  final String
+      password; // TODO: Consider security implications of handling passwords
   final String type;
   final String token;
   final List<HealthData> healthData;
@@ -40,7 +41,8 @@ class User {
       password: map['password'] ?? '',
       type: map['type'] ?? '',
       token: map['token'] ?? '',
-      healthData: List<HealthData>.from(map['healthData']?.map((x) => HealthData.fromMap(x)) ?? []),
+      healthData: List<HealthData>.from(
+          map['healthData']?.map((x) => HealthData.fromMap(x)) ?? []),
     );
   }
 
