@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mental_health_app/features/home/services/get_exercise_time_service.dart';
+import 'package:mental_health_app/features/home/services/health_data_services/get_exercise_time_service.dart';
 import 'package:mental_health_app/features/home/services/health_data_services.dart';
 
 class ExerciseTimeProvider with ChangeNotifier {

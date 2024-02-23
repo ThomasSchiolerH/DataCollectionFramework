@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mental_health_app/features/home/services/bmi_data_service.dart';
+import 'package:mental_health_app/features/home/services/health_data_services/bmi_data_service.dart';
 import 'package:mental_health_app/features/home/services/health_data_services.dart';
 import 'dart:async';
 

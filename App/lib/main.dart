@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
 import 'package:mental_health_app/features/auth/screens/auth_screen.dart';
-import 'package:mental_health_app/provider/bmi_provider.dart';
-import 'package:mental_health_app/provider/exercise_time_provider.dart';
-import 'package:mental_health_app/provider/sleep_provider.dart';
-import 'package:mental_health_app/provider/step_provider.dart';
+import 'package:mental_health_app/provider/health_data_providers/bmi_provider.dart';
+import 'package:mental_health_app/provider/health_data_providers/exercise_time_provider.dart';
+import 'package:mental_health_app/provider/health_data_providers/sleep_provider.dart';
+import 'package:mental_health_app/provider/health_data_providers/step_provider.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:mental_health_app/router.dart';
 import 'package:provider/provider.dart';
