@@ -33,7 +33,8 @@ class HealthDataService {
         body: jsonEncode(healthData.toMap()),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${userProvider.user.token}', // Pass the token for authentication
+          'Authorization':
+              'Bearer ${userProvider.user.token}', // Pass the token for authentication
         },
       );
 
@@ -45,7 +46,8 @@ class HealthDataService {
         },
       );
     } catch (e) {
-      showSnackBar2(context, 'Error uploading $type data: ${e.toString()}', isError: true);
+      showSnackBar2(context, 'Error uploading $type data: ${e.toString()}',
+          isError: true);
     }
   }
 }
