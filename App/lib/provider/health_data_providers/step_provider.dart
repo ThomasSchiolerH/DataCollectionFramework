@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mental_health_app/features/home/services/get_steps.dart';
+import 'package:mental_health_app/features/home/services/health_data_services/get_steps.dart';
 import 'package:mental_health_app/features/home/services/health_data_services.dart';
 
 class StepProvider with ChangeNotifier {

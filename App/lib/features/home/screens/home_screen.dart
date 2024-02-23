@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mental_health_app/provider/bmi_provider.dart';
+import 'package:mental_health_app/provider/health_data_providers/bmi_provider.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'calendar_screen.dart';
-import 'package:mental_health_app/features/home/services/get_steps.dart';
-import 'package:mental_health_app/provider/step_provider.dart';
-import 'package:mental_health_app/provider/exercise_time_provider.dart';
-import 'package:mental_health_app/provider/sleep_provider.dart';
+import 'package:mental_health_app/provider/health_data_providers/step_provider.dart';
+import 'package:mental_health_app/provider/health_data_providers/exercise_time_provider.dart';
+import 'package:mental_health_app/provider/health_data_providers/sleep_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/home";
