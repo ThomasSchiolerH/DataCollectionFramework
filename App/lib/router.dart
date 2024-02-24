@@ -3,6 +3,7 @@ import 'package:mental_health_app/features/auth/screens/auth_screen.dart';
 import 'package:mental_health_app/features/home/screens/home_screen.dart';
 import 'package:mental_health_app/features/home/screens/calendar_screen.dart';
 import 'package:mental_health_app/features/home/screens/analyze_screen.dart';
+import 'package:mental_health_app/features/home/screens/mood_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,6 +28,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const AuthScreen(),
+      );
+    case MoodScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const MoodScreen(),
       );
     case HomeScreen.routeName:
       return MaterialPageRoute(
