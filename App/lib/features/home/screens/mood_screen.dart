@@ -44,20 +44,39 @@ class _MoodScreenState extends State<MoodScreen> {
             SizedBox(height: 20),
             Wrap(
               spacing: 8, // Horizontal space between buttons
+              runSpacing: 8, // Vertical space between buttons
               alignment: WrapAlignment.center,
-              children: List.generate(6, (index) => ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.blue, // Button color
-                  onPrimary: Colors.white, // Text color
-                ),
-                onPressed: () => _selectMoodAndNavigate(context, index + 1),
-                child: Text('${index + 1}'),
-              )),
+              children: List.generate(6, (index) {
+                // Calculate color based on index
+                Color buttonColor = _getColorForMood(index + 1);
+                return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: buttonColor, // Use the calculated color
+                    onPrimary: Colors.white, // Text color
+                    minimumSize: Size(40, 36), // Set the minimum button size (width, height)
+                  ),
+                  onPressed: () => _selectMoodAndNavigate(context, index + 1),
+                  child: Text('${index + 1}'),
+                );
+              }),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Color _getColorForMood(int mood) {
+    // Define your color scale from grey to green
+    List<Color> moodColors = [
+      Colors.grey.shade500, // Mood 1
+      Colors.grey.shade400, // Mood 2
+      Colors.grey.shade300, // Mood 3
+      Colors.lightGreen.shade200, // Mood 4
+      Colors.lightGreen.shade300, // Mood 5
+      Colors.green.shade400, // Mood 6
+    ];
+    return moodColors[mood - 1];
   }
 
   void _selectMoodAndNavigate(BuildContext context, int moodValue) {
