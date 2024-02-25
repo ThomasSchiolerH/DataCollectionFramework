@@ -25,7 +25,7 @@ const validateHealthData = (type, value, unit, date) => {
 healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res) => {
   const { userId } = req.params;
   const { type, value, unit, date } = req.body;
-  console.log(req.body); // Add this line before the validation logic
+  console.log(req.body);
   // Validation
   const validationError = validateHealthData(type, value, unit, date);
   if (validationError) {
