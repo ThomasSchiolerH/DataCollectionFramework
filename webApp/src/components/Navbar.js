@@ -5,7 +5,7 @@ import '../styles/Navbar.css';
 const Navbar = () => {
     return (
         <nav className="navbar">
-            <NavLink to="/" className="navbar-logo">Admin</NavLink>
+            <NavLink to="/home" className="navbar-logo">Admin</NavLink>
             <ul className="navbar-links">
                 <li>
                   <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'active' : undefined}>
