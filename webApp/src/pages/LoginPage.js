@@ -7,7 +7,7 @@ const LoginPage = ({ onLoginSuccess }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
   
     const handleLogin = async (event) => {
       event.preventDefault();
@@ -15,7 +15,6 @@ const LoginPage = ({ onLoginSuccess }) => {
   
       try {
         const response = await axios.post(`${serverURL}/api/admin/signin`, { email, password });
-        // Assuming your API returns the token and role in the response
         const { token, role } = response.data;
         
         if (role !== 'admin') {

@@ -16,7 +16,7 @@ function App() {
     localStorage.setItem('token', token); // Store token in localStorage
   };
 
-  // Optional: Redirect to login page if not authenticated
+  // Redirect to login page if not authenticated
   const RequireAuth = ({ children }) => {
     if (!authToken) {
       // User not authenticated
@@ -32,7 +32,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} />
-          {/* Protect routes as necessary */}
+          {/* Protect routes using RequireAuth */}
           <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
           <Route path="/users" element={<RequireAuth><UsersList /></RequireAuth>} />
           <Route path="/user/:userId" element={<RequireAuth><UserDetails /></RequireAuth>} />

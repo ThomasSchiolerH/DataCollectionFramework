@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getUserHealthData } from '../services/getUserServices'; // Adjust the import path as necessary
+import { getUserHealthData } from '../services/getUserServices';
 
 const UserDetails = () => {
   const { userId } = useParams();
@@ -22,7 +22,7 @@ const UserDetails = () => {
     };
 
     fetchHealthData();
-  }, [userId]); // Depend on userId so it refetches if that changes
+  }, [userId]);
 
   if (loading) {
     return <div>Loading...</div>;

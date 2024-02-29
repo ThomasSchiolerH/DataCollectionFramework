@@ -59,7 +59,7 @@ authRouter.post("/api/signin", async (req, res) => {
   }
 });
 
-// Sign in route
+// Admin sign in route
 authRouter.post("/api/admin/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -84,19 +84,17 @@ authRouter.post("/api/admin/signin", async (req, res) => {
 
     // Check if the user is an admin
     if (user.type !== 'admin') {
-      // Optionally, restrict this route to admins only or handle differently based on your requirements
       return res.status(403).json({ msg: "Access denied. This user is not an admin." });
     }
 
     const token = jWebToken.sign({ id: user._id, role: user.type }, "pwKey");
-    // Return the token and user role (include more data as needed)
+    // Return the token and user role
     res.json({ token, role: user.type });
 
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
 });
-
 
 // Make public
 module.exports = authRouter;
