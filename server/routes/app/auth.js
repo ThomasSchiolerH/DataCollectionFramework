@@ -32,7 +32,7 @@ authRouter.post("/api/signup", async (req, res) => {
   }
 });
 
-// Sign in route
+// // Sign in route
 authRouter.post("/api/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -58,6 +58,45 @@ authRouter.post("/api/signin", async (req, res) => {
     return res.status(500).json({ error: e.message });
   }
 });
+
+// Sign in route
+authRouter.post("/api/admin/signin", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ msg: "User does not exist." });
+    }
+
+    //TODO: Add password encryption
+    //const isPwMatch = await bcryptjs.compare(password, user.password);
+    console.log(password);
+    console.log(user.password);
+    //console.log(isPwMatch);
+    // if (!isPwMatch) {
+    //   return res.status(400).json({ msg: "Incorrect password!" });
+    // }
+
+    if (password !== user.password) {
+      return res.status(400).json({ msg: "Incorrect password!" });
+    }
+
+    // Check if the user is an admin
+    if (user.type !== 'admin') {
+      // Optionally, restrict this route to admins only or handle differently based on your requirements
+      return res.status(403).json({ msg: "Access denied. This user is not an admin." });
+    }
+
+    const token = jWebToken.sign({ id: user._id, role: user.type }, "pwKey");
+    // Return the token and user role (include more data as needed)
+    res.json({ token, role: user.type });
+
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
+});
+
 
 // Make public
 module.exports = authRouter;
