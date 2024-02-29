@@ -9,33 +9,24 @@ import LoginPage from './pages/LoginPage';
 import './styles/App.css';
 
 function App() {
-  const [authToken, setAuthToken] = useState(localStorage.getItem('token') || '');
+  const [authToken, setAuthToken] = useState(sessionStorage.getItem('token') || '');
 
   const handleLoginSuccess = (token) => {
     setAuthToken(token);
-    localStorage.setItem('token', token); // Store token in localStorage
-  };
-
-  // Redirect to login page if not authenticated
-  const RequireAuth = ({ children }) => {
-    if (!authToken) {
-      // User not authenticated
-      return <Navigate to="/login" replace />;
-    }
-    return children;
+    sessionStorage.setItem('token', token); // Store token in sessionStorage
   };
 
   return (
     <Router>
       <div className="App">
-        <Navbar />
+        {authToken && <Navbar />}
         <Routes>
-          <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} />
-          {/* Protect routes using RequireAuth */}
-          <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
-          <Route path="/users" element={<RequireAuth><UsersList /></RequireAuth>} />
-          <Route path="/user/:userId" element={<RequireAuth><UserDetails /></RequireAuth>} />
+          <Route path="/" element={authToken ? <Navigate to="/home" /> : <Navigate to="/login" />} />
+          <Route path="/home" element={authToken ? <HomePage /> : <Navigate to="/login" replace />} />
+          <Route path="/dashboard" element={authToken ? <Dashboard /> : <Navigate to="/login" replace />} />
+          <Route path="/users" element={authToken ? <UsersList /> : <Navigate to="/login" replace />} />
+          <Route path="/user/:userId" element={authToken ? <UserDetails /> : <Navigate to="/login" replace />} />
         </Routes>
       </div>
     </Router>
