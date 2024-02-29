@@ -1,0 +1,55 @@
+.dashboard {
+    padding: 20px;
+  }
+  
+  .admin-dashboard-title-text {
+    margin-bottom: 50px;
+    text-align: center;
+  }
+  
+  .dashboard-grid {
+    display: grid;
+    width: 100%; /* Use a full width for the grid within its container */
+    max-width: 1200px; /* Maximum width of the grid to avoid overly wide cards */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Creates a responsive grid */
+    grid-auto-rows: auto; /* Sets the row height to auto to accommodate content */
+    grid-gap: 20px; /* Space between cards */
+    margin: 0 auto; /* Center the grid horizontally */
+  }
+  
+  .card {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column; /* Ensures the title is at the top and content below */
+  }
+
+  .card.large {
+    grid-column: span 2; /* Makes the card span two columns */
+    grid-row: span 2; /* Makes the card span two rows */
+  }
+  
+  .card-title {
+    text-align: center;
+    margin-bottom: 15px; /* Adds some space between the title and the content */
+    font-size: 1.2em; /* Adjust as needed */
+    font-weight: bold;
+  }
+  
+  .card-content {
+    flex: 1; /* Allows the content to fill the rest of the card */
+    /* Additional styling for your content */
+  }
+  
+  /* For aesthetics */
+  body {
+    background-color: #f4f7f6;
+    color: #333;
+    font-family: Arial, sans-serif;
+  }
+  
