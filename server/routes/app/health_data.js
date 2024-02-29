@@ -64,27 +64,28 @@ healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res
 });
 
 
-// Fetch health data
+  // Fetch health data
 healthRouter.get('/api/users/:userId/healthData', authenticate, async (req, res) => {
-    const { userId } = req.params;
-  
-    try {
-      // Authorization check
-      if (req.userId !== userId) {
-        return res.status(403).json({ msg: 'Access denied.' });
-      }
-  
-      const user = await User.findById(userId, 'healthData');
-      if (!user) {
-        return res.status(404).json({ msg: 'User not found' });
-      }
-  
-      res.status(200).json(user.healthData);
-    } catch (error) {
-      console.error('Error in retrieving health data:', error);
-      res.status(500).send('Internal Server Error');
+  const { userId } = req.params;
+
+  try {
+    // Updated authorization check to allow admins
+    if (req.userId !== userId && req.userRole !== 'admin') {
+      return res.status(403).json({ msg: 'Access denied.' });
     }
-  });
+
+    const user = await User.findById(userId, 'healthData');
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.status(200).json(user.healthData);
+  } catch (error) {
+    console.error('Error in retrieving health data:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 
 // Make public
 module.exports = healthRouter;
