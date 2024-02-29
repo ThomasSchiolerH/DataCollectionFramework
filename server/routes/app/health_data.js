@@ -64,12 +64,12 @@ healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res
 });
 
 
-  // Fetch health data
+// Fetch health data
 healthRouter.get('/api/users/:userId/healthData', authenticate, async (req, res) => {
   const { userId } = req.params;
 
   try {
-    // Updated authorization check to allow admins
+    // Only allow admins
     if (req.userId !== userId && req.userRole !== 'admin') {
       return res.status(403).json({ msg: 'Access denied.' });
     }
@@ -85,7 +85,6 @@ healthRouter.get('/api/users/:userId/healthData', authenticate, async (req, res)
     res.status(500).send('Internal Server Error');
   }
 });
-
 
 // Make public
 module.exports = healthRouter;
