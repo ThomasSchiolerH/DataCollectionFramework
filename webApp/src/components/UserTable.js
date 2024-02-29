@@ -9,6 +9,7 @@ const UserTable = ({ users }) => {
                 <tr>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Type</th>
                 </tr>
             </thead>
             <tbody>
@@ -18,7 +19,7 @@ const UserTable = ({ users }) => {
                             <Link to={`/user/${user._id}`}>{user.name}</Link>
                         </td>
                         <td>{user.email}</td>
-                        {/* Add more user details as needed */}
+                        <td>{user.type}</td>
                     </tr>
                 ))}
             </tbody>

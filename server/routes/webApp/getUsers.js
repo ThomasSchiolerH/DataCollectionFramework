@@ -5,7 +5,7 @@ const getUserRouter = express.Router();
 // Get users route
 getUserRouter.get("/api/getUser", async (req, res) => {
     try {
-        const users = await User.find({}, 'name email');
+        const users = await User.find({}, 'name email type');
 
         if (!users) {
             return res.status(404).json({ msg: "No users found" });
