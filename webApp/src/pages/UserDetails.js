@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getUserHealthData } from '../services/getUserServices';
+import "../styles/UserDetails.css";
 
 const groupHealthDataByType = (healthData) => {
   return healthData.reduce((acc, data) => {
@@ -47,7 +48,7 @@ const UserDetails = () => {
   }
 
   return (
-    <div>
+    <div className='user-details-container'>
       <h1>User Details Page</h1>
       <p>User ID: {userId}</p>
       {Object.keys(groupedHealthData).map((type) => (
