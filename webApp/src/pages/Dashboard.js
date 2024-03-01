@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getUserCount } from '../services/getUserServices';
+import { Link } from 'react-router-dom';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
@@ -19,7 +20,7 @@ const Dashboard = () => {
       <h1 className="admin-dashboard-title-text">Admin Dashboard</h1>
       <div className="dashboard-grid">
         <div className="card">
-          <div className="card-title">Active Users</div>
+          <div className="card-title"><Link to={`/users`}>Active Users</Link></div>
           <div className="card-content">{activeUsers}</div>
         </div>
         <div className="card large">
@@ -34,7 +35,6 @@ const Dashboard = () => {
           <div className="card-title">Large Chart 2</div>
           <div className="card-content">Larger content goes here...</div>
         </div>
-        {/* Add more cards as needed */}
       </div>
     </div>
   );

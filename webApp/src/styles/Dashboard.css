@@ -37,16 +37,20 @@
   .card-title {
     text-align: center;
     margin-bottom: 15px; /* Adds some space between the title and the content */
-    font-size: 1.2em; /* Adjust as needed */
+    font-size: 1.2em;
     font-weight: bold;
   }
+
+  .card-title a {
+    color: inherit; /* Makes the link color the same as its parent */
+    text-decoration: none; /* Removes underline from the link */
+  }  
   
   .card-content {
     flex: 1; /* Allows the content to fill the rest of the card */
     /* Additional styling for your content */
   }
   
-  /* For aesthetics */
   body {
     background-color: #f4f7f6;
     color: #333;
