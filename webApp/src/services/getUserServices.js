@@ -1,9 +1,9 @@
 import axios from 'axios';
 const serverURL = process.env.REACT_APP_SERVER_URL;
 
-// Get user's name and email
 const getToken = () => localStorage.getItem('token');
 
+// Get user's name and email
 export const getUsers = async () => {
     try {
         const token = getToken();
@@ -19,9 +19,10 @@ export const getUsers = async () => {
     }
 };
 
+// Get data for each user
 export const getUserHealthData = async (userId) => {
     try {
-        const token = getToken(); // Reuse the getToken function to access the stored token
+        const token = getToken();
         const response = await axios.get(`${serverURL}/api/users/${userId}/healthData`, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -32,4 +33,20 @@ export const getUserHealthData = async (userId) => {
         console.error('Error fetching health data:', error);
         throw error; // re-throw the error for handling by the caller
     }
+};
+
+// Get user count
+export const getUserCount = async () => {
+  try {
+      const token = getToken();
+      const response = await axios.get(`${serverURL}/api/getUserCount`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data.count;
+  } catch (error) {
+      console.error('Error fetching user count:', error);
+      return 0;
+  }
 };

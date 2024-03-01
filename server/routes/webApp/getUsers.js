@@ -17,5 +17,16 @@ getUserRouter.get("/api/getUser", async (req, res) => {
         return res.status(500).json({ error: e.message });
     }
 });
+
+// Get user count route
+getUserRouter.get("/api/getUserCount", async (req, res) => {
+    try {
+        const count = await User.countDocuments();
+        res.json({ count });
+    } catch (e) {
+        return res.status(500).json({ error: e.message });
+    }
+});
+
 // Make public
 module.exports = getUserRouter;

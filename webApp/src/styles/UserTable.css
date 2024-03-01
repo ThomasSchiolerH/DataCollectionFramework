@@ -15,7 +15,7 @@
 }
 
 .user-table th {
-    background-color: #0b61bd; 
+    background-color: #9e9887; 
     color: white; 
     font-size: 16px; 
 }
@@ -28,12 +28,16 @@
     background-color: #f9f9f9; 
 }
 
+.user-table tbody tr:nth-child(even):hover {
+    background-color: #f1f1f1; 
+}
+
 .user-table tbody td {
     color: #555; 
 }
 
 .user-table a {
-    color: #007bff; 
+    color: #9e9887; 
     text-decoration: none; 
 }
 
