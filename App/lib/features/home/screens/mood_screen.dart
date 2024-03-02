@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 class MoodScreen extends StatefulWidget {
   static const String routeName = "/mood";
+
   const MoodScreen({Key? key}) : super(key: key);
 
   @override
@@ -32,42 +33,62 @@ class _MoodScreenState extends State<MoodScreen> {
       ),
       body: Container(
         color: Colors.white,
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'How are you feeling today? Select a mood for $_currentDate:',
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 20),
-            Wrap(
-              spacing: 8, // Horizontal space between buttons
-              runSpacing: 8, // Vertical space between buttons
-              alignment: WrapAlignment.center,
-              children: List.generate(6, (index) {
-                // Calculate color based on index
-                Color buttonColor = _getColorForMood(index + 1);
-                return ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: buttonColor, // Use the calculated color
-                    onPrimary: Colors.white, // Text color
-                    minimumSize: Size(40, 36), // Set the minimum button size (width, height)
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            margin: EdgeInsets.only(top: 20), // Top margin of 20px and left margin of 20px
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start, // Align items to the left
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0),
+                  child: Text(
+                    'How are you feeling today?',
+                    style: TextStyle(
+                      fontSize: 22, // Increased font size
+                      fontWeight: FontWeight.bold, // Bold font weight
+                      color: Colors.black, // Adjusted text color
+                    ),
                   ),
-                  onPressed: () => _selectMoodAndNavigate(context, index + 1),
-                  child: Text('${index + 1}'),
-                );
-              }),
+                ),
+                Text(
+                  'Select a mood for $_currentDate:',
+                  style: TextStyle(fontSize: 18),
+                ),
+                SizedBox(height: 20),
+                ...List.generate(6, (index) {
+                  List<String> moodDescriptions = [
+                    "Not good (1)",
+                    "Could be better (2)",
+                    "Okay (3)",
+                    "Good (4)",
+                    "Very good (5)",
+                    "Great (6)"
+                  ];
+                  Color buttonColor = _getColorForMood(index + 1);
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0), // Space between buttons
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: buttonColor, // Button background color
+                        onPrimary: Colors.white, // Text color
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
+                      ),
+                      onPressed: () => _selectMoodAndNavigate(context, index + 1),
+                      child: Text(moodDescriptions[index]),
+                    ),
+                  );
+                }),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
   Color _getColorForMood(int mood) {
-    // Define your color scale from grey to green
     List<Color> moodColors = [
       Colors.grey.shade500, // Mood 1
       Colors.grey.shade400, // Mood 2
