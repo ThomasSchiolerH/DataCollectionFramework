@@ -4,9 +4,10 @@ import 'package:mental_health_app/models/health_data.dart';
 class User {
   final String id;
   final String name;
+  final int age;
+  final String gender;
   final String email;
-  final String
-      password; // TODO: Consider security implications of handling passwords
+  final String password; // TODO: Consider security implications of handling passwords
   final String type;
   final String token;
   final List<HealthData> healthData;
@@ -14,6 +15,8 @@ class User {
   User({
     required this.id,
     required this.name,
+    required this.age,
+    required this.gender,
     required this.email,
     required this.password,
     required this.type,
@@ -25,6 +28,8 @@ class User {
     return {
       'id': id,
       'name': name,
+      'age': age,
+      'gender': gender,
       'email': email,
       'password': password,
       'type': type,
@@ -37,6 +42,8 @@ class User {
     return User(
       id: map['_id'] ?? '',
       name: map['name'] ?? '',
+      age: map['age'] ?? '',
+      gender: map['gender'] ?? '',
       email: map['email'] ?? '',
       password: map['password'] ?? '',
       type: map['type'] ?? '',

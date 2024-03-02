@@ -6,11 +6,8 @@ const authRouter = express.Router();
 
 // Sign up route
 authRouter.post("/api/signup", async (req, res) => {
-  //{
-  // 'name': name, 'email': email, 'password': password
-  //}
   try {
-    const { name, email, password } = req.body;
+    const { name, age, gender, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -21,6 +18,8 @@ authRouter.post("/api/signup", async (req, res) => {
 
     let user = new User({
       name,
+      age,
+      gender,
       email,
       password,
       //password: hashedPassword,

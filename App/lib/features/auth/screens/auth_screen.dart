@@ -16,13 +16,18 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
   String _authMode = 'createAccount';
+  String? _selectedGender;
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _ageController.dispose();
+    _genderController.dispose();
     super.dispose();
   }
 
@@ -35,12 +40,16 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void signUpUser() {
-    authServices.signUpUser(
-      context: context,
-      name: _nameController.text,
-      email: _emailController.text,
-      password: _passwordController.text,
-    );
+    if (_signUpFormKey.currentState!.validate()) {
+      authServices.signUpUser(
+        context: context,
+        name: _nameController.text,
+        age: _ageController.text,
+        gender: _selectedGender!,
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+    }
   }
 
   void signInUser() {
@@ -58,8 +67,18 @@ class _AuthScreenState extends State<AuthScreen> {
     return null;
   }
 
+  String? _validateAge(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Age cannot be empty';
+    }
+    final age = int.tryParse(value);
+    if (age == null || age < 17) {
+      return 'Please enter a valid age';
+    }
+    return null;
+  }
+
   String? _validateEmail(String? value) {
-    // This regex should match the one used in your backend
     final regex = RegExp(
         r'^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$');
     if (value == null || !regex.hasMatch(value)) {
@@ -72,7 +91,7 @@ class _AuthScreenState extends State<AuthScreen> {
     if (value == null || value.isEmpty) {
       return 'Password cannot be empty';
     }
-    // You can add more conditions for password validation here if needed
+    // add more conditions for password validation here if needed
     return null;
   }
 
@@ -111,6 +130,30 @@ class _AuthScreenState extends State<AuthScreen> {
                   validator: _validateName,
                 ),
                 TextFormField(
+                  controller: _ageController,
+                  decoration: const InputDecoration(labelText: 'Age'),
+                  keyboardType: TextInputType.number,
+                  validator: _validateAge,
+                ),
+                DropdownButtonFormField<String>(
+                  value: _selectedGender,
+                  decoration: const InputDecoration(labelText: 'Gender'),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedGender = newValue;
+                    });
+                  },
+                  items: <String>['Male', 'Female', 'Other']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  validator: (value) =>
+                      value == null ? 'Please select your gender' : null,
+                ),
+                TextFormField(
                   controller: _emailController,
                   decoration: const InputDecoration(labelText: 'Email Address'),
                   keyboardType: TextInputType.emailAddress,
@@ -139,7 +182,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   validator: _validateEmail,
                 ),
                 TextFormField(
-                  controller: _passwordController, 
+                  controller: _passwordController,
                   decoration: const InputDecoration(labelText: 'Password'),
                   obscureText: true,
                   validator: _validatePassword,

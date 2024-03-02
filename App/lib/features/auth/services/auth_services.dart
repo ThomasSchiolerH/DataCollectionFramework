@@ -17,15 +17,24 @@ class AuthServices {
   void signUpUser({
     required BuildContext context,
     required String name,
+    required String age,
+    required String gender,
     required String email,
     required String password,
   }) async {
     try {
+      final int? ageInt = int.tryParse(age); // Convert age to an int
+      if (ageInt == null) {
+        showSnackBar(context, 'Age must be a valid number.');
+        return;
+      }
       User user = User(
         id: '',
         name: name,
         email: email,
         password: password,
+        age: ageInt,
+        gender: gender,
         type: '',
         token: '',
       );
@@ -57,40 +66,41 @@ class AuthServices {
   }
 
 // Sign in
-void signInUser({
-  required BuildContext context,
-  required String email,
-  required String password,
-}) async {
-  try {
-    http.Response res = await http.post(
-      Uri.parse("$uri/api/signin"),
-      body: jsonEncode({
-        "email": email,
-        "password": password,
-      }),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-    );
+  void signInUser({
+    required BuildContext context,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      http.Response res = await http.post(
+        Uri.parse("$uri/api/signin"),
+        body: jsonEncode({
+          "email": email,
+          "password": password,
+        }),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+      );
 
-    httpErrorHandling(
-      response: res,
-      context: context,
-      onSuccess: () async {
-        Provider.of<UserProvider>(context, listen: false).setUser(res.body);
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          MoodScreen.routeName, // Ensure this matches the routeName defined in MoodScreen
-          (route) => false,
-        );
-      },
-    );
-  } catch (e) {
-    showSnackBar(
-      context,
-      e.toString(),
-    );
+      httpErrorHandling(
+        response: res,
+        context: context,
+        onSuccess: () async {
+          Provider.of<UserProvider>(context, listen: false).setUser(res.body);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            MoodScreen
+                .routeName,
+            (route) => false,
+          );
+        },
+      );
+    } catch (e) {
+      showSnackBar(
+        context,
+        e.toString(),
+      );
+    }
   }
-}
 }
