@@ -50,3 +50,36 @@ export const getUserCount = async () => {
       return 0;
   }
 };
+
+// Fetch age demographic data
+export const getUserAgeDemographics = async () => {
+  try {
+      const token = getToken();
+      const response = await axios.get(`${serverURL}/api/userDemographics/age`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data;
+  } catch (error) {
+      console.error('Error fetching age demographics:', error);
+      return [];
+  }
+};
+
+// Fetch gender demographic data
+export const getUserGenderDemographics = async () => {
+  try {
+      const token = getToken();
+      const response = await axios.get(`${serverURL}/api/userDemographics/gender`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data;
+  } catch (error) {
+      console.error('Error fetching gender demographics:', error);
+      return [];
+  }
+};
+
