@@ -21,30 +21,22 @@ class MoodProvider with ChangeNotifier {
   Future<void> postUserInput(BuildContext context) async {
     if (_moodValue == 0) {
       // Handle the case where moodValue is not set or is the default value
-      showSnackBar2(context, "Please select a mood before submitting.", isError: true);
+      showSnackBar2(context, "Please select a mood before submitting.",
+          isError: true);
       return;
     }
 
     _isUploading = true;
     notifyListeners(); // Notify listeners that the upload process has started
 
-    try {
-      // Assuming postUserInput in UserInputService is properly implemented as an async method
-      await userInputService.postUserInput(
-        context: context,
-        type: "mood", // The type of input you're posting, e.g., "mood"
-        value: _moodValue, // The mood value set by the user
-        date: DateTime.now(), // The current date
-      );
-
-      // If the post is successful, show a success message
-      showSnackBar2(context, "Mood submitted successfully!");
-    } catch (e) {
-      // If an error occurs, show an error message
-      showSnackBar2(context, "Error submitting mood: ${e.toString()}", isError: true);
-    } finally {
-      _isUploading = false;
-      notifyListeners(); // Notify that the upload process has ended
-    }
+    // Assuming postUserInput in UserInputService is properly implemented as an async method
+    await userInputService.postUserInput(
+      context: context,
+      type: "mood", // The type of input you're posting, e.g., "mood"
+      value: _moodValue, // The mood value set by the user
+      date: DateTime.now(), // The current date
+    );
+    _isUploading = false;
+    notifyListeners(); // Notify that the upload process has ended
   }
 }
