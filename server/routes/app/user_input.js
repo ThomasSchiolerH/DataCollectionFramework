@@ -3,7 +3,7 @@ const User = require("../../models/user");
 const userInputRouter = express.Router();
 const authenticate = require("../../middleware/authenticate");
 
-const validateData = (type, value, unit, date) => {
+const validateInputData = (type, value, date) => {
     if (typeof type !== 'string' || type.length === 0) {
       return 'Invalid type. Type must be a non-empty string.';
     }
@@ -22,7 +22,7 @@ userInputRouter.post('/api/users/:userId/userInput', authenticate, async (req, r
     const { type, value, date } = req.body;
     console.log(req.body);
     // Validation
-    const validationError = validateData(type, value, date);
+    const validationError = validateInputData(type, value, date);
     if (validationError) {
       return res.status(400).json({ msg: validationError });
     }
@@ -39,7 +39,7 @@ userInputRouter.post('/api/users/:userId/userInput', authenticate, async (req, r
       }
   
       // Check if there's already an entry for the current day
-      const existingData = user.userInput.find(d => 
+      const existingData = user.userInputData.find(d => 
         d.date.toISOString().split('T')[0] === new Date(date).toISOString().split('T')[0]
       );
   
