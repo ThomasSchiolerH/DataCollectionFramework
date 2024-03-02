@@ -45,6 +45,20 @@ const userSchema = mongoose.Schema({
       required: true 
     },
   }],
+  userInputData: [{
+    type: { 
+      type: String, 
+      required: true 
+    },
+    value : {
+      type: Number,
+      required: true
+    },
+    date: { 
+      type: Date, 
+      required: true 
+    },
+  }],
 });
 
 const User = mongoose.model("User", userSchema);
