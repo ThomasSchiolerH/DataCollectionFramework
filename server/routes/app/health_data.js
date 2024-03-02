@@ -4,7 +4,7 @@ const healthRouter = express.Router();
 const authenticate = require("../../middleware/authenticate");
 
 
-const validateHealthData = (type, value, unit, date) => {
+const validateData = (type, value, unit, date) => {
   if (typeof type !== 'string' || type.length === 0) {
     return 'Invalid type. Type must be a non-empty string.';
   }
@@ -27,7 +27,7 @@ healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res
   const { type, value, unit, date } = req.body;
   console.log(req.body);
   // Validation
-  const validationError = validateHealthData(type, value, unit, date);
+  const validationError = validateData(type, value, unit, date);
   if (validationError) {
     return res.status(400).json({ msg: validationError });
   }
