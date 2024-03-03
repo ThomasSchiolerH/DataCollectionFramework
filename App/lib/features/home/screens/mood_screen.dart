@@ -78,8 +78,7 @@ class _MoodScreenState extends State<MoodScreen> {
                         bottom: 8.0), // Space between buttons
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: buttonColor, // Button background color
-                        onPrimary: Colors.white, // Text color
+                        foregroundColor: Colors.white, backgroundColor: buttonColor, // Text color
                         padding: EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10), // Button padding
                       ),
