@@ -25,7 +25,7 @@ class AuthServices {
     try {
       final int? ageInt = int.tryParse(age); // Convert age to an int
       if (ageInt == null) {
-        showSnackBar(context, 'Age must be a valid number.');
+        showSnackBar2(context, 'Age must be a valid number.', isError: true);
         return;
       }
       User user = User(

@@ -35,26 +35,19 @@ class GetSleepService {
 
     try {
       bool accessGranted = await health.requestAuthorization(types);
-      print("Authorization granted: $accessGranted");
       if (accessGranted) {
         DateTime now = DateTime.now();
         DateTime startOfYesterday = DateTime(now.year, now.month, now.day)
             .subtract(const Duration(days: 1));
         DateTime endOfYesterday = DateTime(now.year, now.month, now.day)
             .subtract(const Duration(seconds: 1));
-        print("Querying sleep data from $startOfYesterday to $endOfYesterday");
 
         List<HealthDataPoint> sleepData = await health.getHealthDataFromTypes(
             startOfYesterday, endOfYesterday, types);
         // Moved calculation call here and correctly update getSleepMinutes.
         getSleepMinutes = calculateTotalSleepMinutes(sleepData);
-        for (HealthDataPoint point in sleepData) {
-          print(
-              'Sleep data point from ${point.dateFrom} to ${point.dateTo}, duration: ${point.dateTo.difference(point.dateFrom).inMinutes} minutes');
-        }
 
         lastFetchedDate = now; // Update last fetched date.
-        print('Total sleep time: $getSleepMinutes minutes');
         if (sleepData.isEmpty) {
           print('No sleep data available for the specified period.');
         }

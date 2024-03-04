@@ -22,10 +22,8 @@ class SleepProvider with ChangeNotifier {
   }
 
   Future<void> uploadSleep(BuildContext context) async {
-    print("Initiating sleep data upload...");
     await fetchSleep();
     // Confirming data to be uploaded
-    print("Uploading sleep data: $_sleepMinutes minutes on ${DateTime.now()}");
     HealthDataService().postHealthData(
       context: context,
       type: 'sleep',
