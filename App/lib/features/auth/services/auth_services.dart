@@ -82,7 +82,7 @@ class AuthServices {
           'Content-Type': 'application/json',
         },
       );
-
+      print(res.body);
       httpErrorHandling(
         response: res,
         context: context,
@@ -90,8 +90,7 @@ class AuthServices {
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
           Navigator.pushNamedAndRemoveUntil(
             context,
-            MoodScreen
-                .routeName,
+            MoodScreen.routeName,
             (route) => false,
           );
         },

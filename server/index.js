@@ -9,6 +9,7 @@ const getUserRouter = require("./routes/webApp/getUsers");
 const healthRouter = require("./routes/app/health_data");
 const authenticate = require("./middleware/authenticate");
 const userInputRouter = require("./routes/app/user_input");
+const analysisRouter = require("./routes/app/analysis");
 
 // INIT
 const PORT = 3000;
@@ -24,6 +25,7 @@ app.use(authRouter);
 app.use(getUserRouter);
 app.use(healthRouter);
 app.use(userInputRouter);
+app.use(analysisRouter);
 
 // Connections
 mongoose
