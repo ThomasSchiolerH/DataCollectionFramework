@@ -39,12 +39,12 @@ userInputRouter.post('/api/users/:userId/userInput', authenticate, async (req, r
       }
   
       // Check if there's already an entry for the current day
-      const existingData = user.userInputData.find(d => 
-        d.date.toISOString().split('T')[0] === new Date(date).toISOString().split('T')[0]
+      const existingData = user.healthData.find(d => 
+        d.date.toISOString().split('T')[0] === new Date(date).toISOString().split('T')[0] && d.type === type
       );
   
       if (existingData) {
-        return res.status(409).json({ msg: 'User input for this day already exists.' });
+        return res.status(409).json({ msg: `${type} input for this day already exists.` });
       }
   
       // Add the new health data
