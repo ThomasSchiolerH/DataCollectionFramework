@@ -25,14 +25,8 @@ class ExerciseTimeProvider with ChangeNotifier {
   }
 
   Future<void> uploadExerciseTime(BuildContext context) async {
-    print("ExerciseTimeProvider - Preparing to upload exercise time...");
-    //_isLoading = true;
-    //notifyListeners();
-
     // Ensure data is fresh before upload
     await fetchExerciseTime();
-    print(
-        "ExerciseTimeProvider - Uploading exercise time: $_exerciseTimeInMinutes minutes");
     // Assuming you have a similar setup for getting the user and auth token
     HealthDataService().postHealthData(
       context: context,
@@ -41,6 +35,5 @@ class ExerciseTimeProvider with ChangeNotifier {
       unit: 'minutes',
       date: DateTime.now(),
     );
-    print("ExerciseTimeProvider - Exercise time upload attempted");
   }
 }

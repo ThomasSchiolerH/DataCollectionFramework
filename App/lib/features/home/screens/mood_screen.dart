@@ -39,7 +39,7 @@ class _MoodScreenState extends State<MoodScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.close, color: Colors.black),
+          icon: const Icon(Icons.close, color: Colors.black),
           onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
         ),
       ),
@@ -49,13 +49,13 @@ class _MoodScreenState extends State<MoodScreen> {
         child: Align(
           alignment: Alignment.topCenter,
           child: Container(
-            margin: EdgeInsets.only(top: 20), // Top margin of 20px
+            margin: const EdgeInsets.only(top: 20), // Top margin of 20px
             child: Column(
               crossAxisAlignment:
                   CrossAxisAlignment.start, // Align items to the left
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 20.0),
                   child: Text(
                     'How are you feeling today?',
                     style: TextStyle(
@@ -67,9 +67,9 @@ class _MoodScreenState extends State<MoodScreen> {
                 ),
                 Text(
                   'Select a mood for $_currentDate:',
-                  style: TextStyle(fontSize: 18),
+                  style: const TextStyle(fontSize: 18),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ...List.generate(6, (index) {
                   List<int> moodDescriptions = [1, 2, 3, 4, 5, 6];
                   Color buttonColor = _getColorForMood(index + 1);
@@ -79,7 +79,7 @@ class _MoodScreenState extends State<MoodScreen> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white, backgroundColor: buttonColor, // Text color
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10), // Button padding
                       ),
                       onPressed: () =>

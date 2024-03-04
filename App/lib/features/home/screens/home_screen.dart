@@ -4,7 +4,6 @@ import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'calendar_screen.dart';
 import 'analyze_screen.dart';
-import 'mood_screen.dart';
 import 'package:mental_health_app/provider/health_data_providers/step_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/exercise_time_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/sleep_provider.dart';
