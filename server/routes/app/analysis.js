@@ -80,10 +80,12 @@ analysisRouter.get('/api/users/:userId/analyseStepsMoodWeekly', authenticate, as
 
     // Calculate correlation
     const correlationCoefficient = dataAnalysisService.calculateCorrelation(alignedWeeklyData.steps, alignedWeeklyData.mood);
+    // Find feedback
+    const feedback = dataAnalysisService.generateFeedback(correlationCoefficient);
 
-    res.status(200).json({ correlationCoefficient });
+    res.status(200).json({ correlationCoefficient, feedback });
   } catch (error) {
-    console.error('Error in analyzing steps and mood correlation weekly:', error);
+    console.error('Error in analysing steps and mood correlation weekly:', error);
     res.status(500).send('Internal Server Error');
   }
 });
