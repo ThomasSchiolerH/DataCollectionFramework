@@ -57,6 +57,34 @@ userInputRouter.post('/api/users/:userId/userInput', authenticate, async (req, r
       res.status(500).send('Internal Server Error');
     }
   });
+
+  // Check if user input exists for a specific date
+userInputRouter.get('/api/users/:userId/hasInputForDate', authenticate, async (req, res) => {
+  const { userId } = req.params;
+  const { date } = req.query; // Expect the date to be passed as a query parameter, e.g., ?date=2023-03-25
+
+  try {
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).json({ msg: 'User not found' });
+      }
+
+      // Check if there's already an entry for the specified day
+      const existingData = user.userInputData.find(d => 
+          d.date.toISOString().split('T')[0] === new Date(date).toISOString().split('T')[0]
+      );
+
+      if (existingData) {
+          return res.json({ hasInput: true });
+      } else {
+          return res.json({ hasInput: false });
+      }
+  } catch (error) {
+      console.error('Error in checking user input:', error);
+      res.status(500).send('Internal Server Error');
+  }
+});
+
   
   // Make public
   module.exports = userInputRouter;

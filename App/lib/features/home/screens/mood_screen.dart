@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mental_health_app/constants/global_variables.dart';
 import 'package:provider/provider.dart';
 import 'package:mental_health_app/provider/user_input_providers/mood_provider.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'home_screen.dart';
+import 'package:mental_health_app/provider/user_provider.dart';
 
 class MoodScreen extends StatefulWidget {
   static const String routeName = "/mood";
@@ -13,14 +18,6 @@ class MoodScreen extends StatefulWidget {
 }
 
 class _MoodScreenState extends State<MoodScreen> {
-  // final DateFormat formatter = DateFormat('dd-MM-yyyy');
-  // String _currentDate = '';
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _currentDate = formatter.format(DateTime.now());
-  // }
   String _currentDate = '';
   String _currentDateFormatted = '';
 
@@ -28,12 +25,56 @@ class _MoodScreenState extends State<MoodScreen> {
   void initState() {
     super.initState();
     DateTime now = DateTime.now();
-    _currentDate = now.toIso8601String(); 
+    _currentDate = now.toIso8601String();
     _currentDateFormatted = DateFormat('dd-MM-yyyy').format(now); // Used for display
+    _checkUserInputForToday();
   }
+
+void _checkUserInputForToday() async {
+  // Assuming you have a way to get the userId dynamically as needed
+  final userProvider = Provider.of<UserProvider>(context, listen: false);
+  final String userId = userProvider.user.id; // Use the dynamic user ID from UserProvider
+  final String currentDateFormatted = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+  try {
+    final response = await http.get(
+      Uri.parse('$uri/api/users/$userId/hasInputForDate?date=$currentDateFormatted'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${userProvider.user.token}', // Use the token from UserProvider
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      final bool hasInput = data['hasInput'];
+
+      if (hasInput) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+        });
+      }
+    } else {
+      print('Error checking user input: ${response.body}');
+    }
+  } catch (e) {
+    print('Exception caught during API call: $e');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
+    // Define a list of prefixes for each mood description
+    List<String> moodPrefixes = [
+      "terrible: ", // Prefix for mood 1
+      "bad: ", // Prefix for mood 2
+      "okay: ", // Prefix for mood 3
+      "good: ", // Prefix for mood 4
+      "very good: ", // Prefix for mood 5
+      "excellent: " // Prefix for mood 6
+    ];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -71,7 +112,6 @@ class _MoodScreenState extends State<MoodScreen> {
                 ),
                 const SizedBox(height: 20),
                 ...List.generate(6, (index) {
-                  List<int> moodDescriptions = [1, 2, 3, 4, 5, 6];
                   Color buttonColor = _getColorForMood(index + 1);
                   return Padding(
                     padding: const EdgeInsets.only(
@@ -84,8 +124,18 @@ class _MoodScreenState extends State<MoodScreen> {
                       ),
                       onPressed: () =>
                           _selectMoodAndNavigate(context, index + 1),
-                      child: Text(moodDescriptions[index]
-                          .toString()), // Convert int to String
+                      child: Row(
+                        mainAxisSize: MainAxisSize
+                            .min, // To keep the Row content as compact as possible
+                        children: [
+                          Text(
+                            "${moodPrefixes[index]}${index + 1}", // Use the prefix for each button
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold, // Make the text bold
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }),
@@ -98,13 +148,13 @@ class _MoodScreenState extends State<MoodScreen> {
   }
 
   Color _getColorForMood(int mood) {
-    List<Color> moodColors = [
-      Colors.grey.shade500, // Mood 1
-      Colors.grey.shade400, // Mood 2
-      Colors.grey.shade300, // Mood 3
-      Colors.lightGreen.shade200, // Mood 4
-      Colors.lightGreen.shade300, // Mood 5
-      Colors.green.shade400, // Mood 6
+    const List<Color> moodColors = [
+      Color.fromRGBO(155, 155, 155, 1), //1
+      Color.fromRGBO(175, 175, 175, 1), //2
+      Color.fromRGBO(195, 203, 195, 1), //3
+      Color.fromRGBO(180, 230, 180, 1), //4
+      Color.fromRGBO(160, 230, 160, 1), //5
+      Color.fromRGBO(125, 238, 125, 1), //6
     ];
     return moodColors[mood - 1];
   }
