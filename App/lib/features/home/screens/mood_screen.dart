@@ -41,7 +41,7 @@ class _MoodScreenState extends State<MoodScreen> {
     _checkUserInputForToday();
   }
 
-  void _checkUserInputForToday() async {
+void _checkUserInputForToday() async {
   final userProvider = Provider.of<UserProvider>(context, listen: false);
   final String userId = userProvider.user.id;
   final String currentDateFormatted = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -59,17 +59,17 @@ class _MoodScreenState extends State<MoodScreen> {
       final Map<String, dynamic> data = json.decode(response.body);
       final bool hasInput = data['hasInput'];
 
-      if (hasInput) {
-        // Delay the navigation to HomeScreen by a short duration
-        Future.delayed(Duration(milliseconds: 500), () {
+      // Delay the navigation to HomeScreen by a short duration
+      Future.delayed(Duration(milliseconds: 500), () {
+        if (hasInput) {
           Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-        });
-      } else {
-        // If user doesn't have input, set loading to false to show MoodScreen
-        setState(() {
-          _isLoading = false;
-        });
-      }
+        } else {
+          // If user doesn't have input, set loading to false to show MoodScreen
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      });
     } else {
       print('Error checking user input: ${response.body}');
     }
@@ -77,6 +77,7 @@ class _MoodScreenState extends State<MoodScreen> {
     print('Exception caught during API call: $e');
   }
 }
+
 
 
   @override
