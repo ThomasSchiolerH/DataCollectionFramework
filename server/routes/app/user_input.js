@@ -85,6 +85,26 @@ userInputRouter.get('/api/users/:userId/hasInputForDate', authenticate, async (r
   }
 });
 
+userInputRouter.get('/api/users/:userId/moodInputs', authenticate, async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    // Assuming `userInputData` contains all types of inputs, filter for 'mood' type
+    const moodInputs = user.userInputData.filter(input => input.type === 'mood');
+
+    return res.json({ moodInputs });
+  } catch (error) {
+    console.error('Error fetching mood inputs:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
   
   // Make public
   module.exports = userInputRouter;
