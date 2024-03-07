@@ -1,6 +1,11 @@
 const ss = require("simple-statistics");
 
 const calculateCorrelation = (weeklySteps, weeklyMoodScores) => {
+  // Ensure both arrays have at least two data points
+  if (weeklySteps.length < 2 || weeklyMoodScores.length < 2) {
+    // Handle this scenario appropriately, maybe by returning null or a specific indicator
+    return null; // Indicating not enough data
+  }
   return ss.sampleCorrelation(weeklySteps, weeklyMoodScores);
 };
 

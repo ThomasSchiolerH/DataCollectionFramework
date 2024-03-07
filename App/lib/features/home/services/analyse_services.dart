@@ -17,7 +17,8 @@ class AnalyseServices {
         Uri.parse("$uri/api/users/$userId/analyseStepsMoodWeekly"),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${userProvider.user.token}', // Use the token for authentication
+          'Authorization':
+              'Bearer ${userProvider.user.token}',
         },
       );
 
@@ -28,11 +29,43 @@ class AnalyseServices {
       );
 
       final data = json.decode(res.body);
-      return data['feedback'] ?? "Analysis completed, but no feedback was provided.";
+      return data['feedback'] ??
+          "Analysis completed, but no feedback was provided.";
     } catch (e) {
       showSnackBar2(context, 'Error fetching analysis: ${e.toString()}',
           isError: true);
       return "Failed to fetch analysis. Please try again later.";
+    }
+  }
+
+  static Future<List<dynamic>> fetchMoodAnalysis(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final userId = userProvider.user.id;
+
+    try {
+      final response = await http.get(
+        Uri.parse("$uri/api/users/$userId/avgHealthData"),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${userProvider.user.token}',
+        },
+      );
+
+      httpErrorHandling(
+        response: response,
+        context: context,
+        onSuccess: () {},
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data;
+      } else {
+        return [];
+      }
+    } catch (e) {
+    showSnackBar2(context, 'Error fetching mood analysis: ${e.toString()}', isError: true);
+    return [];
     }
   }
 }
