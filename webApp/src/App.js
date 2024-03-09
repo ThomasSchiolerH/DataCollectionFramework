@@ -6,6 +6,7 @@ import UsersList from './pages/UsersList';
 import HomePage from './pages/HomePage';
 import UserDetails from './pages/UserDetails';
 import LoginPage from './pages/LoginPage';
+import Analysis from './pages/Analysis';
 import './styles/App.css';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/dashboard" element={authToken ? <Dashboard /> : <Navigate to="/login" replace />} />
           <Route path="/users" element={authToken ? <UsersList /> : <Navigate to="/login" replace />} />
           <Route path="/user/:userId" element={authToken ? <UserDetails /> : <Navigate to="/login" replace />} />
+          <Route path="/analysis/:userId" element={authToken ? <Analysis /> : <Navigate to="/login" replace />} />
         </Routes>
       </div>
     </Router>
