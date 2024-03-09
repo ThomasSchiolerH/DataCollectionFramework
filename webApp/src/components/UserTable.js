@@ -16,7 +16,7 @@ const UserTable = ({ users }) => {
                 {users.map((user, index) => (
                     <tr key={index}>
                         <td>
-                            <Link to={`/user/${user._id}`}>{user.name}</Link>
+                            <Link to={`/analysis/${user._id}`}>{user.name}</Link>
                         </td>
                         <td>{user.email}</td>
                         <td>{user.type}</td>

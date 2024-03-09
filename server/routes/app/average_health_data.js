@@ -8,7 +8,7 @@ avgHealthRouter.get('/api/users/:userId/avgHealthData', authenticate, async (req
     const userId = req.params.userId;
   
     try {
-      if (req.userId !== userId) {
+      if (req.userId !== userId && req.userRole !== 'admin') {
         return res.status(403).json({ msg: 'Access denied.' });
       }
   
