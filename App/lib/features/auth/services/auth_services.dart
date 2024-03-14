@@ -7,6 +7,7 @@ import 'package:mental_health_app/features/home/screens/mood_screen.dart';
 import 'package:mental_health_app/models/user.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
 import 'package:http/http.dart' as http;
+import 'package:mental_health_app/provider/health_data_providers/step_provider.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
 //TODO: Implement shared preferences
 //import 'package:shared_preferences/shared_preferences.dart';
@@ -46,7 +47,6 @@ class AuthServices {
           'Content-Type': 'application/json',
         },
       );
-      //TODO: Fix
       httpErrorHandling(
         response: res,
         context: context,
@@ -88,6 +88,7 @@ class AuthServices {
         context: context,
         onSuccess: () async {
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
+          await Provider.of<StepProvider>(context, listen: false).fetchAndUploadSteps(context);
           Navigator.pushNamedAndRemoveUntil(
             context,
             MoodScreen.routeName,

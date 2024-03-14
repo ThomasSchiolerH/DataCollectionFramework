@@ -18,15 +18,15 @@ void main() {
     ChangeNotifierProvider(
       create: (context) => StepProvider(),
     ),
-    ChangeNotifierProvider(
-      create: (context) => ExerciseTimeProvider(),
-    ),
-    ChangeNotifierProvider(
-      create: (context) => SleepProvider(),
-    ),
-    ChangeNotifierProvider(
-      create: (context) => BMIProvider(),
-    ),
+    // ChangeNotifierProvider(
+    //   create: (context) => ExerciseTimeProvider(),
+    // ),
+    // ChangeNotifierProvider(
+    //   create: (context) => SleepProvider(),
+    // ),
+    // ChangeNotifierProvider(
+    //   create: (context) => BMIProvider(),
+    // ),
     ChangeNotifierProvider(
       create: (context) => MoodProvider(),
     ),

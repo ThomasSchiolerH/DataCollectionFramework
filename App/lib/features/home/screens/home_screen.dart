@@ -73,22 +73,22 @@ class HomeScreenContentState extends State<HomeScreenContent> {
     super.initState();
     // Use Future.microtask to ensure fetchSteps is called after the build method
     Future.microtask(
-        () => Provider.of<StepProvider>(context, listen: false).fetchSteps());
-    Future.microtask(() =>
-        Provider.of<ExerciseTimeProvider>(context, listen: false)
-            .fetchExerciseTime());
-    Future.microtask(
-        () => Provider.of<SleepProvider>(context, listen: false).fetchSleep());
-    Future.microtask(
-        () => Provider.of<BMIProvider>(context, listen: false).fetchBMI());
+        () => Provider.of<StepProvider>(context, listen: false).fetchTotalStepsForToday());
+    // Future.microtask(() =>
+    //     Provider.of<ExerciseTimeProvider>(context, listen: false)
+    //         .fetchExerciseTime());
+    // Future.microtask(
+    //     () => Provider.of<SleepProvider>(context, listen: false).fetchSleep());
+    // Future.microtask(
+    //     () => Provider.of<BMIProvider>(context, listen: false).fetchBMI());
   }
 
   @override
   Widget build(BuildContext context) {
     final stepProvider = Provider.of<StepProvider>(context);
-    final exerciseTimeProvider = Provider.of<ExerciseTimeProvider>(context);
-    final sleepProvider = Provider.of<SleepProvider>(context);
-    final bmiProvider = Provider.of<BMIProvider>(context);
+    // final exerciseTimeProvider = Provider.of<ExerciseTimeProvider>(context);
+    // final sleepProvider = Provider.of<SleepProvider>(context);
+    // final bmiProvider = Provider.of<BMIProvider>(context);
 
     return SingleChildScrollView(
       child: Padding(
@@ -114,54 +114,54 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                 }
               },
             ),
-            const SizedBox(height: 10),
-            Consumer<ExerciseTimeProvider>(
-              builder: (context, exerciseTimeProvider, child) {
-                return exerciseTimeProvider.isLoading
-                    ? const CircularProgressIndicator()
-                    : buildInfoCard('Exercise Time',
-                        '${exerciseTimeProvider.exerciseTimeInMinutes} minutes');
-              },
-            ),
-            const SizedBox(height: 10),
-            Consumer<SleepProvider>(
-              builder: (context, sleepProvider, child) {
-                if (sleepProvider.isLoading) {
-                  return const CircularProgressIndicator();
-                } else {
-                  return buildInfoCard(
-                      'Sleep', '${sleepProvider.sleepMinutes} minutes');
-                }
-              },
-            ),
-            const SizedBox(height: 10),
-            Consumer<BMIProvider>(
-              builder: (context, bmiProvider, child) {
-                // This assumes your BMIProvider correctly updates _bmi upon fetching.
-                // Check if BMI is still loading, then display a progress indicator or the BMI value.
-                var bmiValue = bmiProvider.bmi;
-                return bmiValue == null
-                    ? const CircularProgressIndicator()
-                    : buildInfoCard(
-                        'BMI',
-                        bmiValue.toStringAsFixed(
-                            2)); // Format BMI to 2 decimal places
-              },
-            ),
+            // const SizedBox(height: 10),
+            // Consumer<ExerciseTimeProvider>(
+            //   builder: (context, exerciseTimeProvider, child) {
+            //     return exerciseTimeProvider.isLoading
+            //         ? const CircularProgressIndicator()
+            //         : buildInfoCard('Exercise Time',
+            //             '${exerciseTimeProvider.exerciseTimeInMinutes} minutes');
+            //   },
+            // ),
+            // const SizedBox(height: 10),
+            // Consumer<SleepProvider>(
+            //   builder: (context, sleepProvider, child) {
+            //     if (sleepProvider.isLoading) {
+            //       return const CircularProgressIndicator();
+            //     } else {
+            //       return buildInfoCard(
+            //           'Sleep', '${sleepProvider.sleepMinutes} minutes');
+            //     }
+            //   },
+            // ),
+            // const SizedBox(height: 10),
+            // Consumer<BMIProvider>(
+            //   builder: (context, bmiProvider, child) {
+            //     // This assumes your BMIProvider correctly updates _bmi upon fetching.
+            //     // Check if BMI is still loading, then display a progress indicator or the BMI value.
+            //     var bmiValue = bmiProvider.bmi;
+            //     return bmiValue == null
+            //         ? const CircularProgressIndicator()
+            //         : buildInfoCard(
+            //             'BMI',
+            //             bmiValue.toStringAsFixed(
+            //                 2)); // Format BMI to 2 decimal places
+            //   },
+            // ),
             Padding(
               padding: const EdgeInsets.only(top: 40.0),
               child: Center(
                 child: ElevatedButton(
                   onPressed: () async {
                     await Provider.of<StepProvider>(context, listen: false)
-                        .uploadSteps(context);
-                    await Provider.of<ExerciseTimeProvider>(context,
-                            listen: false)
-                        .uploadExerciseTime(context);
-                    await Provider.of<SleepProvider>(context, listen: false)
-                        .uploadSleep(context);
-                    await Provider.of<BMIProvider>(context, listen: false)
-                        .uploadBMI(context);
+                        .fetchAndUploadSteps(context);
+                    // await Provider.of<ExerciseTimeProvider>(context,
+                    //         listen: false)
+                    //     .uploadExerciseTime(context);
+                    // await Provider.of<SleepProvider>(context, listen: false)
+                    //     .uploadSleep(context);
+                    // await Provider.of<BMIProvider>(context, listen: false)
+                    //     .uploadBMI(context);
                   },
                   child: const Text('Upload Data'),
                 ),
