@@ -9,45 +9,34 @@ import 'package:provider/provider.dart';
 import 'package:mental_health_app/constants/utilities.dart';
 
 class HealthDataService {
-  // Post health data
-  void postHealthData({
+  void postBulkHealthData({
     required BuildContext context,
-    required String type,
-    required num value,
-    required String unit,
-    required DateTime date,
+    required List<HealthData> healthDataPoints,
   }) async {
-    try {
-      final userProvider = Provider.of<UserProvider>(context, listen: false);
-      final userId = userProvider.user.id;
-
-      HealthData healthData = HealthData(
-        type: type,
-        value: value,
-        unit: unit,
-        date: date,
-      );
-
-      http.Response res = await http.post(
-        Uri.parse("$uri/api/users/$userId/healthData"),
-        body: jsonEncode(healthData.toMap()),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Authorization':
-              'Bearer ${userProvider.user.token}', // Pass the token for authentication
-        },
-      );
-
-      httpErrorHandling(
-        response: res,
-        context: context,
-        onSuccess: () {
-          showSnackBar2(context, '$type data uploaded successfully');
-        },
-      );
-    } catch (e) {
-      showSnackBar2(context, 'Error uploading $type data: ${e.toString()}',
-          isError: true);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final userId = userProvider.user.id;
+    
+    for (HealthData healthData in healthDataPoints) {
+      try {
+        http.Response res = await http.post(
+          Uri.parse("$uri/api/users/$userId/healthData"),
+          body: jsonEncode(healthData.toMap()),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${userProvider.user.token}',
+          },
+        );
+        
+        httpErrorHandling(
+          response: res,
+          context: context,
+          onSuccess: () {
+            showSnackBar2(context, '${healthData.type} data for ${healthData.date} uploaded successfully');
+          },
+        );
+      } catch (e) {
+        showSnackBar2(context, 'Error uploading ${healthData.type} data: ${e.toString()}');
+      }
     }
   }
 }

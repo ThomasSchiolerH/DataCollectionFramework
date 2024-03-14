@@ -45,13 +45,13 @@ healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res
     }
 
     // Check if there's already an entry for the current day
-    const existingData = user.healthData.find(d => 
-      d.date.toISOString().split('T')[0] === new Date(date).toISOString().split('T')[0] && d.type === type
-    );
+    // const existingData = user.healthData.find(d => 
+    //   d.date.toISOString().split('T')[0] === new Date(date).toISOString().split('T')[0] && d.type === type
+    // );
     
-    if (existingData) {
-      return res.status(409).json({ msg: `Health data for ${type} on this day already exists.` });
-    }
+    // if (existingData) {
+    //   return res.status(409).json({ msg: `Health data for ${type} on this day already exists.` });
+    // }
 
     // Add the new health data
     user.healthData.push({ type, value, unit, date: new Date(date) });
