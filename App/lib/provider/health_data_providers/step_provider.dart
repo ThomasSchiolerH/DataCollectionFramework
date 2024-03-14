@@ -38,7 +38,7 @@ print("Fetching and uploading steps data...");
       // Summarize the hourly steps into a total count for display purposes.
       _steps = hourlySteps.fold(0, (sum, data) => sum + data.value.toInt());
 
-      HealthDataService().postBulkHealthData(
+      HealthDataService().uploadHealthData(
         context: context,
         healthDataPoints: hourlySteps,
       );

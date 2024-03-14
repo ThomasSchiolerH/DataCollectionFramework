@@ -12,6 +12,7 @@ import 'package:mental_health_app/provider/user_provider.dart';
 //TODO: Implement shared preferences
 //import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class AuthServices {
   // sign up
@@ -88,7 +89,20 @@ class AuthServices {
         context: context,
         onSuccess: () async {
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
-          await Provider.of<StepProvider>(context, listen: false).fetchAndUploadSteps(context);
+          // only upload when connected to WI-FI
+          try {
+            final connectivityResult = await Connectivity().checkConnectivity();
+            if (connectivityResult == ConnectivityResult.wifi) {
+              await Provider.of<StepProvider>(context, listen: false)
+                  .fetchAndUploadSteps(context);
+            } else {
+              showSnackBar2(
+                  context, 'Data will upload once connected to Wi-Fi.', isError: true);
+            }
+          } catch (e) {
+            showSnackBar2(context,
+                'Failed to check network connectivity: ${e.toString()}', isError: true);
+          }
           Navigator.pushNamedAndRemoveUntil(
             context,
             MoodScreen.routeName,
