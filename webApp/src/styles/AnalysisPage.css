@@ -58,3 +58,32 @@
   .view-details-button:hover {
     background-color: #202e3c; 
   }
+
+.correlation-feedback {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #eef2f7;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.analysis-detail .analysis-data-item, 
+.correlation-feedback .analysis-data-item {
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.analysis-detail .analysis-data-item:last-child, 
+.correlation-feedback .analysis-data-item:last-child {
+  margin-bottom: 0;
+}
+
+.data-title {
+  font-weight: bold;
+  color: #333;
+}
+
+.view-details-button:hover {
+  background-color: #202e3c;
+  cursor: pointer; 
+}

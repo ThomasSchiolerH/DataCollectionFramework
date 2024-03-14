@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { fetchMoodAnalysis } from "../services/mood_analysis";
+import {
+  fetchMoodAnalysis,
+  fetchMoodFeedback,
+} from "../services/mood_analysis";
 import "../styles/AnalysisPage.css";
 
 const AnalysisPage = () => {
   const { userId } = useParams();
   const [analysisData, setAnalysisData] = useState(null);
+  const [correlationCoefficient, setCorrelationCoefficient] = useState(null);
+  const [feedback, setFeedback] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -15,6 +20,8 @@ const AnalysisPage = () => {
       try {
         const data = await fetchMoodAnalysis(userId);
         setAnalysisData(data);
+        setCorrelationCoefficient(data.correlationCoefficient);
+        setFeedback(data.feedback);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching analysis data:", err);
@@ -45,13 +52,35 @@ const AnalysisPage = () => {
       {analysisData &&
         analysisData.map((data, index) => (
           <div key={index} className="analysis-detail">
-            <div className="analysis-data-item"><span className="data-title">Mood:</span> {data.mood}</div>
-            <div className="analysis-data-item"><span className="data-title">Average Steps:</span> {data.avgSteps}</div>
-            <div className="analysis-data-item"><span className="data-title">Average Exercise Time:</span> {data.avgExerciseTime}</div>
-            <div className="analysis-data-item"><span className="data-title">Average Sleep:</span> {data.avgSleep}</div>
-            <div className="analysis-data-item"><span className="data-title">Average BMI:</span> {data.avgBMI}</div>
+            <div className="analysis-data-item">
+              <span className="data-title">Mood:</span> {data.mood}
+            </div>
+            <div className="analysis-data-item">
+              <span className="data-title">Average Steps:</span> {data.avgSteps}
+            </div>
+            <div className="analysis-data-item">
+              <span className="data-title">Average Exercise Time:</span>{" "}
+              {data.avgExerciseTime}
+            </div>
+            <div className="analysis-data-item">
+              <span className="data-title">Average Sleep:</span> {data.avgSleep}
+            </div>
+            <div className="analysis-data-item">
+              <span className="data-title">Average BMI:</span> {data.avgBMI}
+            </div>
           </div>
         ))}
+      {correlationCoefficient !== null && (
+        <div className="correlation-feedback">
+          <div className="analysis-data-item">
+            <span className="data-title">Correlation Coefficient:</span>{" "}
+            {correlationCoefficient}
+          </div>
+          <div className="analysis-data-item">
+            <span className="data-title">Feedback:</span> {feedback}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
