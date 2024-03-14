@@ -42,6 +42,7 @@ dependencies:
   flutter_heatmap_calendar: ^1.0.5
   permission_handler: ^11.3.0
   intl: ^0.18.0
+  connectivity_plus: ^2.3.8
 
 dev_dependencies:
   flutter_test:
