@@ -1,35 +1,42 @@
-// import 'package:flutter/material.dart';
-// import 'package:mental_health_app/features/home/services/health_data_services/get_sleep.dart';
-// import 'package:mental_health_app/features/home/services/health_data_services.dart';
+import 'package:flutter/material.dart';
+import 'package:mental_health_app/features/home/services/health_data_services/get_sleep.dart';
+import 'package:mental_health_app/features/home/services/health_data_services.dart';
+import 'package:mental_health_app/models/health_data.dart';
+import 'package:provider/provider.dart';
 
-// class SleepProvider with ChangeNotifier {
-//   int _sleepMinutes = 0;
-//   bool _isLoading = true;
+class SleepProvider with ChangeNotifier {
+  int _sleepMinutes = 0;
+  bool _isLoading = true;
 
-//   int get sleepMinutes => _sleepMinutes;
-//   bool get isLoading => _isLoading;
+  int get sleepMinutes => _sleepMinutes;
+  bool get isLoading => _isLoading;
 
-//   Future<void> fetchSleep() async {
-//     _isLoading = true;
-//     notifyListeners();
+  Future<void> fetchSleep(BuildContext context) async {
+    _isLoading = true;
+    notifyListeners();
 
-//     await GetSleepService.fetchSleepData();
-//     _sleepMinutes = GetSleepService.getSleepMinutes;
+    // Assuming fetchSleepData now correctly updates _sleepMinutes based on fetched data
+    await GetSleepService.fetchSleepData();
+    _sleepMinutes = GetSleepService.getSleepMinutes;
 
-//     // Handle error state or notify users as necessary
-//     _isLoading = false;
-//     notifyListeners();
-//   }
+    _isLoading = false;
+    notifyListeners();
+  }
 
-//   Future<void> uploadSleep(BuildContext context) async {
-//     await fetchSleep();
-//     // Confirming data to be uploaded
-//     HealthDataService().postHealthData(
-//       context: context,
-//       type: 'sleep',
-//       value: _sleepMinutes,
-//       unit: 'minutes',
-//       date: DateTime.now(),
-//     );
-//   }
-// }
+  Future<void> uploadSleep(BuildContext context) async {
+    await fetchSleep(context); // Ensure sleep data is fetched before attempting to upload
+
+    // Use HealthDataService's uploadHealthData for flexibility
+    Provider.of<HealthDataService>(context, listen: false).uploadHealthData(
+      context: context,
+      healthDataPoints: [
+        HealthData(
+          type: 'sleep',
+          value: _sleepMinutes,
+          unit: 'minutes',
+          date: DateTime.now(), // Consider using the actual sleep data date if available
+        )
+      ],
+    );
+  }
+}

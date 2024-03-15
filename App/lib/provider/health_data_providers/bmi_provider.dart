@@ -1,73 +1,77 @@
-// import 'package:flutter/material.dart';
-// import 'package:mental_health_app/features/home/services/health_data_services/bmi_data_service.dart';
-// import 'package:mental_health_app/features/home/services/health_data_services.dart';
-// import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:mental_health_app/features/home/services/health_data_services/bmi_data_service.dart';
+import 'package:mental_health_app/features/home/services/health_data_services.dart';
+import 'package:mental_health_app/models/health_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
 
-// class BMIProvider with ChangeNotifier {
-//   double? _height;
-//   double? _weight;
-//   double _bmi = 0.0;
+class BMIProvider with ChangeNotifier {
+  double _bmi = 0.0;
+  bool _isLoading = true;
 
-//   double? get height => _height;
-//   double? get weight => _weight;
-//   double? get bmi => _bmi;
+  double get bmi => _bmi;
+  bool get isLoading => _isLoading;
 
-//   bool _isLoading = true;
-//   bool get isLoading => _isLoading;
+  Future<void> _updateLastUploadDate(DateTime date) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('lastBMIUploadDate', date.toIso8601String());
+  }
 
-//   // Assuming GetBodyMetricsService is correctly implemented as per previous instructions
-//   Future<void> fetchBMI() async {
-//     _isLoading = true;
-//     notifyListeners();
+  Future<DateTime> _getLastUploadDate() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? lastUploadDateString = prefs.getString('lastBMIUploadDate');
+    if (lastUploadDateString == null) {
+      return DateTime.now().subtract(Duration(days: 1)); // Default to 1 day ago if not set
+    }
+    return DateTime.parse(lastUploadDateString);
+  }
 
-//     double? bmiValue;
+  Future<void> fetchAndUploadBMI(BuildContext context) async {
+    _isLoading = true;
+    notifyListeners();
 
-//     try {
-//       bmiValue =
-//           await BMIDataService.fetchBMIData().timeout(Duration(seconds: 10));
-//     } on TimeoutException catch (_) {
-//       print("Fetching BMI data timed out.");
-//       // Handle timeout, e.g., by setting a default state or showing an error message.
-//     }
+    DateTime lastUploadDate = await _getLastUploadDate();
+    DateTime now = DateTime.now();
 
-//     if (bmiValue != null) {
-//       _bmi = bmiValue;
-//     } else {
-//       await fetchHeightAndWeight();
-//     }
+    if (lastUploadDate.isBefore(DateTime(now.year, now.month, now.day))) {
+      double? height = await BMIDataService.fetchHeightData();
+      double? weight = await BMIDataService.fetchWeightData();
 
-//     _isLoading = false;
-//     notifyListeners();
-//   }
+      if (height != null && weight != null) {
+        // Assuming height in meters and weight in kg, calculate BMI
+        _bmi = weight / (height * height);
+        // Upload the BMI data
+        HealthDataService().uploadHealthData(
+          context: context,
+          healthDataPoints: [HealthData(
+            type: 'BMI',
+            value: _bmi,
+            unit: 'kg/m^2',
+            date: now,
+          )],
+        );
+        _updateLastUploadDate(now);
+      }
+    }
 
-//   Future<void> fetchHeightAndWeight() async {
-//     _height = await BMIDataService.fetchHeightData();
-//     _weight = await BMIDataService.fetchWeightData();
-//     calculateBMI();
-//     notifyListeners();
-//   }
+    _isLoading = false;
+    notifyListeners();
+  }
 
-//   void calculateBMI() {
-//     if (_height != null && _weight != null) {
-//       // Ensure height is in meters before calculation
-//       double heightInMeters = _height!; // Assuming height is already in meters
-//       _bmi = _weight! / (heightInMeters * heightInMeters);
-//       notifyListeners(); // Notify listeners if BMI is calculated manually
-//     }
-//   }
+  Future<void> fetchTotalBMIForToday() async {
+    _isLoading = true;
+    notifyListeners();
 
-//   Future<void> uploadBMI(BuildContext context) async {
-//     await fetchBMI();
+    // Directly use the BMI value if fetched earlier or calculate if not
+    if (_bmi == 0.0) {
+      double? height = await BMIDataService.fetchHeightData();
+      double? weight = await BMIDataService.fetchWeightData();
+      if (height != null && weight != null) {
+        _bmi = weight / (height * height);
+      }
+    }
 
-//     // TODO: Add logic here to check if a full day has elapsed since the last upload
-
-//     // Call HealthDataService to upload the BMI
-//     HealthDataService().postHealthData(
-//       context: context,
-//       type: 'BMI',
-//       value: _bmi,
-//       unit: 'kg/m2',
-//       date: DateTime.now(),
-//     );
-//   }
-// }
+    _isLoading = false;
+    notifyListeners();
+  }
+}
