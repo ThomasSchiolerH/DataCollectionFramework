@@ -147,25 +147,25 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                             2)); // Format BMI to 2 decimal places
               },
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 40.0),
-              child: Center(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    await Provider.of<StepProvider>(context, listen: false)
-                        .fetchAndUploadSteps(context);
-                    await Provider.of<ExerciseTimeProvider>(context,
-                            listen: false)
-                        .fetchAndUploadExerciseTime(context);
-                    await Provider.of<SleepProvider>(context, listen: false)
-                        .uploadSleep(context);
-                    await Provider.of<BMIProvider>(context, listen: false)
-                        .fetchAndUploadBMI(context);
-                  },
-                  child: const Text('Upload Data'),
-                ),
-              ),
-            )
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 40.0),
+            //   child: Center(
+            //     child: ElevatedButton(
+            //       onPressed: () async {
+            //         await Provider.of<StepProvider>(context, listen: false)
+            //             .fetchAndUploadSteps(context);
+            //         await Provider.of<ExerciseTimeProvider>(context,
+            //                 listen: false)
+            //             .fetchAndUploadExerciseTime(context);
+            //         await Provider.of<SleepProvider>(context, listen: false)
+            //             .uploadSleep(context);
+            //         await Provider.of<BMIProvider>(context, listen: false)
+            //             .fetchAndUploadBMI(context);
+            //       },
+            //       child: const Text('Upload Data'),
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),
