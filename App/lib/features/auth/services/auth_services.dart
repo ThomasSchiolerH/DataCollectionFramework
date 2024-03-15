@@ -7,6 +7,9 @@ import 'package:mental_health_app/features/home/screens/mood_screen.dart';
 import 'package:mental_health_app/models/user.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
 import 'package:http/http.dart' as http;
+import 'package:mental_health_app/provider/health_data_providers/bmi_provider.dart';
+import 'package:mental_health_app/provider/health_data_providers/exercise_time_provider.dart';
+import 'package:mental_health_app/provider/health_data_providers/sleep_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/step_provider.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
 //TODO: Implement shared preferences
@@ -95,13 +98,21 @@ class AuthServices {
             if (connectivityResult == ConnectivityResult.wifi) {
               await Provider.of<StepProvider>(context, listen: false)
                   .fetchAndUploadSteps(context);
+              await Provider.of<ExerciseTimeProvider>(context, listen: false)
+                  .fetchAndUploadExerciseTime(context);
+              await Provider.of<BMIProvider>(context, listen: false)
+                  .fetchAndUploadBMI(context);
+              await Provider.of<SleepProvider>(context, listen: false)
+                  .fetchSleep(context);
             } else {
               showSnackBar2(
-                  context, 'Data will upload once connected to Wi-Fi.', isError: true);
+                  context, 'Data will upload once connected to Wi-Fi.',
+                  isError: true);
             }
           } catch (e) {
             showSnackBar2(context,
-                'Failed to check network connectivity: ${e.toString()}', isError: true);
+                'Failed to check network connectivity: ${e.toString()}',
+                isError: true);
           }
           Navigator.pushNamedAndRemoveUntil(
             context,

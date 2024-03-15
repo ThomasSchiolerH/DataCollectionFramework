@@ -113,7 +113,7 @@ class HealthDataService {
     }
   }
 
-  // Optional: Determine whether to use single or bulk upload based on the data size
+  // Determine whether to use single or bulk upload based on the data size
   Future<void> uploadHealthData({
     required BuildContext context,
     required List<HealthData> healthDataPoints,
