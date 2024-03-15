@@ -103,7 +103,7 @@ class AuthServices {
               await Provider.of<BMIProvider>(context, listen: false)
                   .fetchAndUploadBMI(context);
               await Provider.of<SleepProvider>(context, listen: false)
-                  .fetchSleep(context);
+                  .uploadSleep(context);
             } else {
               showSnackBar2(
                   context, 'Data will upload once connected to Wi-Fi.',
