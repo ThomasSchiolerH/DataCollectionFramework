@@ -29,11 +29,9 @@ avgHealthRouter.get('/api/users/:userId/avgHealthData', authenticate, async (req
         mood,
         avgSteps: 0,
         avgExerciseTime: 0,
-        avgSleep: 0,
         avgBMI: 0,
         countSteps: 0,
         countExerciseTime: 0,
-        countSleep: 0,
         countBMI: 0
       }));
   
@@ -55,7 +53,6 @@ avgHealthRouter.get('/api/users/:userId/avgHealthData', authenticate, async (req
           mood: item.mood,
           avgSteps: item.countSteps ? item.avgSteps / item.countSteps : 0,
           avgExerciseTime: item.countExerciseTime ? item.avgExerciseTime / item.countExerciseTime : 0,
-          avgSleep: item.countSleep ? item.avgSleep / item.countSleep : 0,
           avgBMI: item.countBMI ? item.avgBMI / item.countBMI : 0
         };
       });
