@@ -93,7 +93,7 @@ class HealthDataService {
 
     try {
       http.Response res = await http.post(
-        Uri.parse("$uri/api/users/$userId/healthData/bulk"), // Adjusted for bulk upload
+        Uri.parse("$uri/api/users/$userId/healthData/bulk"), // bulk upload
         body: jsonEncode({'data': healthDataPoints.map((data) => data.toMap()).toList()}),
         headers: {
           'Content-Type': 'application/json',

@@ -6,7 +6,6 @@ import 'calendar_screen.dart';
 import 'analyze_screen.dart';
 import 'package:mental_health_app/provider/health_data_providers/step_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/exercise_time_provider.dart';
-import 'package:mental_health_app/provider/health_data_providers/sleep_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/home";
@@ -78,8 +77,6 @@ class HomeScreenContentState extends State<HomeScreenContent> {
         Provider.of<ExerciseTimeProvider>(context, listen: false)
             .fetchTotalExerciseTimeForToday());
     Future.microtask(
-        () => Provider.of<SleepProvider>(context, listen: false).fetchSleep(context));
-    Future.microtask(
         () => Provider.of<BMIProvider>(context, listen: false).fetchTotalBMIForToday());
   }
 
@@ -87,7 +84,6 @@ class HomeScreenContentState extends State<HomeScreenContent> {
   Widget build(BuildContext context) {
     final stepProvider = Provider.of<StepProvider>(context);
     final exerciseTimeProvider = Provider.of<ExerciseTimeProvider>(context);
-    final sleepProvider = Provider.of<SleepProvider>(context);
     final bmiProvider = Provider.of<BMIProvider>(context);
 
     return SingleChildScrollView(
@@ -121,17 +117,6 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                     ? const CircularProgressIndicator()
                     : buildInfoCard('Exercise Time',
                         '${exerciseTimeProvider.totalExerciseTime} minutes');
-              },
-            ),
-            const SizedBox(height: 10),
-            Consumer<SleepProvider>(
-              builder: (context, sleepProvider, child) {
-                if (sleepProvider.isLoading) {
-                  return const CircularProgressIndicator();
-                } else {
-                  return buildInfoCard(
-                      'Sleep', '${sleepProvider.sleepMinutes} minutes');
-                }
               },
             ),
             const SizedBox(height: 10),
