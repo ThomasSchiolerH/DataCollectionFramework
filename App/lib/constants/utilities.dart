@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mental_health_app/main.dart';
 
 void showSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
@@ -15,7 +16,7 @@ void showSnackBar2(BuildContext context, String text, {bool isError = false}) {
       backgroundColor: isError
           ? Colors.red
           : Colors.green, // Change color based on error status
-      behavior: SnackBarBehavior.floating, // Optional: Makes snackbar floating
+      behavior: SnackBarBehavior.floating, // Makes snackbar floating
       duration: const Duration(seconds: 3), // Duration can be adjusted
     ),
   );
