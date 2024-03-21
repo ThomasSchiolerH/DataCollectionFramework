@@ -24,4 +24,19 @@ class UserProvider extends ChangeNotifier {
     _user = user;
     notifyListeners();
   }
+  
+  void clearUser() {
+  _user = User(
+    id: '',
+    name: '',
+    age: 0,
+    gender: '',
+    email: '',
+    password: '',
+    type: '',
+    token: '',
+  );
+  notifyListeners();
+}
+
 }
