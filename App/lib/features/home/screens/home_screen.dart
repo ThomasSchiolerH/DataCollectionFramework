@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mental_health_app/features/auth/services/auth_services.dart';
 import 'package:mental_health_app/provider/health_data_providers/bmi_provider.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -27,9 +28,18 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
+    final AuthServices authServices = AuthServices();
     return Scaffold(
       appBar: AppBar(
         title: Text('Welcome ${user.name}!'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.logout), // Logout icon
+            onPressed: () =>
+                authServices.logoutUser(context), // Call logout method
+            tooltip: 'Logout',
+          ),
+        ],
       ),
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -44,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.analytics),
-             label: 'Analyse',
+            label: 'Analyse',
           ),
         ],
         currentIndex: _selectedIndex,
@@ -71,13 +81,13 @@ class HomeScreenContentState extends State<HomeScreenContent> {
   void initState() {
     super.initState();
     // Use Future.microtask to ensure fetchSteps is called after the build method
-    Future.microtask(
-        () => Provider.of<StepProvider>(context, listen: false).fetchTotalStepsForToday());
+    Future.microtask(() => Provider.of<StepProvider>(context, listen: false)
+        .fetchTotalStepsForToday());
     Future.microtask(() =>
         Provider.of<ExerciseTimeProvider>(context, listen: false)
             .fetchTotalExerciseTimeForToday());
-    Future.microtask(
-        () => Provider.of<BMIProvider>(context, listen: false).fetchTotalBMIForToday());
+    Future.microtask(() => Provider.of<BMIProvider>(context, listen: false)
+        .fetchTotalBMIForToday());
   }
 
   @override

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/error_handle.dart';
 import 'package:mental_health_app/constants/utilities.dart';
+import 'package:mental_health_app/features/auth/screens/auth_screen.dart';
 import 'package:mental_health_app/features/home/screens/home_screen.dart';
 import 'package:mental_health_app/features/home/screens/mood_screen.dart';
 import 'package:mental_health_app/models/user.dart';
@@ -11,8 +12,7 @@ import 'package:mental_health_app/provider/health_data_providers/bmi_provider.da
 import 'package:mental_health_app/provider/health_data_providers/exercise_time_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/step_provider.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
-//TODO: Implement shared preferences
-//import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
@@ -90,6 +90,9 @@ class AuthServices {
         response: res,
         context: context,
         onSuccess: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          final String userToken = jsonDecode(res.body)['token'];
+          await prefs.setString('auth-token', userToken);
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
           // only upload when connected to WI-FI
           try {
@@ -125,4 +128,19 @@ class AuthServices {
       );
     }
   }
+
+  void logoutUser(BuildContext context) async {
+  try {
+    // Clear the authentication token from SharedPreferences
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('auth-token');
+
+    Provider.of<UserProvider>(context, listen: false).clearUser();
+
+    Navigator.pushNamedAndRemoveUntil(context, AuthScreen.routeName, (route) => false);
+  } catch (e) {
+    showSnackBar(context, 'Error during logout: ${e.toString()}');
+  }
+}
+
 }
