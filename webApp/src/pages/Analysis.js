@@ -63,9 +63,6 @@ const AnalysisPage = () => {
               {data.avgExerciseTime}
             </div>
             <div className="analysis-data-item">
-              <span className="data-title">Average Sleep:</span> {data.avgSleep}
-            </div>
-            <div className="analysis-data-item">
               <span className="data-title">Average BMI:</span> {data.avgBMI}
             </div>
           </div>

@@ -48,7 +48,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                 child: ListTile(
                   title: Text('Mood ${data['mood']}'),
                   subtitle: Text(
-                    'Steps: ${data['avgSteps']}, Exercise Time: ${data['avgExerciseTime']}, Sleep: ${data['avgSleep']}, BMI: ${data['avgBMI']}',
+                    'Steps: ${data['avgSteps']}, Exercise Time: ${data['avgExerciseTime']}, BMI: ${data['avgBMI']}',
                   ),
                 ),
               )).toList(),

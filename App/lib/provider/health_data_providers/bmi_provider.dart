@@ -1,73 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/features/home/services/health_data_services/bmi_data_service.dart';
 import 'package:mental_health_app/features/home/services/health_data_services.dart';
+import 'package:mental_health_app/models/health_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
 class BMIProvider with ChangeNotifier {
-  double? _height;
-  double? _weight;
   double _bmi = 0.0;
-
-  double? get height => _height;
-  double? get weight => _weight;
-  double? get bmi => _bmi;
-
   bool _isLoading = true;
+
+  double get bmi => _bmi;
   bool get isLoading => _isLoading;
 
-  // Assuming GetBodyMetricsService is correctly implemented as per previous instructions
-  Future<void> fetchBMI() async {
+  Future<void> _updateLastUploadDate(DateTime date) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('lastBMIUploadDate', date.toIso8601String());
+  }
+
+  Future<DateTime> _getLastUploadDate() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? lastUploadDateString = prefs.getString('lastBMIUploadDate');
+    if (lastUploadDateString == null) {
+      return DateTime.now().subtract(Duration(days: 1)); // Default to 1 day ago if not set
+    }
+    return DateTime.parse(lastUploadDateString);
+  }
+
+  Future<void> fetchAndUploadBMI(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
 
-    double? bmiValue;
+    DateTime lastUploadDate = await _getLastUploadDate();
+    DateTime now = DateTime.now();
 
-    try {
-      bmiValue =
-          await BMIDataService.fetchBMIData().timeout(Duration(seconds: 10));
-    } on TimeoutException catch (_) {
-      print("Fetching BMI data timed out.");
-      // Handle timeout, e.g., by setting a default state or showing an error message.
-    }
+    if (lastUploadDate.isBefore(DateTime(now.year, now.month, now.day))) {
+      double? height = await BMIDataService.fetchHeightData();
+      double? weight = await BMIDataService.fetchWeightData();
 
-    if (bmiValue != null) {
-      _bmi = bmiValue;
-    } else {
-      await fetchHeightAndWeight();
+      if (height != null && weight != null) {
+        // Assuming height in meters and weight in kg, calculate BMI
+        _bmi = weight / (height * height);
+        // Upload the BMI data
+        HealthDataService().uploadHealthData(
+          context: context,
+          healthDataPoints: [HealthData(
+            type: 'BMI',
+            value: _bmi,
+            unit: 'kg/m^2',
+            date: now,
+          )],
+        );
+        _updateLastUploadDate(now);
+      }
     }
 
     _isLoading = false;
     notifyListeners();
   }
 
-  Future<void> fetchHeightAndWeight() async {
-    _height = await BMIDataService.fetchHeightData();
-    _weight = await BMIDataService.fetchWeightData();
-    calculateBMI();
+  Future<void> fetchTotalBMIForToday() async {
+    _isLoading = true;
     notifyListeners();
-  }
 
-  void calculateBMI() {
-    if (_height != null && _weight != null) {
-      // Ensure height is in meters before calculation
-      double heightInMeters = _height!; // Assuming height is already in meters
-      _bmi = _weight! / (heightInMeters * heightInMeters);
-      notifyListeners(); // Notify listeners if BMI is calculated manually
+    // Directly use the BMI value if fetched earlier or calculate if not
+    if (_bmi == 0.0) {
+      double? height = await BMIDataService.fetchHeightData();
+      double? weight = await BMIDataService.fetchWeightData();
+      if (height != null && weight != null) {
+        _bmi = weight / (height * height);
+      }
     }
-  }
 
-  Future<void> uploadBMI(BuildContext context) async {
-    await fetchBMI();
-
-    // TODO: Add logic here to check if a full day has elapsed since the last upload
-
-    // Call HealthDataService to upload the BMI
-    HealthDataService().postHealthData(
-      context: context,
-      type: 'BMI',
-      value: _bmi,
-      unit: 'kg/m2',
-      date: DateTime.now(),
-    );
+    _isLoading = false;
+    notifyListeners();
   }
 }

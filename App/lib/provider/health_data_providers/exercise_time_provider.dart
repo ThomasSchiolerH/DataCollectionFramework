@@ -1,39 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/features/home/services/health_data_services/get_exercise_time_service.dart';
 import 'package:mental_health_app/features/home/services/health_data_services.dart';
+import 'package:mental_health_app/models/health_data.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ExerciseTimeProvider with ChangeNotifier {
-  int _exerciseTimeInMinutes = 0;
   bool _isLoading = true;
+  int _totalExerciseTime = 0; // Add this line
 
-  int get exerciseTimeInMinutes => _exerciseTimeInMinutes;
   bool get isLoading => _isLoading;
+  int get totalExerciseTime => _totalExerciseTime; // Add this getter
 
-  Future<void> fetchExerciseTime() async {
-    _isLoading = true;
-    notifyListeners();
-    try {
-      await GetExerciseTimeService.fetchExerciseTimeData();
-      _exerciseTimeInMinutes = GetExerciseTimeService.exerciseTimeInMinutes;
-    } catch (e) {
-      // Handle the error, maybe log it or set an error message state
-      print("Error fetching exercise time: $e");
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
+  Future<void> _updateLastUploadDate(DateTime date) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('lastExerciseUploadDate', date.toIso8601String());
   }
 
-  Future<void> uploadExerciseTime(BuildContext context) async {
-    // Ensure data is fresh before upload
-    await fetchExerciseTime();
-    // Assuming you have a similar setup for getting the user and auth token
-    HealthDataService().postHealthData(
-      context: context,
-      type: 'exercise_time',
-      value: _exerciseTimeInMinutes,
-      unit: 'minutes',
-      date: DateTime.now(),
-    );
+  Future<DateTime> _getLastUploadDate() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? lastUploadDateString = prefs.getString('lastExerciseUploadDate');
+    if (lastUploadDateString == null) {
+      return DateTime.now().subtract(Duration(days: 1));
+    }
+    return DateTime.parse(lastUploadDateString);
+  }
+
+  Future<void> fetchAndUploadExerciseTime(BuildContext context) async {
+    _isLoading = true;
+    notifyListeners();
+
+    DateTime lastUploadDate = await _getLastUploadDate();
+    DateTime now = DateTime.now();
+
+    List<HealthData> hourlyExerciseData = await GetExerciseTimeService.fetchHourlyExerciseTimeData(lastUploadDate, now);
+    if (hourlyExerciseData.isNotEmpty) {
+      _totalExerciseTime = hourlyExerciseData.fold(0, (sum, data) => sum + data.value.toInt());
+      await Provider.of<HealthDataService>(context, listen: false).uploadHealthData(
+        context: context,
+        healthDataPoints: hourlyExerciseData,
+      );
+      await _updateLastUploadDate(now);
+    }
+
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> fetchTotalExerciseTimeForToday() async {
+    _isLoading = true;
+    notifyListeners();
+    
+    DateTime now = DateTime.now();
+    DateTime startOfDay = DateTime(now.year, now.month, now.day);
+    List<HealthData> hourlyExerciseData = await GetExerciseTimeService.fetchHourlyExerciseTimeData(startOfDay, now);
+
+    _totalExerciseTime = hourlyExerciseData.fold(0, (sum, data) => sum + data.value.toInt());
+
+    _isLoading = false;
+    notifyListeners();
   }
 }
