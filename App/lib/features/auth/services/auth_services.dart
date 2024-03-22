@@ -95,25 +95,25 @@ class AuthServices {
           await prefs.setString('auth-token', userToken);
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
           // only upload when connected to WI-FI
-          try {
-            final connectivityResult = await Connectivity().checkConnectivity();
-            if (connectivityResult == ConnectivityResult.wifi) {
-              await Provider.of<StepProvider>(context, listen: false)
-                  .fetchAndUploadSteps(context);
-              await Provider.of<ExerciseTimeProvider>(context, listen: false)
-                  .fetchAndUploadExerciseTime(context);
-              await Provider.of<BMIProvider>(context, listen: false)
-                  .fetchAndUploadBMI(context);
-            } else {
-              showSnackBar2(
-                  context, 'Data will upload once connected to Wi-Fi.',
-                  isError: true);
-            }
-          } catch (e) {
-            showSnackBar2(context,
-                'Failed to check network connectivity: ${e.toString()}',
-                isError: true);
-          }
+          // try {
+          //   final connectivityResult = await Connectivity().checkConnectivity();
+          //   if (connectivityResult == ConnectivityResult.wifi) {
+          //     await Provider.of<StepProvider>(context, listen: false)
+          //         .fetchAndUploadSteps(context);
+          //     await Provider.of<ExerciseTimeProvider>(context, listen: false)
+          //         .fetchAndUploadExerciseTime(context);
+          //     await Provider.of<BMIProvider>(context, listen: false)
+          //         .fetchAndUploadBMI(context);
+          //   } else {
+          //     showSnackBar2(
+          //         context, 'Data will upload once connected to Wi-Fi.',
+          //         isError: true);
+          //   }
+          // } catch (e) {
+          //   showSnackBar2(context,
+          //       'Failed to check network connectivity: ${e.toString()}',
+          //       isError: true);
+          // }
           Navigator.pushNamedAndRemoveUntil(
             context,
             MoodScreen.routeName,
