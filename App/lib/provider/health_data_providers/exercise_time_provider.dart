@@ -32,8 +32,9 @@ class ExerciseTimeProvider with ChangeNotifier {
 
     DateTime lastUploadDate = await _getLastUploadDate();
     DateTime now = DateTime.now();
+    DateTime startOfCurrentHour = DateTime(now.year, now.month, now.day, now.hour);
 
-    List<HealthData> hourlyExerciseData = await GetExerciseTimeService.fetchHourlyExerciseTimeData(lastUploadDate, now);
+    List<HealthData> hourlyExerciseData = await GetExerciseTimeService.fetchHourlyExerciseTimeData(lastUploadDate, startOfCurrentHour);
     if (hourlyExerciseData.isNotEmpty) {
       _totalExerciseTime = hourlyExerciseData.fold(0, (sum, data) => sum + data.value.toInt());
       await Provider.of<HealthDataService>(context, listen: false).uploadHealthData(

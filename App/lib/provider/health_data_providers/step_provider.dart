@@ -31,9 +31,10 @@ class StepProvider with ChangeNotifier {
 
     DateTime lastUploadDate = await _getLastUploadDate();
     DateTime now = DateTime.now();
+    DateTime startOfCurrentHour = DateTime(now.year, now.month, now.day, now.hour);
 print("Fetching and uploading steps data...");
 
-    List<HealthData> hourlySteps = await GetStepsService.fetchHourlyStepsData(lastUploadDate, now);
+    List<HealthData> hourlySteps = await GetStepsService.fetchHourlyStepsData(lastUploadDate, startOfCurrentHour);
     if (hourlySteps.isNotEmpty) {
       // Summarize the hourly steps into a total count for display purposes.
       _steps = hourlySteps.fold(0, (sum, data) => sum + data.value.toInt());
