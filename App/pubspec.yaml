@@ -43,6 +43,7 @@ dependencies:
   permission_handler: ^11.3.0
   intl: ^0.18.0
   connectivity_plus: ^2.3.8
+  flutter_local_notifications: ^17.0.0
 
 dev_dependencies:
   flutter_test:

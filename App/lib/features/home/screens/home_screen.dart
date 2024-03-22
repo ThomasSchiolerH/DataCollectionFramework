@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/features/auth/services/auth_services.dart';
+import 'package:mental_health_app/features/home/services/notification_services.dart';
 import 'package:mental_health_app/provider/health_data_providers/bmi_provider.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -161,6 +162,11 @@ class HomeScreenContentState extends State<HomeScreenContent> {
             //     ),
             //   ),
             // )
+            ElevatedButton(
+              onPressed: () => NotificationService.showNotification(
+                  id: 0, title: "Test", body: "It works"),
+              child: Text('Notification'),
+            )
           ],
         ),
       ),
