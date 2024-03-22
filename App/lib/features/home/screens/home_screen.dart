@@ -1,4 +1,6 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:mental_health_app/constants/utilities.dart';
 import 'package:mental_health_app/features/auth/services/auth_services.dart';
 import 'package:mental_health_app/features/home/services/notification_services.dart';
 import 'package:mental_health_app/provider/health_data_providers/bmi_provider.dart';
@@ -17,8 +19,23 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance
+        .addObserver(this as WidgetsBindingObserver); // Add the observer
+    checkConnectivityAndUploadData(); // Also check when the screen is first loaded
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance
+        .removeObserver(this as WidgetsBindingObserver); // Remove the observer
+    super.dispose();
+  }
 
   static const List<Widget> _screens = [
     HomeScreenContent(),
@@ -67,7 +84,40 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      checkConnectivityAndUploadData();
     });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      // Adding a delay before checking connectivity and updating data
+      Future.delayed(Duration(seconds: 1), () {
+        checkConnectivityAndUploadData();
+      });
+    }
+  }
+
+  void checkConnectivityAndUploadData() async {
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      if (connectivityResult == ConnectivityResult.wifi) {
+        await Provider.of<StepProvider>(context, listen: false)
+            .fetchAndUploadSteps(context);
+        await Provider.of<ExerciseTimeProvider>(context, listen: false)
+            .fetchAndUploadExerciseTime(context);
+        await Provider.of<BMIProvider>(context, listen: false)
+            .fetchAndUploadBMI(context);
+      } else {
+        showSnackBar2(context, 'Data will upload once connected to Wi-Fi.',
+            isError: true);
+      }
+    } catch (e) {
+      showSnackBar2(
+          context, 'Failed to check network connectivity: ${e.toString()}',
+          isError: true);
+    }
   }
 }
 
@@ -143,25 +193,6 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                             2)); // Format BMI to 2 decimal places
               },
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(top: 40.0),
-            //   child: Center(
-            //     child: ElevatedButton(
-            //       onPressed: () async {
-            //         await Provider.of<StepProvider>(context, listen: false)
-            //             .fetchAndUploadSteps(context);
-            //         await Provider.of<ExerciseTimeProvider>(context,
-            //                 listen: false)
-            //             .fetchAndUploadExerciseTime(context);
-            //         await Provider.of<SleepProvider>(context, listen: false)
-            //             .uploadSleep(context);
-            //         await Provider.of<BMIProvider>(context, listen: false)
-            //             .fetchAndUploadBMI(context);
-            //       },
-            //       child: const Text('Upload Data'),
-            //     ),
-            //   ),
-            // )
             ElevatedButton(
               onPressed: () => NotificationService.showNotification(
                   id: 0, title: "Test", body: "It works"),
