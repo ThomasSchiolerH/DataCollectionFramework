@@ -32,7 +32,7 @@ class StepProvider with ChangeNotifier {
     DateTime lastUploadDate = await _getLastUploadDate();
     DateTime now = DateTime.now();
     DateTime startOfCurrentHour = DateTime(now.year, now.month, now.day, now.hour);
-print("Fetching and uploading steps data...");
+    print("Fetching and uploading steps data...");
 
     List<HealthData> hourlySteps = await GetStepsService.fetchHourlyStepsData(lastUploadDate, startOfCurrentHour);
     if (hourlySteps.isNotEmpty) {

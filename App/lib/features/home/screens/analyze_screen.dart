@@ -24,7 +24,8 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
     // Fetch analysis feedback
     String fetchedFeedback = await AnalyseServices.fetchAnalysis(context);
     // Fetch mood analysis data
-    List<dynamic> fetchedMoodAnalysis = await AnalyseServices.fetchMoodAnalysis(context);
+    List<dynamic> fetchedMoodAnalysis =
+        await AnalyseServices.fetchMoodAnalysis(context);
     setState(() {
       feedback = fetchedFeedback;
       moodAnalysisData = fetchedMoodAnalysis;
@@ -37,21 +38,27 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
       appBar: AppBar(
         title: const Text('Analyse'),
       ),
-      body: SingleChildScrollView( // Use SingleChildScrollView to accommodate varying content lengths
+      body: SingleChildScrollView(
+        // Use SingleChildScrollView to accommodate varying content lengths
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ...moodAnalysisData.map((data) => Card(
-                margin: const EdgeInsets.only(bottom: 10.0),
-                child: ListTile(
-                  title: Text('Mood ${data['mood']}'),
-                  subtitle: Text(
-                    'Steps: ${data['avgSteps']}, Exercise Time: ${data['avgExerciseTime']}, BMI: ${data['avgBMI']}',
-                  ),
-                ),
-              )).toList(),
+              ...moodAnalysisData
+                  .map((data) => Card(
+                        margin: const EdgeInsets.only(bottom: 10.0),
+                        child: ListTile(
+                          title: Text(
+                            'Mood ${data['mood']}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            'Steps: ${data['avgSteps']}, Exercise Time: ${data['avgExerciseTime']}, BMI: ${data['avgBMI']}',
+                          ),
+                        ),
+                      ))
+                  .toList(),
               const SizedBox(height: 20), // Spacing before the feedback text
               Text(feedback, textAlign: TextAlign.center),
             ],
