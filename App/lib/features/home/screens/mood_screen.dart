@@ -60,7 +60,7 @@ void _checkUserInputForToday() async {
       final bool hasInput = data['hasInput'];
 
       // Delay the navigation to HomeScreen by a short duration
-      Future.delayed(Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: 500), () {
         if (hasInput) {
           Navigator.pushReplacementNamed(context, HomeScreen.routeName);
         } else {
@@ -146,7 +146,7 @@ void _checkUserInputForToday() async {
                           children: [
                             Text(
                               "${moodPrefixes[index]}${index + 1}", // Use the prefix for each button
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold, // Make the text bold
                               ),
                             ),
