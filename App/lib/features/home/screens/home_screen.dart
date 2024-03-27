@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         title: Text('Welcome ${user.name}!'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.logout), // Logout icon
+            icon: const Icon(Icons.logout), // Logout icon
             onPressed: () =>
                 authServices.logoutUser(context), // Call logout method
             tooltip: 'Logout',
@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       // Adding a delay before checking connectivity and updating data
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         checkConnectivityAndUploadData();
       });
     }
@@ -196,7 +196,7 @@ class HomeScreenContentState extends State<HomeScreenContent> {
             ElevatedButton(
               onPressed: () => NotificationService.showNotification(
                   id: 0, title: "Test", body: "It works"),
-              child: Text('Notification'),
+              child: const Text('Notification'),
             )
           ],
         ),
