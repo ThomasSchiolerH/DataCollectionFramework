@@ -216,20 +216,20 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                   id: 0, title: "Test", body: "It works"),
               child: const Text('Notification'),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 40.0),
-              child: Center(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    await Provider.of<StepProvider>(context, listen: false)
-                        .fetchAndUploadSteps(context);
-                    await Provider.of<HeartRateProvider>(context, listen: false)
-                        .fetchAndUploadHeartRate(context);
-                  },
-                  child: const Text('Upload Data'),
-                ),
-              ),
-            )
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 40.0),
+            //   child: Center(
+            //     child: ElevatedButton(
+            //       onPressed: () async {
+            //         await Provider.of<StepProvider>(context, listen: false)
+            //             .fetchAndUploadSteps(context);
+            //         await Provider.of<HeartRateProvider>(context, listen: false)
+            //             .fetchAndUploadHeartRate(context);
+            //       },
+            //       child: const Text('Upload Data'),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
