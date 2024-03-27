@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mental_health_app/features/home/services/health_data_services/get_steps.dart';
+import 'package:mental_health_app/features/home/services/health_data_services/steps_services.dart';
 import 'package:mental_health_app/features/home/services/health_data_services.dart';
 import 'package:mental_health_app/models/health_data.dart';
 
