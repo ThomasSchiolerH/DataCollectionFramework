@@ -4,6 +4,7 @@ import 'package:mental_health_app/constants/utilities.dart';
 import 'package:mental_health_app/features/auth/services/auth_services.dart';
 import 'package:mental_health_app/features/home/services/notification_services.dart';
 import 'package:mental_health_app/provider/health_data_providers/bmi_provider.dart';
+import 'package:mental_health_app/provider/health_data_providers/heart_rate_provider.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'calendar_screen.dart';
@@ -109,6 +110,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             .fetchAndUploadExerciseTime(context);
         await Provider.of<BMIProvider>(context, listen: false)
             .fetchAndUploadBMI(context);
+        await Provider.of<HeartRateProvider>(context, listen: false)
+            .fetchAndUploadHeartRate(context);
       } else {
         showSnackBar2(context, 'Data will upload once connected to Wi-Fi.',
             isError: true);
@@ -139,6 +142,9 @@ class HomeScreenContentState extends State<HomeScreenContent> {
             .fetchTotalExerciseTimeForToday());
     Future.microtask(() => Provider.of<BMIProvider>(context, listen: false)
         .fetchTotalBMIForToday());
+    Future.microtask(() =>
+        Provider.of<HeartRateProvider>(context, listen: false)
+            .fetchTotalHeartRateForToday());
   }
 
   @override
@@ -146,6 +152,7 @@ class HomeScreenContentState extends State<HomeScreenContent> {
     final stepProvider = Provider.of<StepProvider>(context);
     final exerciseTimeProvider = Provider.of<ExerciseTimeProvider>(context);
     final bmiProvider = Provider.of<BMIProvider>(context);
+    final heartRateProvider = Provider.of<HeartRateProvider>(context);
 
     return SingleChildScrollView(
       child: Padding(
@@ -167,7 +174,18 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                 if (stepProvider.isLoading) {
                   return const CircularProgressIndicator();
                 } else {
-                  return buildInfoCard('Steps', '${stepProvider.steps}');
+                  return buildInfoCard('Total Steps', '${stepProvider.steps}');
+                }
+              },
+            ),
+            const SizedBox(height: 10),
+            Consumer<HeartRateProvider>(
+              builder: (context, heartRateProvider, child) {
+                if (heartRateProvider.isLoading) {
+                  return const CircularProgressIndicator();
+                } else {
+                  return buildInfoCard(
+                      'Avg. Heart Rate', '${heartRateProvider.heart_rate}');
                 }
               },
             ),
@@ -176,7 +194,7 @@ class HomeScreenContentState extends State<HomeScreenContent> {
               builder: (context, exerciseTimeProvider, child) {
                 return exerciseTimeProvider.isLoading
                     ? const CircularProgressIndicator()
-                    : buildInfoCard('Exercise Time',
+                    : buildInfoCard('Total Exercise Time',
                         '${exerciseTimeProvider.totalExerciseTime} minutes');
               },
             ),
@@ -188,7 +206,7 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                 return bmiValue == null
                     ? const CircularProgressIndicator()
                     : buildInfoCard(
-                        'BMI',
+                        'Current BMI',
                         bmiValue.toStringAsFixed(
                             2)); // Format BMI to 2 decimal places
               },
@@ -197,6 +215,20 @@ class HomeScreenContentState extends State<HomeScreenContent> {
               onPressed: () => NotificationService.showNotification(
                   id: 0, title: "Test", body: "It works"),
               child: const Text('Notification'),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 40.0),
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await Provider.of<StepProvider>(context, listen: false)
+                        .fetchAndUploadSteps(context);
+                    await Provider.of<HeartRateProvider>(context, listen: false)
+                        .fetchAndUploadHeartRate(context);
+                  },
+                  child: const Text('Upload Data'),
+                ),
+              ),
             )
           ],
         ),
