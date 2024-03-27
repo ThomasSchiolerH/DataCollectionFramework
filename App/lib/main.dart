@@ -4,6 +4,7 @@ import 'package:mental_health_app/features/auth/screens/auth_screen.dart';
 import 'package:mental_health_app/features/home/services/notification_services.dart';
 import 'package:mental_health_app/provider/health_data_providers/bmi_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/exercise_time_provider.dart';
+import 'package:mental_health_app/provider/health_data_providers/heart_rate_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/step_provider.dart';
 import 'package:mental_health_app/provider/user_input_providers/mood_provider.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
@@ -13,7 +14,7 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService.initialize();
-  
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (context) => UserProvider(),
@@ -29,6 +30,9 @@ void main() async {
     ),
     ChangeNotifierProvider(
       create: (context) => MoodProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => HeartRateProvider(),
     ),
   ], child: const MyApp()));
 }
