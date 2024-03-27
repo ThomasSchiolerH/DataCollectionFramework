@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
@@ -7,14 +6,14 @@ class NotificationService {
 
   static Future<void> initialize() async {
 
-    final DarwinInitializationSettings initializationSettingsDarwin =
+    const DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings(
           requestAlertPermission: true,
           requestSoundPermission: true,
           requestBadgePermission: true,
             onDidReceiveLocalNotification: onDidReceiveLocalNotification);
 
-    final InitializationSettings initializationSettings = InitializationSettings(
+    const InitializationSettings initializationSettings = InitializationSettings(
       iOS: initializationSettingsDarwin, // Note the change to Darwin settings
     );
 

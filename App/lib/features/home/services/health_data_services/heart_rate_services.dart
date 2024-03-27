@@ -85,7 +85,4 @@ static Future<void> fetchTotalHeartRateForToday() async {
       // Handle error, possibly resetting averageHeartRateForToday or setting it to a specific error value
     }
   }
-
-  // Remember to update any other parts of your code that reference totalHeartRateForToday
-  // to use averageHeartRateForToday instead, and consider its type change to double
 }
