@@ -52,6 +52,7 @@ class StepProvider with ChangeNotifier {
   }
 
     Future<void> fetchTotalStepsForToday() async {
+    _steps = 0;
     await GetStepsService.fetchTotalStepsForToday();
     _steps = GetStepsService.totalStepsForToday; // Get the total steps from GetStepsService
     notifyListeners(); // Notify listeners to update the UI

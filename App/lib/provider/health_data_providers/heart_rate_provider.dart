@@ -52,6 +52,7 @@ class HeartRateProvider with ChangeNotifier {
   }
 
     Future<void> fetchTotalHeartRateForToday() async {
+    _heart_rate = 0;
     await HeartRateServices.fetchTotalHeartRateForToday();
     _heart_rate = HeartRateServices.averageHeartRateForToday.toInt(); // Get the total heart rate from HeartRateServices and cast it to 'int'
     notifyListeners(); // Notify listeners to update the UI
