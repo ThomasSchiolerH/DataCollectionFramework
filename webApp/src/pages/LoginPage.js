@@ -12,24 +12,25 @@ const LoginPage = ({ onLoginSuccess }) => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    setError(""); // Reset error message
-
+    setError(""); 
+  
     try {
       const response = await axios.post(`${serverURL}/api/admin/signin`, {
         email,
         password,
       });
       const { token, role } = response.data;
-
+  
       if (role !== "admin") {
         setError("You are not authorized as an admin.");
         return;
       }
-
-      // Call onLoginSuccess to handle successful login
+  
+      localStorage.setItem('token', token); 
+  
       onLoginSuccess(token);
-
-      navigate("/home"); // Redirect to HomePage
+  
+      navigate("/home"); 
     } catch (err) {
       setError("Failed to login. Please check your credentials.");
     }
