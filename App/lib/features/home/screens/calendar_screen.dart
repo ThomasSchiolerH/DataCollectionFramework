@@ -20,6 +20,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   Map<DateTime, int> datasets = {};
   bool _isLoading = true;
+  int? _lowestValue;
+  int? _highestValue;
 
   @override
   void initState() {
@@ -49,6 +51,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
         final List<dynamic>? inputs = data['moodInputs'] as List<dynamic>?;
         final Map<DateTime, int> newDatasets = {};
 
+        int? lowestValue;
+        int? highestValue;
+
         if (inputs != null) {
           for (var input in inputs) {
             if (input['type'] == 'mood') {
@@ -63,6 +68,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
               } else {
                 print("Failed to parse date or value for input: $input");
               }
+            } else if (input['type'] == 'userInputMessage') {
+              lowestValue = input['lowestValue'] != null
+                  ? int.tryParse(input['lowestValue'].toString())
+                  : null;
+              highestValue = input['highestValue'] != null
+                  ? int.tryParse(input['highestValue'].toString())
+                  : null;
             }
           }
         }
@@ -70,6 +82,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
         setState(() {
           datasets = newDatasets;
           _isLoading = false;
+          _lowestValue = lowestValue;
+          _highestValue = highestValue;
         });
       } else {
         print(
@@ -111,19 +125,41 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget buildHeatMap() {
+    int? lowestMoodValue;
+    int? highestMoodValue;
+    datasets.values.forEach((value) {
+      if (lowestMoodValue == null || value < lowestMoodValue!) {
+        lowestMoodValue = value;
+      }
+      if (highestMoodValue == null || value > highestMoodValue!) {
+        highestMoodValue = value;
+      }
+    });
+
+    Color defaultStartColor = const Color.fromARGB(255, 255, 255, 255);
+    Color defaultEndColor = const Color.fromARGB(255, 255, 0, 0);
+
+    Map<int, Color> colorsets = {};
+    if (lowestMoodValue != null && highestMoodValue != null) {
+      for (int mood = lowestMoodValue!; mood <= highestMoodValue!; mood++) {
+        Color color =
+            _getColorForMood(mood, _lowestValue ?? 1, _highestValue ?? 6);
+        colorsets[mood] = color;
+      }
+    } else {
+      for (int mood = 1; mood <= 6; mood++) {
+        colorsets[mood] = _getColorForMood(mood, 1, 6);
+      }
+    }
+
     return HeatMap(
       datasets: datasets,
       colorMode: ColorMode.opacity,
       showText: false,
       scrollable: true,
-      colorsets: {
-        1: Colors.red.shade200,
-        2: Colors.red.shade300,
-        3: Colors.red.shade400,
-        4: Colors.red.shade500,
-        5: Colors.red.shade600,
-        6: Colors.red.shade700,
-      },
+      colorsets: colorsets.isNotEmpty
+          ? colorsets
+          : {1: defaultStartColor, 6: defaultEndColor},
       onClick: (DateTime date) {
         // Here we look up the mood for the clicked date
         final mood = datasets[date];
@@ -144,4 +180,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
       },
     );
   }
+
+Color _getColorForMood(int mood, int lowestValue, int highestValue) {
+  Color startColor = const Color.fromARGB(255, 255, 255, 255); 
+  Color endColor = const Color.fromARGB(255, 255, 45, 30); 
+  double ratio = (mood - lowestValue) / (highestValue - lowestValue).toDouble();
+  int r = startColor.red + ((endColor.red - startColor.red) * ratio).round();
+  int g = startColor.green + ((endColor.green - startColor.green) * ratio).round();
+  int b = startColor.blue + ((endColor.blue - startColor.blue) * ratio).round();
+  return Color.fromRGBO(r, g, b, 1);
+}
 }

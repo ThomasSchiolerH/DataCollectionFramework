@@ -26,13 +26,24 @@ class _MoodScreenState extends State<MoodScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchCustomUserMessage();
-    _checkUserInputForToday();
+    _initializeScreen();
   }
 
- Future<void> _fetchCustomUserMessage() async {
-  final userProvider = Provider.of<UserProvider>(context, listen: false);
-  final String userId = userProvider.user.id;
+  Future<void> _initializeScreen() async {
+    await Future.wait([
+      _fetchCustomUserMessage(),
+      _checkUserInputForToday(),
+    ]);
+    await Future.delayed(const Duration(seconds: 1)); 
+    if (!mounted) return;
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  Future<void> _fetchCustomUserMessage() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final String userId = userProvider.user.id;
 
   try {
     final response = await http.get(
@@ -43,71 +54,29 @@ class _MoodScreenState extends State<MoodScreen> {
       },
     );
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      if (data.containsKey('message')) {
-        String? lowestValueStr = data['lowestValue']?.toString();
-        String? highestValueStr = data['highestValue']?.toString();
-
-        // Logging the retrieved values for debugging
-        print('Retrieved lowestValueStr: $lowestValueStr');
-        print('Retrieved highestValueStr: $highestValueStr');
-
-        // Attempt to parse the retrieved values
-        int? lowestValue;
-        int? highestValue;
-
-        // Attempt to parse the retrieved values
-        if (lowestValueStr != null) {
-          if (int.tryParse(lowestValueStr) != null) {
-            lowestValue = int.parse(lowestValueStr);
-          } else {
-            lowestValue = 1; // Default value if parsing fails
-          }
-        } else {
-          lowestValue = 1; // Default value if lowestValueStr is null
-        }
-
-        if (highestValueStr != null) {
-          if (int.tryParse(highestValueStr) != null) {
-            highestValue = int.parse(highestValueStr);
-          } else {
-            highestValue = 6; // Default value if parsing fails
-          }
-        } else {
-          highestValue = 6; // Default value if highestValueStr is null
-        }
-
-        // Logging the parsed values for debugging
-        print('Parsed lowestValue: $lowestValue');
-        print('Parsed highestValue: $highestValue');
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        String? message = data['message'];
+        int? lowestValue = data['lowestValue'];
+        int? highestValue = data['highestValue'];
 
         setState(() {
-          _customUserMessage = data['message'];
-          _lowestValue = lowestValue;
-          _highestValue = highestValue;
-          _isLoading = false;
+          _customUserMessage = message;
+          _lowestValue = lowestValue ?? 1;
+          _highestValue = highestValue ?? 6;
         });
+      } else {
+        print('Error fetching custom user message: ${response.body}');
       }
-    } else {
-      print('Error fetching custom user message: ${response.body}');
+    } catch (e) {
+      print('Exception caught during fetch: $e');
     }
-  } catch (e) {
-    print('Exception caught during fetch: $e');
-  } finally {
-    if (!mounted) return;
-    setState(() {
-      _isLoading =
-          false; // Ensure to set loading to false here to show the UI regardless of the outcome
-    });
   }
-}
 
-  void _checkUserInputForToday() async {
+  Future<void> _checkUserInputForToday() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final String userId = userProvider.user.id;
-    final String currentDateFormatted =
-        DateFormat('yyyy-MM-dd').format(DateTime.now());
+    final String currentDateFormatted = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
     try {
       final response = await http.get(
@@ -121,19 +90,10 @@ class _MoodScreenState extends State<MoodScreen> {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
-        final bool hasInput = data['hasInput'];
-
-        // Delay the navigation to HomeScreen by a short duration
-        Future.delayed(const Duration(milliseconds: 500), () {
-          if (hasInput) {
-            Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-          } else {
-            // If user doesn't have input, set loading to false to show MoodScreen
-            setState(() {
-              _isLoading = false;
-            });
-          }
-        });
+        final bool hasInput = data['hasInput'] as bool;
+        if (hasInput) {
+          Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+        }
       } else {
         print('Error checking user input: ${response.body}');
       }
@@ -154,8 +114,7 @@ class _MoodScreenState extends State<MoodScreen> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.close, color: Colors.black),
-          onPressed: () =>
-              Navigator.pushReplacementNamed(context, HomeScreen.routeName),
+          onPressed: () => Navigator.pushReplacementNamed(context, HomeScreen.routeName),
         ),
       ),
       body: Container(
@@ -170,24 +129,18 @@ class _MoodScreenState extends State<MoodScreen> {
             SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                itemCount: _highestValue != null && _lowestValue != null
-                    ? (_highestValue! - _lowestValue! + 1)
-                    : 0,
+                itemCount: (_highestValue != null && _lowestValue != null) ? (_highestValue! - _lowestValue! + 1) : 0,
                 itemBuilder: (context, index) {
-                  // Adjusted to use the range from lowestValue to highestValue
                   int moodValue = _lowestValue! + index;
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: _getColorForMood(
-                            moodValue, _lowestValue!, _highestValue!),
+                        primary: _getColorForMood(moodValue, _lowestValue!, _highestValue!),
                         onPrimary: Colors.white,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       ),
-                      onPressed: () =>
-                          _selectMoodAndNavigate(context, moodValue),
+                      onPressed: () => _selectMoodAndNavigate(context, moodValue),
                       child: Text('$moodValue'),
                     ),
                   );
@@ -201,35 +154,19 @@ class _MoodScreenState extends State<MoodScreen> {
   }
 
   Color _getColorForMood(int mood, int lowestValue, int highestValue) {
-    // Define the start and end colors of the gradient
-    Color startColor =
-        Color.fromRGBO(155, 155, 155, 1); // Darker shade for lower mood
-    Color endColor =
-        Color.fromRGBO(125, 238, 125, 1); // Lighter shade for higher mood
-
-    // Calculate the ratio based on the mood value within the range
-    double ratio =
-        (mood - lowestValue) / (highestValue - lowestValue).toDouble();
-
-    // Linearly interpolate between the start and end colors based on the ratio
+    Color startColor = Color.fromRGBO(155, 155, 155, 1); 
+    Color endColor = Color.fromRGBO(125, 238, 125, 1); 
+    double ratio = (mood - lowestValue) / (highestValue - lowestValue).toDouble();
     int r = startColor.red + ((endColor.red - startColor.red) * ratio).round();
-    int g = startColor.green +
-        ((endColor.green - startColor.green) * ratio).round();
-    int b =
-        startColor.blue + ((endColor.blue - startColor.blue) * ratio).round();
-
-    // Return the interpolated color
+    int g = startColor.green + ((endColor.green - startColor.green) * ratio).round();
+    int b = startColor.blue + ((endColor.blue - startColor.blue) * ratio).round();
     return Color.fromRGBO(r, g, b, 1);
   }
 
   void _selectMoodAndNavigate(BuildContext context, int moodValue) async {
     final moodProvider = Provider.of<MoodProvider>(context, listen: false);
     moodProvider.setMoodValue(moodValue);
-
-    // Post the user input
     await moodProvider.postUserInput(context);
-
-    // Navigate to the home screen after uploading the mood
     Navigator.pushReplacementNamed(context, '/home');
   }
 }
