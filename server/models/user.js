@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     name: {
       required: true,
       type: String,
-      trim: true, // Remove leading and trailing spaces
+      trim: true,
     },
     age: {
       required: true,
@@ -21,7 +21,7 @@ const userSchema = mongoose.Schema(
       type: String,
       trim: true,
       validate: {
-        validator: (value) => {
+        validator: function (value) {
           const re =
             /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$/i;
           return re.test(value);
@@ -73,6 +73,24 @@ const userSchema = mongoose.Schema(
         },
       },
     ],
+    userInputMessage: {
+      message: {
+        type: String,
+        required: false,
+      },
+      inputType: {
+        type: String,
+        required: false,
+      },
+      lowestValue: {
+        type: String,
+        required: false,
+      },
+      highestValue: {
+        type: String,
+        required: false,
+      },
+    },
   },
   {
     timestamps: true,

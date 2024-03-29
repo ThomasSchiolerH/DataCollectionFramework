@@ -79,5 +79,28 @@ getUserRouter.get("/api/userDemographics/gender", async (req, res) => {
     }
 });
 
-// Make public
+getUserRouter.post("/api/users/customInput", async (req, res) => {
+    const { username, message, inputType, lowestValue, highestValue } = req.body;
+
+    try {
+        const user = await User.findOne({ name: username });
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        user.userInputMessage = {
+            message, 
+            inputType,
+            lowestValue,
+            highestValue,
+        };
+
+        await user.save();
+        res.status(200).json({ msg: "User input message updated successfully." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = getUserRouter;

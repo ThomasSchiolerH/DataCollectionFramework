@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import UserDetails from './pages/UserDetails';
 import LoginPage from './pages/LoginPage';
 import Analysis from './pages/Analysis';
+import Customize from './pages/Customize'; 
 import './styles/App.css';
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
 
   const handleLoginSuccess = (token) => {
     setAuthToken(token);
-    sessionStorage.setItem('token', token); // Store token in sessionStorage
+    sessionStorage.setItem('token', token); 
   };
 
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/users" element={authToken ? <UsersList /> : <Navigate to="/login" replace />} />
           <Route path="/user/:userId" element={authToken ? <UserDetails /> : <Navigate to="/login" replace />} />
           <Route path="/analysis/:userId" element={authToken ? <Analysis /> : <Navigate to="/login" replace />} />
+          <Route path="/customize" element={authToken ? <Customize /> : <Navigate to="/login" replace />} /> 
         </Routes>
       </div>
     </Router>
