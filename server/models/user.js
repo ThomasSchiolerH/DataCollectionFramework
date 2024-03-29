@@ -83,11 +83,11 @@ const userSchema = new mongoose.Schema(
         required: false,
       },
       lowestValue: {
-        type: String,
+        type: Number,
         required: false,
       },
       highestValue: {
-        type: String,
+        type: Number,
         required: false,
       },
     },
