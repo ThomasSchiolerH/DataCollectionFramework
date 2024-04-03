@@ -103,7 +103,9 @@ const Dashboard = () => {
     <div className="dashboard">
       <div className="users-list">
         <h1 className="userlist-title-text">Users</h1>
-        <UserTable users={users} />
+        <div className="user-table-wrapper">
+          <UserTable users={users} />
+        </div>
       </div>
       <div className="dashboard-content">
         <h1 className="admin-dashboard-title-text">Dashboard</h1>
