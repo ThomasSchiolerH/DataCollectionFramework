@@ -80,7 +80,7 @@ getUserRouter.get("/api/userDemographics/gender", async (req, res) => {
 });
 
 getUserRouter.post("/api/users/customInput", async (req, res) => {
-    const { username, message, inputType, lowestValue, highestValue } = req.body;
+    const { username, message, inputType, lowestValue, highestValue, enabledSensors } = req.body;
 
     try {
         const user = await User.findOne({ name: username });
@@ -93,6 +93,7 @@ getUserRouter.post("/api/users/customInput", async (req, res) => {
             inputType,
             lowestValue,
             highestValue,
+            enabledSensors, 
         };
 
         await user.save();
@@ -100,27 +101,6 @@ getUserRouter.post("/api/users/customInput", async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: error.message });
-    }
-});
-
-getUserRouter.get('/api/users/:userId/userInputMessage', async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        const user = await User.findById(userId);
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        if (user.userInputMessage) {
-            const { message, lowestValue, highestValue } = user.userInputMessage; 
-            res.json({ message, lowestValue, highestValue }); 
-        } else {
-            res.status(404).json({ message: 'No custom user input message found.' });
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
