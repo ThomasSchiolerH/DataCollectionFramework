@@ -79,6 +79,27 @@ getUserRouter.get("/api/userDemographics/gender", async (req, res) => {
     }
 });
 
+getUserRouter.get("/api/users/:userId/userInputMessage", async (req, res) => {
+    try {
+        const userId = req.params.userId; 
+        const user = await User.findById(userId); 
+
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        if (user.userInputMessage) {
+            return res.json(user.userInputMessage);
+        } else {
+            return res.status(404).json({ msg: "User input message not found" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 getUserRouter.post("/api/users/customInput", async (req, res) => {
     const { username, message, inputType, lowestValue, highestValue, enabledSensors } = req.body;
 
