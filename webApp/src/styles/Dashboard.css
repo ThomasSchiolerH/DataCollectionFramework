@@ -1,6 +1,22 @@
 .dashboard {
-    padding: 20px;
-  }
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  overflow: hidden; /* Prevents the entire dashboard from scrolling */
+}
+
+.users-list, .dashboard-content {
+  overflow-y: auto; /* Allows individual scrolling */
+  padding: 20px;
+}
+
+.users-list {
+  flex: 1; /* Takes up 1/3 of the space */
+}
+
+.dashboard-content {
+  flex: 2; /* Takes up 2/3 of the space */
+}
 
 .admin-dashboard-title-text {
   margin-bottom: 50px;

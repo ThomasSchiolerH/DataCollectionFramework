@@ -12,11 +12,6 @@ const Navbar = () => {
                     Dashboard
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink to="/users" className={({ isActive }) => isActive ? 'active' : undefined}>
-                    Users
-                  </NavLink>
-                </li>
             </ul>
         </nav>
     );
