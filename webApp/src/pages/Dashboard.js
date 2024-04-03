@@ -111,7 +111,7 @@ const Dashboard = () => {
         <h1 className="admin-dashboard-title-text">Dashboard</h1>
         <div className="dashboard-grid">
           <div className="card">
-            <div className="card-title">Active Users</div>
+            <div className="card-title-activeusers">Active Users</div>
             <div className="card-content-activeusers">{activeUsers}</div>
           </div>
           <div className="card large">
