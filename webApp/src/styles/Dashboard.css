@@ -66,6 +66,14 @@
   flex: 1; /* Allows the content to fill the rest of the card */
 }
 
+.card-content-activeusers {
+  font-size: 2em;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px; 
+  margin-bottom: 10px;
+}
+
 body {
   background-color: #f4f7f6;
   color: #333;

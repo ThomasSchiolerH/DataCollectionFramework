@@ -110,7 +110,7 @@ const Dashboard = () => {
         <div className="dashboard-grid">
           <div className="card">
             <div className="card-title">Active Users</div>
-            <div className="card-content">{activeUsers}</div>
+            <div className="card-content-activeusers">{activeUsers}</div>
           </div>
           <div className="card large">
             <div className="card-title">Age Distribution</div>
