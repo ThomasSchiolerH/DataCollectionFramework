@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
-import UsersList from './pages/UsersList';
 import HomePage from './pages/HomePage';
 import UserDetails from './pages/UserDetails';
 import LoginPage from './pages/LoginPage';
