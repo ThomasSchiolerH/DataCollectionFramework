@@ -4,16 +4,19 @@ const User = require("../../models/user");
 const jWebToken = require("jsonwebtoken");
 const authRouter = express.Router();
 
+const capitaliseWords = (str) => str.toLowerCase().replace(/\b(\w)/g, s => s.toUpperCase());
+
 // Sign up route
 authRouter.post("/api/signup", async (req, res) => {
   try {
-    const { name, age, gender, email, password } = req.body;
+    let { name, age, gender, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ msg: "Another user is using this email" });
     }
 
+    name = capitaliseWords(name);
     //const hashedPassword = await bcryptjs.hash(password, 8);
 
     let user = new User({
