@@ -26,7 +26,6 @@ function App() {
           <Route path="/" element={authToken ? <Navigate to="/home" /> : <Navigate to="/login" />} />
           <Route path="/home" element={authToken ? <HomePage /> : <Navigate to="/login" replace />} />
           <Route path="/dashboard" element={authToken ? <Dashboard /> : <Navigate to="/login" replace />} />
-          <Route path="/users" element={authToken ? <UsersList /> : <Navigate to="/login" replace />} />
           <Route path="/user/:userId" element={authToken ? <UserDetails /> : <Navigate to="/login" replace />} />
           <Route path="/analysis/:userId" element={authToken ? <Analysis /> : <Navigate to="/login" replace />} />
         </Routes>

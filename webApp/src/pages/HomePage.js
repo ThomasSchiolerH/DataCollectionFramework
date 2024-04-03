@@ -10,9 +10,6 @@ const HomePage = () => {
             <div className='link-container'>
                 <Link to="/dashboard">Go to Dashboard</Link>
             </div>
-            <div className='link-container'>
-                <Link to="/users">View Users</Link>
-            </div>
         </div>
     );
 }

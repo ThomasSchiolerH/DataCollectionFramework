@@ -102,11 +102,11 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="users-list">
-        <h1 className="userlist-title-text">Users List</h1>
+        <h1 className="userlist-title-text">Users</h1>
         <UserTable users={users} />
       </div>
       <div className="dashboard-content">
-        <h1 className="admin-dashboard-title-text">Admin Dashboard</h1>
+        <h1 className="admin-dashboard-title-text">Dashboard</h1>
         <div className="dashboard-grid">
           <div className="card">
             <div className="card-title">Active Users</div>
