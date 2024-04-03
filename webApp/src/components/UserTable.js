@@ -1,8 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import '../styles/UserTable.css';
 
 const UserTable = ({ users }) => {
+    const navigate = useNavigate(); // Initialize useNavigate
+
+    // Function to handle row click
+    const handleRowClick = (userId) => {
+        navigate(`/analysis/${userId}`); // Navigate to the user-specific page
+    };
+
     return (
         <table className="user-table">
             <thead>
@@ -14,10 +21,9 @@ const UserTable = ({ users }) => {
             </thead>
             <tbody>
                 {users.map((user, index) => (
-                    <tr key={index}>
-                        <td>
-                            <Link to={`/analysis/${user._id}`}>{user.name}</Link>
-                        </td>
+                    // Use onClick event to handle row click
+                    <tr key={index} onClick={() => handleRowClick(user._id)} style={{ cursor: 'pointer' }}>
+                        <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>{user.type}</td>
                     </tr>
