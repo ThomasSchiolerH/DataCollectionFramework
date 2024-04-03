@@ -90,6 +90,10 @@ const userSchema = new mongoose.Schema(
         type: Number,
         required: false,
       },
+      enabledSensors: {
+        type: Map,
+        of: Boolean,
+      },
     },
   },
   {
