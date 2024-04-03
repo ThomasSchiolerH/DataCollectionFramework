@@ -123,7 +123,7 @@ class _MoodScreenState extends State<MoodScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _customUserMessage ?? 'How are you feeling today?',
+              _customUserMessage ?? 'There are not given anything to answer for you today',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
