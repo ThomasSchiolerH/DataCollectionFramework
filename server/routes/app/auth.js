@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("../../models/user");
-//const bcryptjs = require("bcryptjs");
+const bcryptjs = require("bcryptjs");
 const jWebToken = require("jsonwebtoken");
 const authRouter = express.Router();
 
@@ -14,15 +14,15 @@ authRouter.post("/api/signup", async (req, res) => {
       return res.status(400).json({ msg: "Another user is using this email" });
     }
 
-    //const hashedPassword = await bcryptjs.hash(password, 8);
+    const hashedPassword = await bcryptjs.hash(password, 8);
 
     let user = new User({
       name,
       age,
       gender,
       email,
-      password,
-      //password: hashedPassword,
+      //password,
+      password: hashedPassword,
     });
     user = await user.save();
     res.json(user);
@@ -41,16 +41,14 @@ authRouter.post("/api/signin", async (req, res) => {
       return res.status(400).json({ msg: "User does not exist." });
     }
     //TODO: Add password encryption
-    //const isPwMatch = await bcryptjs.compare(password, user.password);
+    const isPwMatch = await bcryptjs.compare(password, user.password);
     console.log(password);
     console.log(user.password);
-    //console.log(isPwMatch);
-    // if (!isPwMatch) {
-    //   return res.status(400).json({ msg: "Incorrect password!" });
-    // }
-    if (password !== user.password) {
+    console.log(isPwMatch);
+    if (!isPwMatch) {
       return res.status(400).json({ msg: "Incorrect password!" });
     }
+
     const token = jWebToken.sign({id: user._id}, "pwKey");
     res.json({token, ...user._doc});
   } catch (e) {
@@ -69,15 +67,11 @@ authRouter.post("/api/admin/signin", async (req, res) => {
     }
 
     //TODO: Add password encryption
-    //const isPwMatch = await bcryptjs.compare(password, user.password);
+    const isPwMatch = await bcryptjs.compare(password, user.password);
     console.log(password);
     console.log(user.password);
-    //console.log(isPwMatch);
-    // if (!isPwMatch) {
-    //   return res.status(400).json({ msg: "Incorrect password!" });
-    // }
-
-    if (password !== user.password) {
+    console.log(isPwMatch);
+    if (!isPwMatch) {
       return res.status(400).json({ msg: "Incorrect password!" });
     }
 
