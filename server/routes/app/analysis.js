@@ -52,7 +52,7 @@ analysisRouter.get('/api/users/:userId/analyseStepsMoodWeekly', authenticate, as
   const { userId } = req.params;
 
   try {
-    if (req.userId !== userId) {
+    if (req.userId !== userId && req.userRole !== 'admin') {
       return res.status(403).json({ msg: 'Access denied.' });
     }
 

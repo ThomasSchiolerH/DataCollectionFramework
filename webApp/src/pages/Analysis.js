@@ -18,10 +18,15 @@ const AnalysisPage = () => {
     const fetchAnalysisData = async () => {
       setLoading(true);
       try {
-        const data = await fetchMoodAnalysis(userId);
-        setAnalysisData(data);
-        setCorrelationCoefficient(data.correlationCoefficient);
-        setFeedback(data.feedback);
+        // Fetch feedback and correlation coefficient
+        const feedbackData = await fetchMoodFeedback(userId);
+        setCorrelationCoefficient(feedbackData.correlationCoefficient);
+        setFeedback(feedbackData.feedback);
+        
+        // Fetch average health data
+        const analysisData = await fetchMoodAnalysis(userId);
+        setAnalysisData(analysisData); // Assuming this returns an array-like structure
+        
         setLoading(false);
       } catch (err) {
         console.error("Error fetching analysis data:", err);
@@ -29,11 +34,14 @@ const AnalysisPage = () => {
         setLoading(false);
       }
     };
-
+  
     if (userId) {
       fetchAnalysisData();
     }
   }, [userId]);
+  
+  
+  
 
   if (loading) {
     return <div className="loading">Loading...</div>;
@@ -49,6 +57,17 @@ const AnalysisPage = () => {
       <Link to={`/user/${userId}`} className="view-details-button">
         View User Details
       </Link>
+      {correlationCoefficient !== null && (
+        <div className="correlation-feedback">
+          <div className="analysis-data-item">
+            <span className="data-title">Correlation Coefficient:</span>{" "}
+            {correlationCoefficient}
+          </div>
+          <div className="analysis-data-item">
+            <span className="data-title">Feedback:</span> {feedback}
+          </div>
+        </div>
+      )}
       {analysisData &&
         analysisData.map((data, index) => (
           <div key={index} className="analysis-detail">
@@ -67,17 +86,6 @@ const AnalysisPage = () => {
             </div>
           </div>
         ))}
-      {correlationCoefficient !== null && (
-        <div className="correlation-feedback">
-          <div className="analysis-data-item">
-            <span className="data-title">Correlation Coefficient:</span>{" "}
-            {correlationCoefficient}
-          </div>
-          <div className="analysis-data-item">
-            <span className="data-title">Feedback:</span> {feedback}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
