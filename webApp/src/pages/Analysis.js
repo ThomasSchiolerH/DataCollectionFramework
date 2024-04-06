@@ -61,7 +61,7 @@ const AnalysisPage = () => {
         <div className="correlation-feedback">
           <div className="analysis-data-item">
             <span className="data-title">Correlation Coefficient:</span>{" "}
-            {correlationCoefficient}
+            {correlationCoefficient.toFixed(3)}
           </div>
           <div className="analysis-data-item">
             <span className="data-title">Feedback:</span> {feedback}
