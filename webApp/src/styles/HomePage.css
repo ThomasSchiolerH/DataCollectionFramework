@@ -45,12 +45,12 @@ body, html {
     margin: 10px;
     border-radius: 5px;
     text-decoration: none;
-    color: #007bff;
+    color: #202e3c;
     font-weight: bold;
     transition: background-color 0.3s ease;
 }
 
 .home-page a:hover {
-    background-color: #0056b3;
+    background-color: #5e93cf;
     color: #ffffff; 
 }

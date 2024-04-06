@@ -39,7 +39,7 @@
     width: calc(100% - 20px); /* Adjusts width taking padding into account */
     padding: 10px;
     margin: 20px 0;
-    background-color: #007bff;
+    background-color: #2f4b6b;
     color: white;
     border: none;
     border-radius: 5px;
@@ -48,7 +48,7 @@
 }
 
 .login-card button:hover {
-    background-color: #0056b3;
+    background-color: #5e93cf;
 }
 
 .login-card p {

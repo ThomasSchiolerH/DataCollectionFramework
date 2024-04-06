@@ -47,14 +47,20 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Mental Health App',
       theme: ThemeData(
-        scaffoldBackgroundColor: GlobalVariables.backgroundColor,
+        scaffoldBackgroundColor: GlobalVariables.greyBackgroundColor,
         colorScheme: const ColorScheme.light(
           primary: GlobalVariables.secondaryColor,
         ),
         appBarTheme: const AppBarTheme(
           elevation: 0,
+          color: GlobalVariables.unselectedNavBarColor,
           iconTheme: IconThemeData(
-            color: Colors.black,
+            color: Colors.white,
+          ),
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

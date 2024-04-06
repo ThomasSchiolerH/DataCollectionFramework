@@ -39,28 +39,34 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
         title: const Text('Analyse'),
       ),
       body: SingleChildScrollView(
-        // Use SingleChildScrollView to accommodate varying content lengths
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ...moodAnalysisData
-                  .map((data) => Card(
-                        margin: const EdgeInsets.only(bottom: 10.0),
-                        child: ListTile(
-                          title: Text(
-                            'Mood ${data['mood']}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Text(
-                            'Steps: ${data['avgSteps']}, Exercise Time: ${data['avgExerciseTime']}, BMI: ${data['avgBMI']}',
-                          ),
-                        ),
-                      ))
-                  .toList(),
-              const SizedBox(height: 20), // Spacing before the feedback text
-              Text(feedback, textAlign: TextAlign.center),
+              ...moodAnalysisData.map((data) => Card(
+                    margin: const EdgeInsets.only(bottom: 10.0),
+                    child: ListTile(
+                      title: Text(
+                        'Mood ${data['mood']}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        'Steps: ${data['avgSteps']}, Exercise Time: ${data['avgExerciseTime']}, BMI: ${data['avgBMI']}',
+                      ),
+                    ),
+                  )).toList(),
+              const SizedBox(height: 20),
+              Card(
+                margin: const EdgeInsets.only(bottom: 10.0),
+                child: ListTile(
+                  title: const Text(
+                    "Analysis",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(feedback),
+                ),
+              ),
             ],
           ),
         ),
@@ -68,3 +74,4 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
     );
   }
 }
+

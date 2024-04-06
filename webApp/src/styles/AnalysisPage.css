@@ -18,7 +18,7 @@
     padding: 1rem;
     background-color: #f9f9f9;
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
   }
   
   .analysis-data-item {
@@ -47,7 +47,7 @@
     padding: 10px 20px;
     border: none; 
     border-radius: 5px; 
-    background-color: #344b62; 
+    background-color: #202e3c; 
     color: white; 
     text-align: center; 
     text-decoration: none; 
@@ -55,16 +55,12 @@
     transition: background-color 0.3s; 
   }
   
-  .view-details-button:hover {
-    background-color: #202e3c; 
-  }
-
 .correlation-feedback {
   margin-top: 2rem;
   padding: 1rem;
   background-color: #eef2f7;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .analysis-detail .analysis-data-item, 
@@ -84,6 +80,6 @@
 }
 
 .view-details-button:hover {
-  background-color: #202e3c;
+  background-color: #5e93cf;
   cursor: pointer; 
 }

@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:mental_health_app/constants/global_variables.dart';
 import 'package:mental_health_app/constants/utilities.dart';
 import 'package:mental_health_app/features/auth/services/auth_services.dart';
 import 'package:mental_health_app/features/home/services/notification_services.dart';
@@ -45,42 +46,45 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context).user;
-    final AuthServices authServices = AuthServices();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Welcome ${user.name}!'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.logout), // Logout icon
-            onPressed: () =>
-                authServices.logoutUser(context), // Call logout method
-            tooltip: 'Logout',
-          ),
-        ],
-      ),
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Overview',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Calendar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.analytics),
-            label: 'Analyse',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
-    );
-  }
+Widget build(BuildContext context) {
+  final user = Provider.of<UserProvider>(context).user;
+  final AuthServices authServices = AuthServices();
+
+  return Scaffold(
+    appBar: _selectedIndex == 0 ? AppBar( // Conditional rendering based on _selectedIndex
+      title: Text('Welcome ${user.name}!'),
+      actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.logout),
+          onPressed: () => authServices.logoutUser(context),
+          tooltip: 'Logout',
+        ),
+      ],
+    ) : null,
+    body: _screens[_selectedIndex],
+    bottomNavigationBar: BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.dashboard),
+          label: 'Overview',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_today),
+          label: 'Calendar',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.analytics),
+          label: 'Analyse',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
+      selectedItemColor: GlobalVariables.selectedNavBarColor,
+      unselectedItemColor: GlobalVariables.unselectedNavBarColor,
+      backgroundColor: Colors.white,
+    ),
+  );
+}
 
   void _onItemTapped(int index) {
     setState(() {
@@ -238,6 +242,7 @@ class HomeScreenContentState extends State<HomeScreenContent> {
 
   Widget buildInfoCard(String title, String value) {
     return Card(
+      color: Colors.white,
       elevation: 4.0,
       child: Padding(
         padding: const EdgeInsets.all(15.0),
