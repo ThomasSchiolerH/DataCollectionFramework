@@ -44,19 +44,6 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ...moodAnalysisData.map((data) => Card(
-                    margin: const EdgeInsets.only(bottom: 10.0),
-                    child: ListTile(
-                      title: Text(
-                        'Mood ${data['mood']}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        'Steps: ${data['avgSteps']}, Exercise Time: ${data['avgExerciseTime']}, Heart Rate: ${data['avgHeartRate']}, BMI: ${double.parse(data['avgBMI'].toString()).toStringAsFixed(2)}',
-                      ),
-                    ),
-                  )).toList(),
-              const SizedBox(height: 20),
               Card(
                 margin: const EdgeInsets.only(bottom: 10.0),
                 child: ListTile(
@@ -67,6 +54,24 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                   subtitle: Text(feedback),
                 ),
               ),
+              const SizedBox(height: 20),
+              ...moodAnalysisData
+                  .map((data) => Card(
+                        margin: const EdgeInsets.only(bottom: 10.0),
+                        child: ListTile(
+                          title: Text(
+                            'Mood ${data['mood']}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            'Steps: ${data['avgSteps']}\n'
+                            'Exercise Time: ${data['avgExerciseTime']}\n'
+                            'Heart Rate: ${data['avgHeartRate']}\n'
+                            'BMI: ${double.parse(data['avgBMI'].toString()).toStringAsFixed(2)}',
+                          ),
+                        ),
+                      ))
+                  .toList(),
             ],
           ),
         ),
@@ -74,4 +79,3 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
     );
   }
 }
-
