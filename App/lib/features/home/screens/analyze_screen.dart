@@ -44,15 +44,12 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
       return list;
     }
 
+    // Round to two decimals only if the number is a double
     String formatNumber(dynamic number) {
-      // Parse the number to ensure it's treated as a double
       double value = double.parse(number.toString());
-      // Check if the number is an integer
       if (value == value.toInt()) {
-        // If yes, return it as an integer string
         return value.toInt().toString();
       } else {
-        // If not, return it rounded to two decimal places
         return value.toStringAsFixed(2);
       }
     }

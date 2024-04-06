@@ -57,7 +57,7 @@ avgHealthRouter.get('/api/users/:userId/avgHealthData', authenticate, async (req
                 typeFormatted = 'ExerciseTime';
                 break;
               case 'BMI':
-                typeFormatted = 'BMI'; // Assuming Bmi is expected based on your original code structure
+                typeFormatted = 'BMI';
                 break;
               default:
                 console.error(`Unexpected type: ${type}`);
