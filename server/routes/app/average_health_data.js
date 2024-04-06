@@ -42,23 +42,43 @@ avgHealthRouter.get('/api/users/:userId/avgHealthData', authenticate, async (req
         const moodIndex = moodInput.value - 1;
         healthData.forEach(healthItem => {
           if (new Date(healthItem.date).toDateString() === new Date(moodInput.date).toDateString()) {
+            let typeFormatted;
             const { type, value } = healthItem;
-            moodAnalysis[moodIndex][`avg${type.charAt(0).toUpperCase() + type.slice(1)}`] += value;
-            moodAnalysis[moodIndex][`count${type.charAt(0).toUpperCase() + type.slice(1)}`] += 1;
+            
+            // Convert database type values to expected camelCase format
+            switch (type) {
+              case 'HEART_RATE':
+                typeFormatted = 'HeartRate';
+                break;
+              case 'steps':
+                typeFormatted = 'Steps';
+                break;
+              case 'exercise_time':
+                typeFormatted = 'ExerciseTime';
+                break;
+              case 'BMI':
+                typeFormatted = 'BMI'; // Assuming Bmi is expected based on your original code structure
+                break;
+              default:
+                console.error(`Unexpected type: ${type}`);
+                return; // Skip this iteration if the type is not recognized
+            }
+      
+            moodAnalysis[moodIndex][`avg${typeFormatted}`] += value;
+            moodAnalysis[moodIndex][`count${typeFormatted}`] += 1;
           }
         });
       });
-  
-      // Calculate total averages for each health data type
-      moodAnalysis = moodAnalysis.map(item => {
-        return {
-          mood: item.mood,
-          avgSteps: item.countSteps ? item.avgSteps / item.countSteps : 0,
-          avgExerciseTime: item.countExerciseTime ? item.avgExerciseTime / item.countExerciseTime : 0,
-          avgHeartRate: item.countHeartRate ? item.avgHeartRate / item.countHeartRate : 0,
-          avgBMI: item.countBMI ? item.avgBMI / item.countBMI : 0
-        };
-      });
+      
+      // Continue with the calculation of averages as in your original code
+      moodAnalysis = moodAnalysis.map(item => ({
+        mood: item.mood,
+        avgSteps: item.countSteps ? item.avgSteps / item.countSteps : 0,
+        avgExerciseTime: item.countExerciseTime ? item.avgExerciseTime / item.countExerciseTime : 0,
+        avgHeartRate: item.countHeartRate ? item.avgHeartRate / item.countHeartRate : 0,
+        avgBMI: item.countBMI ? item.avgBMI / item.countBMI : 0,
+      }));
+      
   
       res.json(moodAnalysis);
     } catch (error) {

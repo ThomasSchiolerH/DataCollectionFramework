@@ -34,44 +34,78 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Iterable<Widget> intersperseSizedBox(Iterable<Widget> widgets) {
+      var list = widgets
+          .expand((widget) => [widget, const SizedBox(height: 10)])
+          .toList();
+      if (list.isNotEmpty) {
+        list.removeLast();
+      }
+      return list;
+    }
+
+    String formatNumber(dynamic number) {
+      // Parse the number to ensure it's treated as a double
+      double value = double.parse(number.toString());
+      // Check if the number is an integer
+      if (value == value.toInt()) {
+        // If yes, return it as an integer string
+        return value.toInt().toString();
+      } else {
+        // If not, return it rounded to two decimal places
+        return value.toStringAsFixed(2);
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Analyse'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Card(
+                elevation: 4.0,
                 margin: const EdgeInsets.only(bottom: 10.0),
                 child: ListTile(
                   title: const Text(
                     "Analysis",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  subtitle: Text(feedback),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Text(feedback),
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
-              ...moodAnalysisData
-                  .map((data) => Card(
-                        margin: const EdgeInsets.only(bottom: 10.0),
-                        child: ListTile(
-                          title: Text(
-                            'Mood ${data['mood']}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+              ...intersperseSizedBox(
+                moodAnalysisData
+                    .map((data) => Card(
+                          elevation: 4.0,
+                          margin: const EdgeInsets.only(bottom: 10.0),
+                          child: ListTile(
+                            title: Text(
+                              'Mood ${data['mood']}',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Text(
+                                'Steps: ${formatNumber(data['avgSteps'])}\n'
+                                'Exercise Time: ${formatNumber(data['avgExerciseTime'])}\n'
+                                'Heart Rate: ${formatNumber(data['avgHeartRate'])}\n'
+                                'BMI: ${formatNumber(data['avgBMI'])}',
+                              ),
+                            ),
                           ),
-                          subtitle: Text(
-                            'Steps: ${data['avgSteps']}\n'
-                            'Exercise Time: ${data['avgExerciseTime']}\n'
-                            'Heart Rate: ${data['avgHeartRate']}\n'
-                            'BMI: ${double.parse(data['avgBMI'].toString()).toStringAsFixed(2)}',
-                          ),
-                        ),
-                      ))
-                  .toList(),
+                        ))
+                    .toList(),
+              )
             ],
           ),
         ),
