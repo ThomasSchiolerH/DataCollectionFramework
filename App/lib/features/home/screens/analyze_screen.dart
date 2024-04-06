@@ -52,7 +52,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(
-                        'Steps: ${data['avgSteps']}, Exercise Time: ${data['avgExerciseTime']}, BMI: ${data['avgBMI']}',
+                        'Steps: ${data['avgSteps']}, Exercise Time: ${data['avgExerciseTime']}, Heart Rate: ${data['avgHeartRate']}, BMI: ${double.parse(data['avgBMI'].toString()).toStringAsFixed(2)}',
                       ),
                     ),
                   )).toList(),
