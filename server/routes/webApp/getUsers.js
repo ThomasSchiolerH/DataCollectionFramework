@@ -81,8 +81,8 @@ getUserRouter.get("/api/userDemographics/gender", async (req, res) => {
 
 getUserRouter.get("/api/users/:userId/userInputMessage", async (req, res) => {
     try {
-        const userId = req.params.userId; 
-        const user = await User.findById(userId); 
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
 
         if (!user) {
             return res.status(404).json({ msg: "User not found" });
@@ -101,23 +101,45 @@ getUserRouter.get("/api/users/:userId/userInputMessage", async (req, res) => {
 
 
 getUserRouter.post("/api/users/customInput", async (req, res) => {
-    const { username, message, inputType, lowestValue, highestValue, enabledSensors } = req.body;
+    const { applyToAllUsers, projectName, message, inputType, lowestValue, highestValue, enabledSensors } = req.body;
 
     try {
-        const user = await User.findOne({ name: username });
-        if (!user) {
-            return res.status(404).json({ msg: "User not found" });
+        if (applyToAllUsers) {
+            await User.updateMany({}, {
+                $set: {
+                    userInputMessage: {
+                        projectName,
+                        message,
+                        inputType,
+                        lowestValue,
+                        highestValue,
+                        enabledSensors,
+                    },
+                },
+            });
+        } else {
+            const { usernames } = req.body;
+            const updatePromises = usernames.map(async (username) => {
+                const user = await User.findOne({ name: username.trim() });
+                if (!user) {
+                    throw new Error(`User not found: ${username}`);
+                }
+
+                user.userInputMessage = {
+                    projectName,
+                    message,
+                    inputType,
+                    lowestValue,
+                    highestValue,
+                    enabledSensors,
+                };
+
+                return user.save();
+            });
+
+            await Promise.all(updatePromises);
         }
 
-        user.userInputMessage = {
-            message, 
-            inputType,
-            lowestValue,
-            highestValue,
-            enabledSensors, 
-        };
-
-        await user.save();
         res.status(200).json({ msg: "User input message updated successfully." });
     } catch (error) {
         console.error(error);

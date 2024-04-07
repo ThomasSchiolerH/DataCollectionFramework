@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const Customize = () => {
-    const [username, setUsername] = useState('');
+    const [projectName, setProjectName] = useState('');
+    const [usernames, setUsernames] = useState('');
     const [message, setMessage] = useState('');
     const [inputType, setInputType] = useState('');
     const [lowestValue, setLowestValue] = useState('');
@@ -24,18 +25,32 @@ const Customize = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const serverURL = process.env.REACT_APP_SERVER_URL;
-
+    
+        const applyToAllUsers = usernames.trim().toLowerCase() === "all";
+    
+        const payload = applyToAllUsers ? {
+            applyToAllUsers,
+            projectName,
+            message,
+            inputType,
+            lowestValue,
+            highestValue,
+            enabledSensors,
+        } : {
+            usernames: usernames.split(',').map(username => username.trim()),
+            projectName,
+            message,
+            inputType,
+            lowestValue,
+            highestValue,
+            enabledSensors,
+        };
+    
         try {
-            await axios.post(`${serverURL}/api/users/customInput`, {
-                username,
-                message,
-                inputType,
-                lowestValue,
-                highestValue,
-                enabledSensors,
-            });
+            await axios.post(`${serverURL}/api/users/customInput`, payload);
             console.log('User input message updated successfully');
-            setUsername('');
+            setProjectName('');
+            setUsernames('');
             setMessage('');
             setInputType('');
             setLowestValue('');
@@ -49,7 +64,7 @@ const Customize = () => {
         } catch (error) {
             console.error('Error updating user input message:', error);
         }
-    };
+    };    
 
     return (
         <div style={{ textAlign: 'center', padding: '20px', fontFamily: 'Arial', maxWidth: '700px', margin: '0 auto' }}>
@@ -57,10 +72,17 @@ const Customize = () => {
             <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '20px' }}>
                 <input
                     type="text"
-                    id="username"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    id="projectName"
+                    placeholder="Project Name"
+                    value={projectName}
+                    onChange={(e) => setProjectName(e.target.value)}
+                    style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+                />
+                <input
+                    id="usernames"
+                    placeholder="Username, Username, Username"
+                    value={usernames}
+                    onChange={(e) => setUsernames(e.target.value)}
                     style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
                 />
                 <input
