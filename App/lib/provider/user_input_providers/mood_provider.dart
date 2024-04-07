@@ -3,7 +3,7 @@ import 'package:mental_health_app/constants/utilities.dart'; // Ensure this path
 import 'package:mental_health_app/features/home/services/user_input_services.dart'; // Ensure this path is correct
 
 class MoodProvider with ChangeNotifier {
-  int _moodValue = 0; 
+  int _moodValue = 0;
   bool _isUploading = false;
 
   final UserInputService userInputService = UserInputService();
@@ -13,10 +13,10 @@ class MoodProvider with ChangeNotifier {
 
   void setMoodValue(int newValue) {
     _moodValue = newValue;
-    notifyListeners(); 
+    notifyListeners();
   }
 
-  Future<void> postUserInput(BuildContext context) async {
+  Future<void> postUserInput(BuildContext context, String inputType) async {
     if (_moodValue == 0) {
       showSnackBar2(context, "Please select a mood before submitting.",
           isError: true);
@@ -28,11 +28,12 @@ class MoodProvider with ChangeNotifier {
 
     await userInputService.postUserInput(
       context: context,
-      type: "mood", 
-      value: _moodValue, 
+      type: inputType,
+      value: _moodValue,
       date: DateTime.now(),
     );
+
     _isUploading = false;
-    notifyListeners(); 
+    notifyListeners();
   }
 }

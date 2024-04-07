@@ -22,6 +22,8 @@ class _MoodScreenState extends State<MoodScreen> {
   String? _customUserMessage;
   int? _lowestValue;
   int? _highestValue;
+  String? _inputType; 
+
 
   @override
   void initState() {
@@ -42,8 +44,8 @@ class _MoodScreenState extends State<MoodScreen> {
   }
 
   Future<void> _fetchCustomUserMessage() async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final String userId = userProvider.user.id;
+  final userProvider = Provider.of<UserProvider>(context, listen: false);
+  final String userId = userProvider.user.id;
 
   try {
     final response = await http.get(
@@ -54,24 +56,28 @@ class _MoodScreenState extends State<MoodScreen> {
       },
     );
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = json.decode(response.body);
-        String? message = data['message'];
-        int? lowestValue = data['lowestValue'];
-        int? highestValue = data['highestValue'];
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
 
-        setState(() {
-          _customUserMessage = message;
-          _lowestValue = lowestValue ?? 1;
-          _highestValue = highestValue ?? 6;
-        });
-      } else {
-        print('Error fetching custom user message: ${response.body}');
-      }
-    } catch (e) {
-      print('Exception caught during fetch: $e');
+      String? message = data['message'];
+      int? lowestValue = data['lowestValue'];
+      int? highestValue = data['highestValue'];
+      String? inputType = data['inputType']; 
+
+      setState(() {
+        _customUserMessage = message; 
+        _lowestValue = lowestValue ?? 1; 
+        _highestValue = highestValue ?? 6; 
+        _inputType = inputType; 
+      });
+    } else {
+      print('Error fetching custom user message: ${response.body}');
     }
+  } catch (e) {
+    print('Exception caught during fetch: $e');
   }
+}
+
 
   Future<void> _checkUserInputForToday() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -163,10 +169,15 @@ class _MoodScreenState extends State<MoodScreen> {
     return Color.fromRGBO(r, g, b, 1);
   }
 
-  void _selectMoodAndNavigate(BuildContext context, int moodValue) async {
-    final moodProvider = Provider.of<MoodProvider>(context, listen: false);
-    moodProvider.setMoodValue(moodValue);
-    await moodProvider.postUserInput(context);
-    Navigator.pushReplacementNamed(context, '/home');
+void _selectMoodAndNavigate(BuildContext context, int moodValue) async {
+  final moodProvider = Provider.of<MoodProvider>(context, listen: false);
+  if (_inputType == null || _inputType!.isEmpty) {
+    print("Input type is not specified.");
+    return;
   }
+  moodProvider.setMoodValue(moodValue);
+  await moodProvider.postUserInput(context, _inputType!);
+  Navigator.pushReplacementNamed(context, '/home');
+}
+
 }
