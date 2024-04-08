@@ -94,6 +94,10 @@ const userSchema = new mongoose.Schema(
         type: Number,
         required: false,
       },
+      messageExpiration: { 
+        type: Date,
+        required: false,
+      },
       enabledSensors: {
         type: Map,
         of: Boolean,

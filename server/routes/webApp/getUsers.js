@@ -101,20 +101,22 @@ getUserRouter.get("/api/users/:userId/userInputMessage", async (req, res) => {
 
 
 getUserRouter.post("/api/users/customInput", async (req, res) => {
-    const { applyToAllUsers, projectName, message, inputType, lowestValue, highestValue, enabledSensors } = req.body;
+    const { applyToAllUsers, projectName, message, inputType, lowestValue, highestValue, enabledSensors, timeIntervalDays } = req.body;
+
+    const messageExpiration = new Date();
+    messageExpiration.setDate(messageExpiration.getDate() + timeIntervalDays);
 
     try {
         if (applyToAllUsers) {
             await User.updateMany({}, {
                 $set: {
-                    userInputMessage: {
-                        projectName,
-                        message,
-                        inputType,
-                        lowestValue,
-                        highestValue,
-                        enabledSensors,
-                    },
+                    "userInputMessage.projectName": projectName,
+                    "userInputMessage.message": message,
+                    "userInputMessage.inputType": inputType,
+                    "userInputMessage.lowestValue": lowestValue,
+                    "userInputMessage.highestValue": highestValue,
+                    "userInputMessage.enabledSensors": enabledSensors,
+                    "userInputMessage.messageExpiration": messageExpiration,
                 },
             });
         } else {
@@ -132,6 +134,7 @@ getUserRouter.post("/api/users/customInput", async (req, res) => {
                     lowestValue,
                     highestValue,
                     enabledSensors,
+                    messageExpiration,
                 };
 
                 return user.save();
@@ -146,7 +149,6 @@ getUserRouter.post("/api/users/customInput", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
 
 
 module.exports = getUserRouter;

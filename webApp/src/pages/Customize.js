@@ -8,6 +8,7 @@ const Customize = () => {
     const [inputType, setInputType] = useState('');
     const [lowestValue, setLowestValue] = useState('');
     const [highestValue, setHighestValue] = useState('');
+    const [timeIntervalDays, setTimeIntervalDays] = useState('');
     const [enabledSensors, setEnabledSensors] = useState({
         steps: false,
         heartRate: false,
@@ -28,7 +29,7 @@ const Customize = () => {
     
         const applyToAllUsers = usernames.trim().toLowerCase() === "all";
     
-        const payload = applyToAllUsers ? {
+        const payload = {
             applyToAllUsers,
             projectName,
             message,
@@ -36,15 +37,12 @@ const Customize = () => {
             lowestValue,
             highestValue,
             enabledSensors,
-        } : {
-            usernames: usernames.split(',').map(username => username.trim()),
-            projectName,
-            message,
-            inputType,
-            lowestValue,
-            highestValue,
-            enabledSensors,
+            timeIntervalDays: parseInt(timeIntervalDays, 10) 
         };
+
+        if (!applyToAllUsers) {
+            payload.usernames = usernames.split(',').map(username => username.trim());
+        }
     
         try {
             await axios.post(`${serverURL}/api/users/customInput`, payload);
@@ -55,6 +53,7 @@ const Customize = () => {
             setInputType('');
             setLowestValue('');
             setHighestValue('');
+            setTimeIntervalDays(''); 
             setEnabledSensors({
                 steps: false,
                 heartRate: false,
@@ -117,7 +116,14 @@ const Customize = () => {
                     onChange={(e) => setHighestValue(e.target.value)}
                     style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
                 />
-
+                <input
+                    type="number"
+                    id="timeIntervalDays"
+                    placeholder="Time Interval (Days)"
+                    value={timeIntervalDays}
+                    onChange={(e) => setTimeIntervalDays(e.target.value)}
+                    style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+                />
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '10px', marginLeft: '10px' }}>
                     <span style={{ fontWeight: 'bold' }}>Sensors:</span>
                     {Object.keys(enabledSensors).map((sensor) => (
