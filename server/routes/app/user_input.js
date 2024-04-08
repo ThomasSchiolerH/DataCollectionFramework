@@ -104,7 +104,31 @@ userInputRouter.get('/api/users/:userId/moodInputs', authenticate, async (req, r
   }
 });
 
+userInputRouter.patch('/api/users/:userId/updateResponse', authenticate, async (req, res) => {
+  const { userId } = req.params;
+  const { projectResponse } = req.body;
 
+  if (req.userId !== userId) {
+    return res.status(403).json({ msg: 'Access denied.' });
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(userId, {
+      "$set": {
+        "userInputMessage.projectResponse": projectResponse
+      }
+    }, { new: true }); 
+
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    res.status(200).send('Response updated successfully');
+  } catch (error) {
+    console.error('Error updating user response:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
   
   // Make public
   module.exports = userInputRouter;
