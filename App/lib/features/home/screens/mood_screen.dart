@@ -142,9 +142,8 @@ class _MoodScreenState extends State<MoodScreen> {
                     padding: const EdgeInsets.only(bottom: 10),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: _getColorForMood(moodValue, _lowestValue!, _highestValue!),
-                        onPrimary: Colors.white,
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        foregroundColor: Colors.white, backgroundColor: _getColorForMood(moodValue, _lowestValue!, _highestValue!),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       ),
                       onPressed: () => _selectMoodAndNavigate(context, moodValue),
                       child: Text('$moodValue'),
