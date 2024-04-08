@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
 class AuthServices {
-  // sign up
+  // Updated sign up method with navigation to AcceptProjectScreen
   void signUpUser({
     required BuildContext context,
     required String name,
@@ -49,21 +49,20 @@ class AuthServices {
         response: res,
         context: context,
         onSuccess: () {
-          showSnackBar(
+          showSnackBar(context, 'Account has been created!');
+          Navigator.pushNamedAndRemoveUntil(
             context,
-            'Account has been created!',
+            '/acceptProject', // Use the route name for AcceptProjectScreen
+            (route) => false,
           );
         },
       );
     } catch (e) {
-      showSnackBar(
-        context,
-        e.toString(),
-      );
+      showSnackBar(context, e.toString());
     }
   }
 
-// Sign in
+  // Updated sign in method with navigation to AcceptProjectScreen
   void signInUser({
     required BuildContext context,
     required String email,
@@ -72,15 +71,9 @@ class AuthServices {
     try {
       http.Response res = await http.post(
         Uri.parse("$uri/api/signin"),
-        body: jsonEncode({
-          "email": email,
-          "password": password,
-        }),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-        },
+        body: jsonEncode({"email": email, "password": password}),
+        headers: <String, String>{'Content-Type': 'application/json'},
       );
-      print(res.body);
       httpErrorHandling(
         response: res,
         context: context,
@@ -89,53 +82,30 @@ class AuthServices {
           final String userToken = jsonDecode(res.body)['token'];
           await prefs.setString('auth-token', userToken);
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
-          // only upload when connected to WI-FI
-          // try {
-          //   final connectivityResult = await Connectivity().checkConnectivity();
-          //   if (connectivityResult == ConnectivityResult.wifi) {
-          //     await Provider.of<StepProvider>(context, listen: false)
-          //         .fetchAndUploadSteps(context);
-          //     await Provider.of<ExerciseTimeProvider>(context, listen: false)
-          //         .fetchAndUploadExerciseTime(context);
-          //     await Provider.of<BMIProvider>(context, listen: false)
-          //         .fetchAndUploadBMI(context);
-          //   } else {
-          //     showSnackBar2(
-          //         context, 'Data will upload once connected to Wi-Fi.',
-          //         isError: true);
-          //   }
-          // } catch (e) {
-          //   showSnackBar2(context,
-          //       'Failed to check network connectivity: ${e.toString()}',
-          //       isError: true);
-          // }
           Navigator.pushNamedAndRemoveUntil(
             context,
-            MoodScreen.routeName,
+            '/acceptProject', // Use the route name for AcceptProjectScreen
             (route) => false,
           );
         },
       );
     } catch (e) {
-      showSnackBar(
-        context,
-        e.toString(),
-      );
+      showSnackBar(context, e.toString());
     }
   }
 
   void logoutUser(BuildContext context) async {
-  try {
-    // Clear the authentication token from SharedPreferences
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('auth-token');
+    try {
+      // Clear the authentication token from SharedPreferences
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('auth-token');
 
-    Provider.of<UserProvider>(context, listen: false).clearUser();
+      Provider.of<UserProvider>(context, listen: false).clearUser();
 
-    Navigator.pushNamedAndRemoveUntil(context, AuthScreen.routeName, (route) => false);
-  } catch (e) {
-    showSnackBar(context, 'Error during logout: ${e.toString()}');
+      Navigator.pushNamedAndRemoveUntil(
+          context, AuthScreen.routeName, (route) => false);
+    } catch (e) {
+      showSnackBar(context, 'Error during logout: ${e.toString()}');
+    }
   }
-}
-
 }
