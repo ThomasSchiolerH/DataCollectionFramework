@@ -79,5 +79,74 @@ getUserRouter.get("/api/userDemographics/gender", async (req, res) => {
     }
 });
 
-// Make public
+getUserRouter.get("/api/users/:userId/userInputMessage", async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        if (user.userInputMessage) {
+            return res.json(user.userInputMessage);
+        } else {
+            return res.status(404).json({ msg: "User input message not found" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+getUserRouter.post("/api/users/customInput", async (req, res) => {
+    const { applyToAllUsers, projectName, message, inputType, lowestValue, highestValue, enabledSensors } = req.body;
+
+    try {
+        if (applyToAllUsers) {
+            await User.updateMany({}, {
+                $set: {
+                    userInputMessage: {
+                        projectName,
+                        message,
+                        inputType,
+                        lowestValue,
+                        highestValue,
+                        enabledSensors,
+                    },
+                },
+            });
+        } else {
+            const { usernames } = req.body;
+            const updatePromises = usernames.map(async (username) => {
+                const user = await User.findOne({ name: username.trim() });
+                if (!user) {
+                    throw new Error(`User not found: ${username}`);
+                }
+
+                user.userInputMessage = {
+                    projectName,
+                    message,
+                    inputType,
+                    lowestValue,
+                    highestValue,
+                    enabledSensors,
+                };
+
+                return user.save();
+            });
+
+            await Promise.all(updatePromises);
+        }
+
+        res.status(200).json({ msg: "User input message updated successfully." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+
 module.exports = getUserRouter;

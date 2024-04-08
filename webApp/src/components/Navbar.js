@@ -12,6 +12,11 @@ const Navbar = () => {
                     Dashboard
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink to="/customize" className={({ isActive }) => isActive ? 'active' : undefined}>
+                    Customize
+                  </NavLink>
+                </li>
             </ul>
         </nav>
     );
