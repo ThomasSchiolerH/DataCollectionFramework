@@ -9,28 +9,54 @@ body {
 
 /* Projects Container */
 .customize-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Push the grid and button to opposite ends */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align content to the top */
 }
 
 /* Grid of projects */
 .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust the minmax for a wider card */
-    gap: 40px;
-    padding: 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Create three columns */
+  gap: 40px;
+  padding: 60px;
 }
 
-.project-item {
-    padding: 20px;
-    background-color: #ffffff; /* Light background for items */
-    border-radius: 8px; /* More pronounced rounded corners for the items */
-    text-align: left; /* Align text to the left for a cleaner look */
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* Softer shadow for depth */
-    display: flex;
-    flex-direction: column; /* Organize content in a column */
+.project-item, .add-project-btn {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  text-align: left;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content for the button */
+}
+
+.add-project-btn {
+  width: 100%; /* Button width matches the card */
+  height: auto; /* Height adjusts based on content */
+  padding: 20px; /* Match project card padding */
+  margin: 0; /* Reset any specific margins if set */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* Match project card shadow */
+  border-radius: 8px; /* Match project card border radius */
+  text-align: center; /* Center button text horizontally */
+  font-size: 5.5rem;
+  color: white;
+  background-color: #202e3c;
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  border: none;
+}
+
+.add-project-btn span {
+  white-space: nowrap; /* Prevent wrapping of button text */
+}
+
+.add-project-btn:hover {
+  background-color: #5e93cf;
 }
 
 .project-item h3 {
@@ -70,26 +96,6 @@ body {
     background-color: #ffebee;
     color: #ea4335;
 }
-
-/* Add project button */
-.add-project-btn {
-    font-size: 1.5rem;
-    background-color: #202e3c;
-    color: white;
-    border: none;
-    border-radius: 10px; /* Adjust border-radius for rounded corners */
-    width: 280px; /* Adjust width for a rectangular button */
-    height: 40px; /* Adjust height for a rectangular button */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    margin: 40px auto 0; /* Center the button horizontally and provide top margin, no bottom margin */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }  
-  
-  .add-project-btn:hover {
-    background-color: #5e93cf;
-  }
 
   /* Modal Styles */
   .modal.active {

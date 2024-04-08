@@ -94,9 +94,6 @@ const Customize = () => {
 
   return (
     <div className="customize-container">
-      <button className="add-project-btn" onClick={toggleModal}>
-        Add a new project
-      </button>
       <div className="projects-grid">
         {projects.map((project, index) => (
           <div key={index} className="project-item">
@@ -129,6 +126,9 @@ const Customize = () => {
             </div>
           </div>
         ))}
+        <button className="add-project-btn" onClick={toggleModal}>
+          +
+        </button>
       </div>
 
       {isModalOpen && (
