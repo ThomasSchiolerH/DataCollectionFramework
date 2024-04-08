@@ -147,6 +147,55 @@ getUserRouter.post("/api/users/customInput", async (req, res) => {
     }
 });
 
+// Endpoint to get different projects and its information
+getUserRouter.get("/api/getDifferentProjects", async (req, res) => {
+    try {
+        const projects = await User.aggregate([
+            {
+                $match: {
+                    "userInputMessage.projectName": { $exists: true, $ne: null }
+                }
+            },
+            {
+                $group: {
+                    _id: "$userInputMessage.projectName",
+                    message: { $first: "$userInputMessage.message" },
+                    inputType: { $first: "$userInputMessage.inputType" },
+                    lowestValue: { $first: "$userInputMessage.lowestValue" },
+                    highestValue: { $first: "$userInputMessage.highestValue" },
+                    enabledSensors: { $first: "$userInputMessage.enabledSensors" },
+                    userCount: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    projectName: "$_id",
+                    message: 1,
+                    inputType: 1,
+                    lowestValue: 1,
+                    highestValue: 1,
+                    enabledSensors: 1,
+                    userCount: 1
+                }
+            },
+            {
+                $sort: { projectName: 1 }
+            }
+        ]);
+
+        if (!projects || projects.length === 0) {
+            return res.status(404).json({ msg: "No projects found" });
+        }
+
+        res.json(projects);
+
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ error: e.message });
+    }
+});
+
 
 
 module.exports = getUserRouter;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/Customize.css";
 
@@ -17,9 +17,26 @@ const Customize = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => setIsModalOpen(!isModalOpen);
+  const [projects, setProjects] = useState([]);
 
   // Define the projects array here
-  const projects = ["Project 1", "Project 2", "Project 3"]; // Placeholder projects
+  //   const projects = ["Project 1", "Project 2", "Project 3"]; // Placeholder projects
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const serverURL = process.env.REACT_APP_SERVER_URL;
+      try {
+        const response = await axios.get(
+          `${serverURL}/api/getDifferentProjects`
+        );
+        setProjects(response.data); // Directly using the fetched array of objects
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   const handleSensorChange = (sensor) => {
     setEnabledSensors((prevSensors) => ({
@@ -77,15 +94,41 @@ const Customize = () => {
 
   return (
     <div className="customize-container">
+      <button className="add-project-btn" onClick={toggleModal}>
+        Add a new project
+      </button>
       <div className="projects-grid">
         {projects.map((project, index) => (
           <div key={index} className="project-item">
-            {project}
+            <h3>{project.projectName}</h3>
+            <p>
+              <strong>Message:</strong> {project.message}
+            </p>
+            <p>
+              <strong>Type:</strong> {project.inputType}
+            </p>
+            <p>
+              <strong>Range:</strong> {project.lowestValue} -{" "}
+              {project.highestValue}
+            </p>
+            <p>
+              <strong>Users Assigned:</strong> {project.userCount}
+            </p>
+            <div className="sensors-info">
+              <strong>Sensors Enabled:</strong>
+              {Object.entries(project.enabledSensors).map(
+                ([sensor, enabled], idx) => (
+                  <span
+                    key={idx}
+                    className={`sensor-${enabled ? "enabled" : "disabled"}`}
+                  >
+                    {sensor}
+                  </span>
+                )
+              )}
+            </div>
           </div>
         ))}
-        <button className="add-project-btn" onClick={toggleModal}>
-          +
-        </button>
       </div>
 
       {isModalOpen && (
@@ -143,20 +186,18 @@ const Customize = () => {
                 value={highestValue}
                 onChange={(e) => setHighestValue(e.target.value)}
               />
-                <span style={{ fontWeight: "bold" }}>Sensors:</span>
-                {Object.keys(enabledSensors).map((sensor) => (
-                  <label
-                    key={sensor}
-                  >
-                    <input
-                      type="checkbox"
-                      id={sensor}
-                      checked={enabledSensors[sensor]}
-                      onChange={() => handleSensorChange(sensor)}
-                    />
-                    {sensor.charAt(0).toUpperCase() + sensor.slice(1)}
-                  </label>
-                ))}
+              <span style={{ fontWeight: "bold" }}>Sensors:</span>
+              {Object.keys(enabledSensors).map((sensor) => (
+                <label key={sensor}>
+                  <input
+                    type="checkbox"
+                    id={sensor}
+                    checked={enabledSensors[sensor]}
+                    onChange={() => handleSensorChange(sensor)}
+                  />
+                  {sensor.charAt(0).toUpperCase() + sensor.slice(1)}
+                </label>
+              ))}
               <button type="submit">Submit</button>
             </form>
           </div>
