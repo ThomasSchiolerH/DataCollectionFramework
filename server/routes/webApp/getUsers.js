@@ -196,6 +196,37 @@ getUserRouter.get("/api/getDifferentProjects", async (req, res) => {
     }
 });
 
+getUserRouter.get("/api/getDifferentProjectsCount", async (req, res) => {
+    try {
+        const projectCount = await User.aggregate([
+            {
+                $match: {
+                    "userInputMessage.projectName": { $exists: true, $ne: null }
+                }
+            },
+            {
+                $group: {
+                    _id: "$userInputMessage.projectName"
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    projectCount: { $sum: 1 }
+                }
+            }
+        ]);
 
+        if (!projectCount || projectCount.length === 0) {
+            return res.status(404).json({ msg: "No projects found" });
+        }
+
+        res.json({ projectCount: projectCount[0].projectCount });
+
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ error: e.message });
+    }
+});
 
 module.exports = getUserRouter;

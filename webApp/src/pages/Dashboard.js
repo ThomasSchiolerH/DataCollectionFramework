@@ -4,6 +4,7 @@ import {
   getUserAgeDemographics,
   getUserGenderDemographics,
   getUsers,
+  getProjectCount,
 } from "../services/getUserServices";
 import { Pie } from "react-chartjs-2";
 import { Link } from "react-router-dom";
@@ -17,6 +18,7 @@ Chart.register(ArcElement, Tooltip, Legend);
 const Dashboard = () => {
   const [activeUsers, setActiveUsers] = useState(0);
   const [users, setUsers] = useState([]);
+  const [activeProjects, setActiveProjects] = useState(0); 
 
   const [ageData, setAgeData] = useState({
     labels: [],
@@ -47,6 +49,15 @@ const Dashboard = () => {
     const fetchUserCount = async () => {
       const count = await getUserCount();
       setActiveUsers(count);
+    };
+
+    const fetchProjectCount = async () => {
+      try {
+        const projectCount = await getProjectCount();
+        setActiveProjects(projectCount);
+      } catch (error) {
+        console.error("Error fetching project count:", error);
+      }
     };
 
     const fetchUserData = async () => {
@@ -95,6 +106,7 @@ const Dashboard = () => {
     };
 
     fetchUserCount();
+    fetchProjectCount();
     fetchData();
     fetchUserData();
   }, []);
@@ -119,8 +131,8 @@ const Dashboard = () => {
             <div className="card-content"><Pie data={ageData} /></div>
           </div>
           <div className="card">
-            <div className="card-title">Other data</div>
-            <div className="card-content">blablabla</div>
+            <div className="card-title-activeusers">Active Projects</div>
+            <div className="card-content-activeusers">{activeProjects}</div>
           </div>
           <div className="card large">
             <div className="card-title">Gender Distribution</div>

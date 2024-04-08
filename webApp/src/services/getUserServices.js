@@ -51,6 +51,24 @@ export const getUserCount = async () => {
   }
 };
 
+// Get project count
+export const getProjectCount = async () => {
+  try {
+      const token = getToken();
+      const response = await axios.get(`${serverURL}/api/getDifferentProjectsCount`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      // Corrected from response.data.count to response.data.projectCount
+      return response.data.projectCount;
+  } catch (error) {
+      console.error('Error fetching project count:', error);
+      return 0; // Return 0 or a meaningful default/fallback value
+  }
+};
+
+
 // Fetch age demographic data
 export const getUserAgeDemographics = async () => {
   try {
