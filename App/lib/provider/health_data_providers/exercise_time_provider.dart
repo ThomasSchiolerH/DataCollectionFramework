@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/features/home/services/health_data_services/get_exercise_time_service.dart';
 import 'package:mental_health_app/features/home/services/health_data_services.dart';
+import 'package:mental_health_app/features/home/services/user_input_services.dart';
 import 'package:mental_health_app/models/health_data.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +20,8 @@ class ExerciseTimeProvider with ChangeNotifier {
 
   Future<DateTime> _getLastUploadDate() async {
     final prefs = await SharedPreferences.getInstance();
-    final String? lastUploadDateString = prefs.getString('lastExerciseUploadDate');
+    final String? lastUploadDateString =
+        prefs.getString('lastExerciseUploadDate');
     if (lastUploadDateString == null) {
       return DateTime.now().subtract(Duration(days: 1));
     }
@@ -30,18 +32,32 @@ class ExerciseTimeProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    DateTime lastUploadDate = await _getLastUploadDate();
-    DateTime now = DateTime.now();
-    DateTime startOfCurrentHour = DateTime(now.year, now.month, now.day, now.hour);
+    UserInputService userInputService = UserInputService();
 
-    List<HealthData> hourlyExerciseData = await GetExerciseTimeService.fetchHourlyExerciseTimeData(lastUploadDate, startOfCurrentHour);
-    if (hourlyExerciseData.isNotEmpty) {
-      _totalExerciseTime = hourlyExerciseData.fold(0, (sum, data) => sum + data.value.toInt());
-      await Provider.of<HealthDataService>(context, listen: false).uploadHealthData(
-        context: context,
-        healthDataPoints: hourlyExerciseData,
-      );
-      await _updateLastUploadDate(now);
+    // Fetch user settings to determine enabled sensors/data types for upload
+    final Map<String, bool> enabledSensors =
+        await userInputService.fetchUserSettings(context);
+
+    // Check if steps data is enabled for upload
+    if (enabledSensors['exerciseTime'] ?? false) {
+      DateTime lastUploadDate = await _getLastUploadDate();
+      DateTime now = DateTime.now();
+      DateTime startOfCurrentHour =
+          DateTime(now.year, now.month, now.day, now.hour);
+
+      List<HealthData> hourlyExerciseData =
+          await GetExerciseTimeService.fetchHourlyExerciseTimeData(
+              lastUploadDate, startOfCurrentHour);
+      if (hourlyExerciseData.isNotEmpty) {
+        _totalExerciseTime =
+            hourlyExerciseData.fold(0, (sum, data) => sum + data.value.toInt());
+        await Provider.of<HealthDataService>(context, listen: false)
+            .uploadHealthData(
+          context: context,
+          healthDataPoints: hourlyExerciseData,
+        );
+        await _updateLastUploadDate(now);
+      }
     }
 
     _isLoading = false;
@@ -51,12 +67,15 @@ class ExerciseTimeProvider with ChangeNotifier {
   Future<void> fetchTotalExerciseTimeForToday() async {
     _isLoading = true;
     notifyListeners();
-    
+
     DateTime now = DateTime.now();
     DateTime startOfDay = DateTime(now.year, now.month, now.day);
-    List<HealthData> hourlyExerciseData = await GetExerciseTimeService.fetchHourlyExerciseTimeData(startOfDay, now);
+    List<HealthData> hourlyExerciseData =
+        await GetExerciseTimeService.fetchHourlyExerciseTimeData(
+            startOfDay, now);
 
-    _totalExerciseTime = hourlyExerciseData.fold(0, (sum, data) => sum + data.value.toInt());
+    _totalExerciseTime =
+        hourlyExerciseData.fold(0, (sum, data) => sum + data.value.toInt());
 
     _isLoading = false;
     notifyListeners();

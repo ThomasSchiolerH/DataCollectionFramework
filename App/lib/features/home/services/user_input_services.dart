@@ -45,4 +45,37 @@ class UserInputService {
       showSnackBar2(context, 'Error uploading user input: ${e.toString()}', isError: true);
     }
   }
+
+  Future<Map<String, bool>> fetchUserSettings(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final userId = userProvider.user.id;
+    Map<String, bool> enabledSensors = {};
+
+    try {
+      http.Response res = await http.get(
+        Uri.parse("$uri/api/users/$userId/userInputMessage"),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${userProvider.user.token}',
+        },
+      );
+
+      httpErrorHandling(
+        response: res,
+        context: context,
+        onSuccess: () {
+          final data = json.decode(res.body);
+          if (data['enabledSensors'] != null) {
+            enabledSensors = Map<String, bool>.from(data['enabledSensors']);
+          }
+          //showSnackBar2(context, 'User settings fetched successfully');
+        },
+      );
+    } catch (e) {
+      showSnackBar2(context, 'Error fetching user settings: ${e.toString()}', isError: true);
+    }
+
+    return enabledSensors;
+  }
+
 }

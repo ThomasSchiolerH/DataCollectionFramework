@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mental_health_app/features/home/services/user_input_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mental_health_app/features/home/services/health_data_services/heart_rate_services.dart';
 import 'package:mental_health_app/features/home/services/health_data_services.dart';
@@ -18,9 +19,11 @@ class HeartRateProvider with ChangeNotifier {
 
   Future<DateTime> _getLastUploadDate() async {
     final prefs = await SharedPreferences.getInstance();
-    final String? lastUploadDateString = prefs.getString('lastHeartRateUploadDate');
+    final String? lastUploadDateString =
+        prefs.getString('lastHeartRateUploadDate');
     if (lastUploadDateString == null) {
-      return DateTime.now().subtract(Duration(days: 1)); // Default to 1 day ago if not set
+      return DateTime.now()
+          .subtract(Duration(days: 1)); // Default to 1 day ago if not set
     }
     return DateTime.parse(lastUploadDateString);
   }
@@ -28,33 +31,46 @@ class HeartRateProvider with ChangeNotifier {
   Future<void> fetchAndUploadHeartRate(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
+    UserInputService userInputService = UserInputService();
 
-    DateTime lastUploadDate = await _getLastUploadDate();
-    DateTime now = DateTime.now();
-    DateTime startOfCurrentHour = DateTime(now.year, now.month, now.day, now.hour);
-    print("Fetching and uploading heart rate data...");
+    // Fetch user settings to determine enabled sensors/data types for upload
+    final Map<String, bool> enabledSensors =
+        await userInputService.fetchUserSettings(context);
 
-    List<HealthData> hourlyHeartRate = await HeartRateServices.fetchHourlyHeartRate(lastUploadDate, startOfCurrentHour);
-    if (hourlyHeartRate.isNotEmpty) {
-      // Summarize the hourly heart rate into a total count for display purposes.
-      _heart_rate = hourlyHeartRate.fold(0, (sum, data) => sum + data.value.toInt());
+    // Check if steps data is enabled for upload
+    if (enabledSensors['heartRate'] ?? false) {
+      DateTime lastUploadDate = await _getLastUploadDate();
+      DateTime now = DateTime.now();
+      DateTime startOfCurrentHour =
+          DateTime(now.year, now.month, now.day, now.hour);
+      print("Fetching and uploading heart rate data...");
 
-      HealthDataService().uploadHealthData(
-        context: context,
-        healthDataPoints: hourlyHeartRate,
-      );
-      await _updateLastUploadDate(now);
-      print("Fetched ${hourlyHeartRate.length} hourly data points.");
+      List<HealthData> hourlyHeartRate =
+          await HeartRateServices.fetchHourlyHeartRate(
+              lastUploadDate, startOfCurrentHour);
+      if (hourlyHeartRate.isNotEmpty) {
+        // Summarize the hourly heart rate into a total count for display purposes.
+        _heart_rate =
+            hourlyHeartRate.fold(0, (sum, data) => sum + data.value.toInt());
+
+        HealthDataService().uploadHealthData(
+          context: context,
+          healthDataPoints: hourlyHeartRate,
+        );
+        await _updateLastUploadDate(now);
+        print("Fetched ${hourlyHeartRate.length} hourly data points.");
+      }
     }
     await HeartRateServices.fetchTotalHeartRateForToday();
     _isLoading = false;
     notifyListeners();
   }
 
-    Future<void> fetchTotalHeartRateForToday() async {
+  Future<void> fetchTotalHeartRateForToday() async {
     _heart_rate = 0;
     await HeartRateServices.fetchTotalHeartRateForToday();
-    _heart_rate = HeartRateServices.averageHeartRateForToday.toInt(); // Get the total heart rate from HeartRateServices and cast it to 'int'
+    _heart_rate = HeartRateServices.averageHeartRateForToday
+        .toInt(); // Get the total heart rate from HeartRateServices and cast it to 'int'
     notifyListeners(); // Notify listeners to update the UI
   }
 }
