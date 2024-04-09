@@ -68,7 +68,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                   margin: const EdgeInsets.only(bottom: 10.0),
                   child: ListTile(
                     title: Text(
-                      '$inputTypeTitle $moodValue',
+                      '$inputTypeTitle value $moodValue',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Padding(
