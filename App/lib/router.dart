@@ -5,6 +5,7 @@ import 'package:mental_health_app/features/home/screens/calendar_screen.dart';
 import 'package:mental_health_app/features/home/screens/analyze_screen.dart';
 import 'package:mental_health_app/features/home/screens/mood_screen.dart';
 import 'package:mental_health_app/features/home/screens/accept_decline_user_input_message.dart';
+import 'package:mental_health_app/features/home/screens/if_declined.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,6 +35,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const AcceptProjectScreen(),
+      );
+        case IfDeclinedScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => IfDeclinedScreen(),
       );
     case MoodScreen.routeName:
       return MaterialPageRoute(
