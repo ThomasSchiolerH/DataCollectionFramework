@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
 class AuthServices {
-  // Updated sign up method with navigation to AcceptProjectScreen
+  // Sign up
   void signUpUser({
     required BuildContext context,
     required String name,
@@ -59,7 +59,7 @@ class AuthServices {
     }
   }
 
-  // Updated sign in method with navigation to AcceptProjectScreen
+  // Sign in
   void signInUser({
     required BuildContext context,
     required String email,
@@ -79,10 +79,12 @@ class AuthServices {
           final String userToken = jsonDecode(res.body)['token'];
           await prefs.setString('auth-token', userToken);
 
-          // Assuming setUser method now updates user with projectResponse
+          // setUser method now updates user with projectResponse
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
-          final String userId = Provider.of<UserProvider>(context, listen: false).user.id;
-          final String? projectResponse = await fetchProjectResponse(context, userId);
+          final String userId =
+              Provider.of<UserProvider>(context, listen: false).user.id;
+          final String? projectResponse =
+              await fetchProjectResponse(context, userId);
 
           // Conditional navigation based on projectResponse
           switch (projectResponse) {
@@ -94,12 +96,11 @@ class AuthServices {
               await Navigator.pushNamedAndRemoveUntil(
                   context, IfDeclinedScreen.routeName, (route) => false);
               break;
-            case null: // Assuming null is treated as 'not responded'
+            case null:
               await Navigator.pushNamedAndRemoveUntil(
                   context, AcceptProjectScreen.routeName, (route) => false);
               break;
             default:
-              // Handle unexpected values, if any
               break;
           }
         },
@@ -109,31 +110,30 @@ class AuthServices {
     }
   }
 
-  Future<String?> fetchProjectResponse(BuildContext context, String userId) async {
-  try {
-    final response = await http.get(
-      Uri.parse("$uri/api/users/$userId/userInputMessage"),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        // Assume 'auth-token' is set during login
-        'Authorization': 'Bearer ${await SharedPreferences.getInstance().then((prefs) => prefs.getString('auth-token'))}',
-      },
-    );
-    
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      // Assuming 'projectResponse' is directly accessible within 'userInputMessage'
-      return data['projectResponse'];
-    } else {
-      // Handle non-200 responses
-      throw Exception('Failed to fetch project response');
-    }
-  } catch (e) {
-    showSnackBar(context, 'Error fetching project response: ${e.toString()}');
-    return null;
-  }
-}
+  Future<String?> fetchProjectResponse(
+      BuildContext context, String userId) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$uri/api/users/$userId/userInputMessage"),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization':
+              'Bearer ${await SharedPreferences.getInstance().then((prefs) => prefs.getString('auth-token'))}',
+        },
+      );
 
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data['projectResponse'];
+      } else {
+        // Handle non-200 responses
+        throw Exception('Failed to fetch project response');
+      }
+    } catch (e) {
+      showSnackBar(context, 'Error fetching project response: ${e.toString()}');
+      return null;
+    }
+  }
 
   void logoutUser(BuildContext context) async {
     try {

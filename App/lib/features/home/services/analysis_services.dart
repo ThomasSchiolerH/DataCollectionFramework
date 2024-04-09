@@ -58,7 +58,6 @@ class AnalyseServices {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        // Assuming the moodAnalysis data is always present and correct format
         return data['moodAnalysis'] ?? []; // Extract the moodAnalysis list
       } else {
         return [];

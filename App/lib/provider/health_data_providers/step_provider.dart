@@ -22,7 +22,7 @@ class StepProvider with ChangeNotifier {
     final String? lastUploadDateString = prefs.getString('lastUploadDate');
     if (lastUploadDateString == null) {
       return DateTime.now()
-          .subtract(Duration(days: 1)); // Default to 1 day ago if not set
+          .subtract(const Duration(days: 1)); // Default to 1 day ago if not set
     }
     return DateTime.parse(lastUploadDateString);
   }
@@ -50,7 +50,6 @@ class StepProvider with ChangeNotifier {
       if (hourlySteps.isNotEmpty) {
         _steps = hourlySteps.fold(0, (sum, data) => sum + data.value.toInt());
 
-        // Assume HealthDataService is properly instantiated elsewhere
         HealthDataService().uploadHealthData(
           context: context,
           healthDataPoints: hourlySteps,
@@ -58,7 +57,6 @@ class StepProvider with ChangeNotifier {
         await _updateLastUploadDate(now);
         print("Fetched ${hourlySteps.length} hourly data points.");
       }
-
     } else {
       print("Steps data upload is disabled by admin.");
     }

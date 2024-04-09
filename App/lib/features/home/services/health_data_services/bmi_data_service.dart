@@ -52,21 +52,18 @@ class BMIDataService {
       // Access the numericValue property, which is of type num, and convert it to double
       return value.numericValue.toDouble();
     }
-    // Directly return the value if it is already a double
+    // return the value if it is already a double
     else if (value is double) {
       return value;
     }
-    // If the value is an integer, convert it to double
     else if (value is int) {
       return value.toDouble();
     }
-    // If the value is a string, try parsing it to double
     else if (value is String) {
       return double.tryParse(value);
     }
-    // Log or handle the case where value is not a recognizable numeric type
     else {
-      //print("Unable to convert the value to double: $value");
+      print("Unable to convert the value to double: $value");
       return null;
     }
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mental_health_app/constants/utilities.dart'; // Ensure this path is correct
-import 'package:mental_health_app/features/home/services/user_input_services.dart'; // Ensure this path is correct
+import 'package:mental_health_app/constants/utilities.dart'; 
+import 'package:mental_health_app/features/home/services/user_input_services.dart'; 
 
 class MoodProvider with ChangeNotifier {
   int _moodValue = 0;

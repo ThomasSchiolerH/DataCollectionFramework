@@ -22,7 +22,6 @@ const validateData = (type, value, unit, date) => {
 };
 
 // Upload health data
-// TODO: Fix the upload logic
 healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res) => {
   const { userId } = req.params;
   const { type, value, unit, date } = req.body;
@@ -44,15 +43,6 @@ healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res
       return res.status(404).json({ msg: 'User not found' });
     }
 
-    // Check if there's already an entry for the current day
-    // const existingData = user.healthData.find(d => 
-    //   d.date.toISOString().split('T')[0] === new Date(date).toISOString().split('T')[0] && d.type === type
-    // );
-    
-    // if (existingData) {
-    //   return res.status(409).json({ msg: `Health data for ${type} on this day already exists.` });
-    // }
-
     // Add the new health data
     user.healthData.push({ type, value, unit, date: new Date(date) });
     await user.save();
@@ -67,8 +57,7 @@ healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res
 // Bulk upload
 healthRouter.post('/api/users/:userId/healthData/bulk', authenticate, async (req, res) => {
   const { userId } = req.params;
-  // Expect an object with a 'data' property that is an array of health data objects
-  const healthDataArray = req.body.data; // Adjusted to access the nested array
+  const healthDataArray = req.body.data; 
   const errors = [];
 
   if (!Array.isArray(healthDataArray)) {
@@ -88,16 +77,12 @@ healthRouter.post('/api/users/:userId/healthData/bulk', authenticate, async (req
         continue; // Skip invalid entries
       }
 
-      // Optionally, consider adding logic here to handle duplicate data prevention based on your requirements
-
       user.healthData.push({ type, value, unit, date: new Date(date) });
     }
 
     await user.save();
 
-    // Provide feedback on the operation, including any validation errors encountered
     if (errors.length > 0) {
-      // Return a detailed response if there were any errors
       return res.status(400).json({ msg: 'Some health data could not be added due to validation errors.', errors });
     }
 

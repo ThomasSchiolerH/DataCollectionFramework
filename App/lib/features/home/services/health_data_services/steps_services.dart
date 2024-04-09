@@ -20,7 +20,7 @@ class GetStepsService {
     while (currentTime.isBefore(endDate)) {
       DateTime endOfHour = DateTime(currentTime.year, currentTime.month,
               currentTime.day, currentTime.hour)
-          .add(Duration(hours: 1));
+          .add(const Duration(hours: 1));
       // Adjust endOfHour if it exceeds endDate
       if (endOfHour.isAfter(endDate)) {
         endOfHour = endDate;

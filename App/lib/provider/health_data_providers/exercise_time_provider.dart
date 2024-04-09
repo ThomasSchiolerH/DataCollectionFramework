@@ -8,10 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ExerciseTimeProvider with ChangeNotifier {
   bool _isLoading = true;
-  int _totalExerciseTime = 0; // Add this line
+  int _totalExerciseTime = 0; 
 
   bool get isLoading => _isLoading;
-  int get totalExerciseTime => _totalExerciseTime; // Add this getter
+  int get totalExerciseTime => _totalExerciseTime;
 
   Future<void> _updateLastUploadDate(DateTime date) async {
     final prefs = await SharedPreferences.getInstance();
@@ -23,7 +23,7 @@ class ExerciseTimeProvider with ChangeNotifier {
     final String? lastUploadDateString =
         prefs.getString('lastExerciseUploadDate');
     if (lastUploadDateString == null) {
-      return DateTime.now().subtract(Duration(days: 1));
+      return DateTime.now().subtract(const Duration(days: 1));
     }
     return DateTime.parse(lastUploadDateString);
   }
@@ -38,7 +38,7 @@ class ExerciseTimeProvider with ChangeNotifier {
     final Map<String, bool> enabledSensors =
         await userInputService.fetchUserSettings(context);
 
-    // Check if steps data is enabled for upload
+    // Check if data is enabled for upload
     if (enabledSensors['exerciseTime'] ?? false) {
       DateTime lastUploadDate = await _getLastUploadDate();
       DateTime now = DateTime.now();

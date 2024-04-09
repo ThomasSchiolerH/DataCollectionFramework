@@ -23,7 +23,7 @@ class BMIProvider with ChangeNotifier {
     final String? lastUploadDateString = prefs.getString('lastBMIUploadDate');
     if (lastUploadDateString == null) {
       return DateTime.now()
-          .subtract(Duration(days: 1)); // Default to 1 day ago if not set
+          .subtract(const Duration(days: 1)); // Default to 1 day ago if not set
     }
     return DateTime.parse(lastUploadDateString);
   }
@@ -37,7 +37,7 @@ class BMIProvider with ChangeNotifier {
     final Map<String, bool> enabledSensors =
         await userInputService.fetchUserSettings(context);
 
-    // Check if steps data is enabled for upload
+    // Check if data is enabled for upload
     if (enabledSensors['BMI'] ?? false) {
       DateTime lastUploadDate = await _getLastUploadDate();
       DateTime now = DateTime.now();
@@ -47,7 +47,6 @@ class BMIProvider with ChangeNotifier {
         double? weight = await BMIDataService.fetchWeightData();
 
         if (height != null && weight != null) {
-          // Assuming height in meters and weight in kg, calculate BMI
           _bmi = weight / (height * height);
           // Upload the BMI data
           HealthDataService().uploadHealthData(

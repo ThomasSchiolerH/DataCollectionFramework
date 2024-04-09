@@ -7,7 +7,7 @@ class User {
   final int age;
   final String gender;
   final String email;
-  final String password; // TODO: Consider security implications of handling passwords
+  final String password;
   final String type;
   final String token;
   final List<HealthData> healthData;

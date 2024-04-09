@@ -7,9 +7,9 @@ class IfDeclinedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Project Declined"),
+        title: const Text("Project Declined"),
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           "You declined the project. Please ask the admin for a new project.",
           textAlign: TextAlign.center,

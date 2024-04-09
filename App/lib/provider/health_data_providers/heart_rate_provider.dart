@@ -23,7 +23,7 @@ class HeartRateProvider with ChangeNotifier {
         prefs.getString('lastHeartRateUploadDate');
     if (lastUploadDateString == null) {
       return DateTime.now()
-          .subtract(Duration(days: 1)); // Default to 1 day ago if not set
+          .subtract(const Duration(days: 1)); // Default to 1 day ago if not set
     }
     return DateTime.parse(lastUploadDateString);
   }
@@ -37,7 +37,7 @@ class HeartRateProvider with ChangeNotifier {
     final Map<String, bool> enabledSensors =
         await userInputService.fetchUserSettings(context);
 
-    // Check if steps data is enabled for upload
+    // Check if data is enabled for upload
     if (enabledSensors['heartRate'] ?? false) {
       DateTime lastUploadDate = await _getLastUploadDate();
       DateTime now = DateTime.now();
@@ -70,7 +70,7 @@ class HeartRateProvider with ChangeNotifier {
     _heart_rate = 0;
     await HeartRateServices.fetchTotalHeartRateForToday();
     _heart_rate = HeartRateServices.averageHeartRateForToday
-        .toInt(); // Get the total heart rate from HeartRateServices and cast it to 'int'
-    notifyListeners(); // Notify listeners to update the UI
+        .toInt();
+    notifyListeners(); 
   }
 }

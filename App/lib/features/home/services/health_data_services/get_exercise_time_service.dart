@@ -6,7 +6,8 @@ class GetExerciseTimeService {
   static int exerciseTimeInMinutes = 0;
   static DateTime? lastFetchedDate;
 
-  static Future<List<HealthData>> fetchHourlyExerciseTimeData(DateTime startDate, DateTime endDate) async {
+  static Future<List<HealthData>> fetchHourlyExerciseTimeData(
+      DateTime startDate, DateTime endDate) async {
     List<HealthData> hourlyExerciseData = [];
     List<HealthDataType> types = [HealthDataType.EXERCISE_TIME];
     bool accessGranted = await health.requestAuthorization(types);
@@ -17,16 +18,20 @@ class GetExerciseTimeService {
 
     DateTime currentTime = startDate;
     while (currentTime.isBefore(endDate)) {
-      DateTime endOfHour = DateTime(currentTime.year, currentTime.month, currentTime.day, currentTime.hour).add(Duration(hours: 1));
+      DateTime endOfHour = DateTime(currentTime.year, currentTime.month,
+              currentTime.day, currentTime.hour)
+          .add(const Duration(hours: 1));
       if (endOfHour.isAfter(endDate)) {
         endOfHour = endDate;
       }
 
-      List<HealthDataPoint> dataPoints = await health.getHealthDataFromTypes(currentTime, endOfHour, types);
+      List<HealthDataPoint> dataPoints =
+          await health.getHealthDataFromTypes(currentTime, endOfHour, types);
       double exerciseTime = 0;
       for (var dataPoint in dataPoints) {
         if (dataPoint.type == HealthDataType.EXERCISE_TIME) {
-          NumericHealthValue numericValue = dataPoint.value as NumericHealthValue;
+          NumericHealthValue numericValue =
+              dataPoint.value as NumericHealthValue;
           exerciseTime += numericValue.numericValue;
         }
       }
@@ -46,16 +51,16 @@ class GetExerciseTimeService {
     return hourlyExerciseData;
   }
 
-
-static Future<int> fetchTotalExerciseTimeForToday() async {
+  static Future<int> fetchTotalExerciseTimeForToday() async {
     DateTime now = DateTime.now();
     DateTime startOfDay = DateTime(now.year, now.month, now.day);
-    List<HealthData> todayExerciseData = await fetchHourlyExerciseTimeData(startOfDay, now);
+    List<HealthData> todayExerciseData =
+        await fetchHourlyExerciseTimeData(startOfDay, now);
 
-    int totalTodayExerciseTime = todayExerciseData.fold(0, (sum, data) => sum + data.value.toInt());
+    int totalTodayExerciseTime =
+        todayExerciseData.fold(0, (sum, data) => sum + data.value.toInt());
     exerciseTimeInMinutes = totalTodayExerciseTime;
 
-    return totalTodayExerciseTime; // Return the total for further processing or updating UI
-}
-
+    return totalTodayExerciseTime;
+  }
 }

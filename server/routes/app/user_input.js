@@ -61,7 +61,7 @@ userInputRouter.post('/api/users/:userId/userInput', authenticate, async (req, r
   // Check if user input exists for a specific date
 userInputRouter.get('/api/users/:userId/hasInputForDate', authenticate, async (req, res) => {
   const { userId } = req.params;
-  const { date } = req.query; // Expect the date to be passed as a query parameter, e.g., ?date=2023-03-25
+  const { date } = req.query;
 
   try {
       const user = await User.findById(userId);
@@ -94,7 +94,6 @@ userInputRouter.get('/api/users/:userId/moodInputs', authenticate, async (req, r
       return res.status(404).json({ msg: 'User not found' });
     }
 
-    // Assuming `userInputData` contains all types of inputs, filter for 'mood' type
     const moodInputs = user.userInputData.filter(input => input.type === 'mood');
 
     return res.json({ moodInputs });

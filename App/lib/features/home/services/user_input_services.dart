@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mental_health_app/constants/error_handle.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
-import 'package:mental_health_app/models/user_input.dart'; 
+import 'package:mental_health_app/models/user_input.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:mental_health_app/constants/utilities.dart';
@@ -11,7 +11,7 @@ import 'package:mental_health_app/constants/utilities.dart';
 class UserInputService {
   Future<void> postUserInput({
     required BuildContext context,
-    required String type, 
+    required String type,
     required num value,
     required DateTime date,
   }) async {
@@ -42,7 +42,8 @@ class UserInputService {
         },
       );
     } catch (e) {
-      showSnackBar2(context, 'Error uploading user input: ${e.toString()}', isError: true);
+      showSnackBar2(context, 'Error uploading user input: ${e.toString()}',
+          isError: true);
     }
   }
 
@@ -72,10 +73,10 @@ class UserInputService {
         },
       );
     } catch (e) {
-      showSnackBar2(context, 'Error fetching user settings: ${e.toString()}', isError: true);
+      showSnackBar2(context, 'Error fetching user settings: ${e.toString()}',
+          isError: true);
     }
 
     return enabledSensors;
   }
-
 }

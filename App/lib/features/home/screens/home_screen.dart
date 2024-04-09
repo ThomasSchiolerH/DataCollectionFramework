@@ -28,8 +28,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance
-        .addObserver(this as WidgetsBindingObserver); // Add the observer
-    checkConnectivityAndUploadData(); // Also check when the screen is first loaded
+        .addObserver(this as WidgetsBindingObserver);
+    checkConnectivityAndUploadData(); // check when the screen is first loaded
   }
 
   @override
@@ -138,7 +138,7 @@ class HomeScreenContentState extends State<HomeScreenContent> {
   @override
   void initState() {
     super.initState();
-    // Use Future.microtask to ensure fetchSteps is called after the build method
+    // Use Future.microtask to ensure provider methods are called after the build method
     Future.microtask(() => Provider.of<StepProvider>(context, listen: false)
         .fetchTotalStepsForToday());
     Future.microtask(() =>
@@ -205,14 +205,13 @@ class HomeScreenContentState extends State<HomeScreenContent> {
             const SizedBox(height: 10),
             Consumer<BMIProvider>(
               builder: (context, bmiProvider, child) {
-                // Check if BMI is still loading, then display a progress indicator or the BMI value.
                 var bmiValue = bmiProvider.bmi;
                 return bmiValue == null
                     ? const CircularProgressIndicator()
                     : buildInfoCard(
                         'Current BMI',
                         bmiValue.toStringAsFixed(
-                            2)); // Format BMI to 2 decimal places
+                            2));
               },
             ),
             ElevatedButton(
@@ -220,20 +219,6 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                   id: 0, title: "Test", body: "It works"),
               child: const Text('Notification'),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(top: 40.0),
-            //   child: Center(
-            //     child: ElevatedButton(
-            //       onPressed: () async {
-            //         await Provider.of<StepProvider>(context, listen: false)
-            //             .fetchAndUploadSteps(context);
-            //         await Provider.of<HeartRateProvider>(context, listen: false)
-            //             .fetchAndUploadHeartRate(context);
-            //       },
-            //       child: const Text('Upload Data'),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

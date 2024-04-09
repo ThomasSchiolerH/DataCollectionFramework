@@ -20,7 +20,7 @@ class HeartRateServices {
     while (currentTime.isBefore(endDate)) {
       DateTime endOfHour = DateTime(currentTime.year, currentTime.month,
               currentTime.day, currentTime.hour)
-          .add(Duration(hours: 1));
+          .add(const Duration(hours: 1));
       // Adjust endOfHour if it exceeds endDate
       if (endOfHour.isAfter(endDate)) {
         endOfHour = endDate;
@@ -67,7 +67,7 @@ static Future<void> fetchTotalHeartRateForToday() async {
     try {
       List<HealthDataPoint> dataPoints = await health.getHealthDataFromTypes(startOfDay, now, types);
       int sumHeartRate = 0;
-      int count = 0; // To count the number of data points
+      int count = 0;
       
       for (var dataPoint in dataPoints) {
         if (dataPoint.type == HealthDataType.HEART_RATE) {

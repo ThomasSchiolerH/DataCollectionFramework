@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mental_health_app/constants/utilities.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
@@ -96,38 +97,37 @@ class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
   }
 
   Future<void> _updateUserResponse(String response) async {
-  final userProvider = Provider.of<UserProvider>(context, listen: false);
-  final String userId = userProvider.user.id;
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final String userId = userProvider.user.id;
 
-  try {
-    final res = await http.patch(  // Changed from post to patch
-      Uri.parse('$uri/api/users/$userId/updateResponse'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${userProvider.user.token}',
-      },
-      body: jsonEncode({
-        "projectResponse": response,
-      }),
-    );
+    try {
+      final res = await http.patch(
+        Uri.parse('$uri/api/users/$userId/updateResponse'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${userProvider.user.token}',
+        },
+        body: jsonEncode({
+          "projectResponse": response,
+        }),
+      );
 
-    if (res.statusCode == 200) {
-      // Assuming you want to navigate to the MoodScreen on Accept
-      // And to the IfDeclinedScreen on Decline
-      String routeName = response == "Accepted"
-          ? MoodScreen.routeName
-          : IfDeclinedScreen.routeName;
-      Navigator.pushReplacementNamed(context, routeName);
-    } else {
-      print('Failed to update response: ${res.body}');
-      // Handle error, maybe show a dialog or a Snackbar
+      if (res.statusCode == 200) {
+        String routeName = response == "Accepted"
+            ? MoodScreen.routeName
+            : IfDeclinedScreen.routeName;
+        Navigator.pushReplacementNamed(context, routeName);
+      } else {
+        showSnackBar2(context, 'Failed to update response: ${res.body}',
+            isError: true);
+        //print('Failed to update response: ${res.body}');
+      }
+    } catch (e) {
+      showSnackBar2(context, 'Exception caught during update: $e',
+          isError: true);
+      //print('Exception caught during update: $e');
     }
-  } catch (e) {
-    print('Exception caught during update: $e');
-    // Handle exception, maybe show a dialog or a Snackbar
   }
-}
-
 
   List<Widget> _buildSensorsList() {
     return _userInputMessage?.enabledSensors?.entries.map((entry) {
@@ -144,7 +144,7 @@ class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
         title: const Text('Project Details'),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
