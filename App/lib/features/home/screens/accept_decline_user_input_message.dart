@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
-import 'package:mental_health_app/features/home/screens/home_screen.dart';
 import 'package:mental_health_app/features/home/screens/mood_screen.dart';
+import 'package:mental_health_app/features/home/screens/if_declined.dart';
 
 class UserInputMessage {
   final String? projectName;
@@ -113,10 +113,10 @@ class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
 
     if (res.statusCode == 200) {
       // Assuming you want to navigate to the MoodScreen on Accept
-      // And to the HomeScreen on Decline
+      // And to the IfDeclinedScreen on Decline
       String routeName = response == "Accepted"
           ? MoodScreen.routeName
-          : HomeScreen.routeName;
+          : IfDeclinedScreen.routeName;
       Navigator.pushReplacementNamed(context, routeName);
     } else {
       print('Failed to update response: ${res.body}');
