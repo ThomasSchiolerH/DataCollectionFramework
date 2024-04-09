@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/error_handle.dart';
 import 'package:mental_health_app/constants/utilities.dart';
 import 'package:mental_health_app/features/auth/screens/auth_screen.dart';
+import 'package:mental_health_app/features/home/screens/accept_decline_user_input_message.dart';
+import 'package:mental_health_app/features/home/screens/if_declined.dart';
 import 'package:mental_health_app/features/home/screens/mood_screen.dart';
 import 'package:mental_health_app/models/user.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
@@ -12,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
 class AuthServices {
-  // sign up
+  // Updated sign up method with navigation to AcceptProjectScreen
   void signUpUser({
     required BuildContext context,
     required String name,
@@ -49,21 +51,15 @@ class AuthServices {
         response: res,
         context: context,
         onSuccess: () {
-          showSnackBar(
-            context,
-            'Account has been created!',
-          );
+          showSnackBar(context, 'Account has been created!');
         },
       );
     } catch (e) {
-      showSnackBar(
-        context,
-        e.toString(),
-      );
+      showSnackBar(context, e.toString());
     }
   }
 
-// Sign in
+  // Updated sign in method with navigation to AcceptProjectScreen
   void signInUser({
     required BuildContext context,
     required String email,
@@ -72,15 +68,9 @@ class AuthServices {
     try {
       http.Response res = await http.post(
         Uri.parse("$uri/api/signin"),
-        body: jsonEncode({
-          "email": email,
-          "password": password,
-        }),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-        },
+        body: jsonEncode({"email": email, "password": password}),
+        headers: <String, String>{'Content-Type': 'application/json'},
       );
-      print(res.body);
       httpErrorHandling(
         response: res,
         context: context,
@@ -88,54 +78,75 @@ class AuthServices {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           final String userToken = jsonDecode(res.body)['token'];
           await prefs.setString('auth-token', userToken);
+
+          // Assuming setUser method now updates user with projectResponse
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
-          // only upload when connected to WI-FI
-          // try {
-          //   final connectivityResult = await Connectivity().checkConnectivity();
-          //   if (connectivityResult == ConnectivityResult.wifi) {
-          //     await Provider.of<StepProvider>(context, listen: false)
-          //         .fetchAndUploadSteps(context);
-          //     await Provider.of<ExerciseTimeProvider>(context, listen: false)
-          //         .fetchAndUploadExerciseTime(context);
-          //     await Provider.of<BMIProvider>(context, listen: false)
-          //         .fetchAndUploadBMI(context);
-          //   } else {
-          //     showSnackBar2(
-          //         context, 'Data will upload once connected to Wi-Fi.',
-          //         isError: true);
-          //   }
-          // } catch (e) {
-          //   showSnackBar2(context,
-          //       'Failed to check network connectivity: ${e.toString()}',
-          //       isError: true);
-          // }
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            MoodScreen.routeName,
-            (route) => false,
-          );
+          final String userId = Provider.of<UserProvider>(context, listen: false).user.id;
+          final String? projectResponse = await fetchProjectResponse(context, userId);
+
+          // Conditional navigation based on projectResponse
+          switch (projectResponse) {
+            case "Accepted":
+              await Navigator.pushNamedAndRemoveUntil(
+                  context, MoodScreen.routeName, (route) => false);
+              break;
+            case "Declined":
+              await Navigator.pushNamedAndRemoveUntil(
+                  context, IfDeclinedScreen.routeName, (route) => false);
+              break;
+            case null: // Assuming null is treated as 'not responded'
+              await Navigator.pushNamedAndRemoveUntil(
+                  context, AcceptProjectScreen.routeName, (route) => false);
+              break;
+            default:
+              // Handle unexpected values, if any
+              break;
+          }
         },
       );
     } catch (e) {
-      showSnackBar(
-        context,
-        e.toString(),
-      );
+      showSnackBar(context, e.toString());
     }
   }
 
-  void logoutUser(BuildContext context) async {
+  Future<String?> fetchProjectResponse(BuildContext context, String userId) async {
   try {
-    // Clear the authentication token from SharedPreferences
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('auth-token');
-
-    Provider.of<UserProvider>(context, listen: false).clearUser();
-
-    Navigator.pushNamedAndRemoveUntil(context, AuthScreen.routeName, (route) => false);
+    final response = await http.get(
+      Uri.parse("$uri/api/users/$userId/userInputMessage"),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        // Assume 'auth-token' is set during login
+        'Authorization': 'Bearer ${await SharedPreferences.getInstance().then((prefs) => prefs.getString('auth-token'))}',
+      },
+    );
+    
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      // Assuming 'projectResponse' is directly accessible within 'userInputMessage'
+      return data['projectResponse'];
+    } else {
+      // Handle non-200 responses
+      throw Exception('Failed to fetch project response');
+    }
   } catch (e) {
-    showSnackBar(context, 'Error during logout: ${e.toString()}');
+    showSnackBar(context, 'Error fetching project response: ${e.toString()}');
+    return null;
   }
 }
 
+
+  void logoutUser(BuildContext context) async {
+    try {
+      // Clear the authentication token from SharedPreferences
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('auth-token');
+
+      Provider.of<UserProvider>(context, listen: false).clearUser();
+
+      Navigator.pushNamedAndRemoveUntil(
+          context, AuthScreen.routeName, (route) => false);
+    } catch (e) {
+      showSnackBar(context, 'Error during logout: ${e.toString()}');
+    }
+  }
 }

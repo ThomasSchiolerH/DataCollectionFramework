@@ -9,6 +9,7 @@ const Customize = () => {
   const [inputType, setInputType] = useState("");
   const [lowestValue, setLowestValue] = useState("");
   const [highestValue, setHighestValue] = useState("");
+  const [timeIntervalDays, setTimeIntervalDays] = useState('');
   const [enabledSensors, setEnabledSensors] = useState({
     steps: false,
     heartRate: false,
@@ -60,6 +61,7 @@ const Customize = () => {
           lowestValue,
           highestValue,
           enabledSensors,
+          timeIntervalDays: parseInt(timeIntervalDays, 10) 
         }
       : {
           usernames: usernames.split(",").map((username) => username.trim()),
@@ -69,6 +71,7 @@ const Customize = () => {
           lowestValue,
           highestValue,
           enabledSensors,
+          timeIntervalDays: parseInt(timeIntervalDays, 10) 
         };
 
     try {
@@ -80,6 +83,7 @@ const Customize = () => {
       setInputType("");
       setLowestValue("");
       setHighestValue("");
+      setTimeIntervalDays('');
       setEnabledSensors({
         steps: false,
         heartRate: false,
@@ -89,7 +93,7 @@ const Customize = () => {
     } catch (error) {
       console.error("Error updating user input message:", error);
     }
-    setIsModalOpen(false); // Close modal after submission
+    setIsModalOpen(false); 
   };
 
   return (
@@ -186,7 +190,14 @@ const Customize = () => {
                 value={highestValue}
                 onChange={(e) => setHighestValue(e.target.value)}
               />
-              <span style={{ fontWeight: "bold" }}>Sensors:</span>
+                <input
+                    type="number"
+                    id="timeIntervalDays"
+                    placeholder="Time Interval (Days)"
+                    value={timeIntervalDays}
+                    onChange={(e) => setTimeIntervalDays(e.target.value)}
+                    style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+                />              <span style={{ fontWeight: "bold" }}>Sensors:</span>
               {Object.keys(enabledSensors).map((sensor) => (
                 <label key={sensor}>
                   <input

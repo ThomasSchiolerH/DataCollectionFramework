@@ -94,11 +94,20 @@ const userSchema = new mongoose.Schema(
         type: Number,
         required: false,
       },
+      messageExpiration: { 
+        type: Date,
+        required: false,
+      },
+      projectResponse: { 
+        type: String,
+        enum: ["Accepted", "Declined", null], 
+        default: null,
+      },
       enabledSensors: {
         type: Map,
         of: Boolean,
       },
-    },
+    },    
   },
   {
     timestamps: true,
