@@ -17,8 +17,7 @@ class AnalyseServices {
         Uri.parse("$uri/api/users/$userId/analyseStepsMoodWeekly"),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'Authorization':
-              'Bearer ${userProvider.user.token}',
+          'Authorization': 'Bearer ${userProvider.user.token}',
         },
       );
 
@@ -59,13 +58,15 @@ class AnalyseServices {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        return data;
+        // Assuming the moodAnalysis data is always present and correct format
+        return data['moodAnalysis'] ?? []; // Extract the moodAnalysis list
       } else {
         return [];
       }
     } catch (e) {
-    showSnackBar2(context, 'Error fetching mood analysis: ${e.toString()}', isError: true);
-    return [];
+      showSnackBar2(context, 'Error fetching mood analysis: ${e.toString()}',
+          isError: true);
+      return [];
     }
   }
 }

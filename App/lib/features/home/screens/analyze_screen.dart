@@ -34,26 +34,6 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Iterable<Widget> intersperseSizedBox(Iterable<Widget> widgets) {
-      var list = widgets
-          .expand((widget) => [widget, const SizedBox(height: 10)])
-          .toList();
-      if (list.isNotEmpty) {
-        list.removeLast();
-      }
-      return list;
-    }
-
-    // Round to two decimals only if the number is a double
-    String formatNumber(dynamic number) {
-      double value = double.parse(number.toString());
-      if (value == value.toInt()) {
-        return value.toInt().toString();
-      } else {
-        return value.toStringAsFixed(2);
-      }
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Analyse'),
@@ -79,34 +59,42 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              ...intersperseSizedBox(
-                moodAnalysisData
-                    .map((data) => Card(
-                          elevation: 4.0,
-                          margin: const EdgeInsets.only(bottom: 10.0),
-                          child: ListTile(
-                            title: Text(
-                              'Mood ${data['mood']}',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: Text(
-                                'Steps: ${formatNumber(data['avgSteps'])}\n'
-                                'Exercise Time: ${formatNumber(data['avgExerciseTime'])}\n'
-                                'Heart Rate: ${formatNumber(data['avgHeartRate'])}\n'
-                                'BMI: ${formatNumber(data['avgBMI'])}',
-                              ),
-                            ),
-                          ),
-                        ))
-                    .toList(),
-              )
+              ...moodAnalysisData.map((data) {
+                String inputTypeTitle = data['inputType'] ?? "Not Fetched";
+                int moodValue =
+                    (data['moodValue'] is int) ? data['moodValue'] : 0;
+                return Card(
+                  elevation: 4.0,
+                  margin: const EdgeInsets.only(bottom: 10.0),
+                  child: ListTile(
+                    title: Text(
+                      '$inputTypeTitle $moodValue',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        'Steps: ${formatNumber(data['avgSteps'])}\n'
+                        'Exercise Time: ${formatNumber(data['avgExerciseTime'])}\n'
+                        'Heart Rate: ${formatNumber(data['avgHeartRate'])}\n'
+                        'BMI: ${formatNumber(data['avgBMI'])}',
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  // Helper function to format numbers
+  String formatNumber(dynamic number) {
+    double value = double.tryParse(number.toString()) ?? 0;
+    return value == value.toInt()
+        ? value.toInt().toString()
+        : value.toStringAsFixed(2);
   }
 }
