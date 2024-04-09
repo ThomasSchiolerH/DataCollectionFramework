@@ -1,14 +1,12 @@
+// Importing dependencies
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import {
-  fetchMoodAnalysis,
-  fetchMoodFeedback,
-} from "../services/mood_analysis";
+import { fetchMoodAnalysis, fetchMoodFeedback } from "../services/mood_analysis";
 import "../styles/AnalysisPage.css";
 
 const AnalysisPage = () => {
   const { userId } = useParams();
-  const [analysisData, setAnalysisData] = useState(null);
+  const [analysisData, setAnalysisData] = useState(null); // Holds both inputType and moodAnalysis
   const [correlationCoefficient, setCorrelationCoefficient] = useState(null);
   const [feedback, setFeedback] = useState("");
   const [error, setError] = useState("");
@@ -18,14 +16,12 @@ const AnalysisPage = () => {
     const fetchAnalysisData = async () => {
       setLoading(true);
       try {
-        // Fetch feedback and correlation coefficient
         const feedbackData = await fetchMoodFeedback(userId);
         setCorrelationCoefficient(feedbackData.correlationCoefficient);
         setFeedback(feedbackData.feedback);
-        
-        // Fetch average health data
-        const analysisData = await fetchMoodAnalysis(userId);
-        setAnalysisData(analysisData); // Assuming this returns an array-like structure
+
+        const analysisDataResponse = await fetchMoodAnalysis(userId);
+        setAnalysisData(analysisDataResponse); // Contains both inputType and moodAnalysis array
         
         setLoading(false);
       } catch (err) {
@@ -34,14 +30,11 @@ const AnalysisPage = () => {
         setLoading(false);
       }
     };
-  
+
     if (userId) {
       fetchAnalysisData();
     }
   }, [userId]);
-  
-  
-  
 
   if (loading) {
     return <div className="loading">Loading...</div>;
@@ -68,24 +61,25 @@ const AnalysisPage = () => {
           </div>
         </div>
       )}
-      {analysisData &&
-        analysisData.map((data, index) => (
-          <div key={index} className="analysis-detail">
-            <div className="analysis-data-item">
-              <span className="data-title">Mood:</span> {data.mood}
-            </div>
-            <div className="analysis-data-item">
-              <span className="data-title">Average Steps:</span> {data.avgSteps}
-            </div>
-            <div className="analysis-data-item">
-              <span className="data-title">Average Exercise Time:</span>{" "}
-              {data.avgExerciseTime}
-            </div>
-            <div className="analysis-data-item">
-              <span className="data-title">Average BMI:</span> {data.avgBMI}
-            </div>
+      {analysisData && analysisData.moodAnalysis && analysisData.moodAnalysis.map((data, index) => (
+        <div key={index} className="analysis-detail">
+          <div className="analysis-data-item">
+            <span className="data-title">{analysisData.inputType || 'Mood'} Value:</span> {data.moodValue}
           </div>
-        ))}
+          <div className="analysis-data-item">
+            <span className="data-title">Average Steps:</span> {data.avgSteps}
+          </div>
+          <div className="analysis-data-item">
+            <span className="data-title">Average Exercise Time:</span> {data.avgExerciseTime}
+          </div>
+          <div className="analysis-data-item">
+            <span className="data-title">Average Heart Rate:</span> {data.avgHeartRate}
+          </div>
+          <div className="analysis-data-item">
+            <span className="data-title">Average BMI:</span> {data.avgBMI}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
