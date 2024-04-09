@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/error_handle.dart';
 import 'package:mental_health_app/constants/utilities.dart';
 import 'package:mental_health_app/features/auth/screens/auth_screen.dart';
+import 'package:mental_health_app/features/home/screens/accept_decline_user_input_message.dart';
+import 'package:mental_health_app/features/home/screens/if_declined.dart';
 import 'package:mental_health_app/features/home/screens/mood_screen.dart';
 import 'package:mental_health_app/models/user.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
@@ -50,11 +52,6 @@ class AuthServices {
         context: context,
         onSuccess: () {
           showSnackBar(context, 'Account has been created!');
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/acceptProject', // Use the route name for AcceptProjectScreen
-            (route) => false,
-          );
         },
       );
     } catch (e) {
@@ -81,18 +78,62 @@ class AuthServices {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           final String userToken = jsonDecode(res.body)['token'];
           await prefs.setString('auth-token', userToken);
+
+          // Assuming setUser method now updates user with projectResponse
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/acceptProject', // Use the route name for AcceptProjectScreen
-            (route) => false,
-          );
+          final String userId = Provider.of<UserProvider>(context, listen: false).user.id;
+          final String? projectResponse = await fetchProjectResponse(context, userId);
+
+          // Conditional navigation based on projectResponse
+          switch (projectResponse) {
+            case "Accepted":
+              await Navigator.pushNamedAndRemoveUntil(
+                  context, MoodScreen.routeName, (route) => false);
+              break;
+            case "Declined":
+              await Navigator.pushNamedAndRemoveUntil(
+                  context, IfDeclinedScreen.routeName, (route) => false);
+              break;
+            case null: // Assuming null is treated as 'not responded'
+              await Navigator.pushNamedAndRemoveUntil(
+                  context, AcceptProjectScreen.routeName, (route) => false);
+              break;
+            default:
+              // Handle unexpected values, if any
+              break;
+          }
         },
       );
     } catch (e) {
       showSnackBar(context, e.toString());
     }
   }
+
+  Future<String?> fetchProjectResponse(BuildContext context, String userId) async {
+  try {
+    final response = await http.get(
+      Uri.parse("$uri/api/users/$userId/userInputMessage"),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        // Assume 'auth-token' is set during login
+        'Authorization': 'Bearer ${await SharedPreferences.getInstance().then((prefs) => prefs.getString('auth-token'))}',
+      },
+    );
+    
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      // Assuming 'projectResponse' is directly accessible within 'userInputMessage'
+      return data['projectResponse'];
+    } else {
+      // Handle non-200 responses
+      throw Exception('Failed to fetch project response');
+    }
+  } catch (e) {
+    showSnackBar(context, 'Error fetching project response: ${e.toString()}');
+    return null;
+  }
+}
+
 
   void logoutUser(BuildContext context) async {
     try {
