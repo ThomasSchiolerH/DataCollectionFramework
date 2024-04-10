@@ -1,12 +1,12 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client'; // Import createRoot
+import { createRoot } from 'react-dom/client';
 import App from './App';
 
-// Use createRoot to manage the root of your app
+// Use createRoot to manage the root
 const container = document.getElementById('root');
-const root = createRoot(container); // Create a root instance
+const root = createRoot(container); 
 
-// Render your app within StrictMode for additional checks and warnings in development
+// Render within StrictMode for additional checks and warnings in development
 root.render(
   <React.StrictMode>
     <App />

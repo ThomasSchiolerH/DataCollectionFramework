@@ -7,18 +7,16 @@ import {
   getProjectCount,
 } from "../services/getUserServices";
 import { Pie } from "react-chartjs-2";
-import { Link } from "react-router-dom";
 import "../styles/Dashboard.css";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import UserTable from "../components/UserTable";
 
-// Register Chart.js elements
 Chart.register(ArcElement, Tooltip, Legend);
 
 const Dashboard = () => {
   const [activeUsers, setActiveUsers] = useState(0);
   const [users, setUsers] = useState([]);
-  const [activeProjects, setActiveProjects] = useState(0); 
+  const [activeProjects, setActiveProjects] = useState(0);
 
   const [ageData, setAgeData] = useState({
     labels: [],
@@ -128,7 +126,9 @@ const Dashboard = () => {
           </div>
           <div className="card large">
             <div className="card-title">Age Distribution</div>
-            <div className="card-content"><Pie data={ageData} /></div>
+            <div className="card-content">
+              <Pie data={ageData} />
+            </div>
           </div>
           <div className="card">
             <div className="card-title-activeusers">Active Projects</div>
@@ -136,13 +136,14 @@ const Dashboard = () => {
           </div>
           <div className="card large">
             <div className="card-title">Gender Distribution</div>
-            <div className="card-content"><Pie data={genderData} /></div>
+            <div className="card-content">
+              <Pie data={genderData} />
+            </div>
           </div>
-          {/* Other cards remain unchanged */}
         </div>
       </div>
     </div>
-  );  
+  );
 };
 
 export default Dashboard;

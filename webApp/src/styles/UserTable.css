@@ -5,11 +5,13 @@
     margin-right: auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    overflow: hidden; /* This ensures the border-radius is applied correctly */
+    overflow: hidden;
+    /* This ensures the border-radius is applied correctly */
 }
 
 .user-table {
-    width: 100%; /* Adjusted to fill the wrapper */
+    width: 100%;
+    /* Adjusted to fill the wrapper */
     border-collapse: collapse;
     background-color: #fff;
 }
@@ -21,41 +23,41 @@
 }
 
 .user-table th {
-    background-color: #5e93cf; 
-    color: white; 
-    font-size: 16px; 
+    background-color: #5e93cf;
+    color: white;
+    font-size: 16px;
 }
 
 .user-table tbody tr:hover {
-    background-color: #f1f1f1; 
+    background-color: #f1f1f1;
 }
 
 .user-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9; 
+    background-color: #f9f9f9;
 }
 
 .user-table tbody tr:nth-child(even):hover {
-    background-color: #f1f1f1; 
+    background-color: #f1f1f1;
 }
 
 .user-table tbody td {
-    color: #555; 
+    color: #555;
 }
 
 .user-table a {
-    color: #9e9887; 
-    text-decoration: none; 
+    color: #9e9887;
+    text-decoration: none;
 }
 
 .user-table a:hover {
-    text-decoration: underline; 
+    text-decoration: underline;
 }
 
 .userlist-title-text, .admin-dashboard-title-text {
     display: block;
     width: fit-content;
-    margin: 20px auto 30px; 
+    margin: 20px auto 30px;
     font-size: 24px;
-    color: #333; 
-    text-align: center; 
+    color: #333;
+    text-align: center;
 }

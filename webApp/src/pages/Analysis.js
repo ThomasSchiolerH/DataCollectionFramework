@@ -1,12 +1,15 @@
 // Importing dependencies
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { fetchMoodAnalysis, fetchMoodFeedback } from "../services/mood_analysis";
+import {
+  fetchMoodAnalysis,
+  fetchMoodFeedback,
+} from "../services/mood_analysis";
 import "../styles/AnalysisPage.css";
 
 const AnalysisPage = () => {
   const { userId } = useParams();
-  const [analysisData, setAnalysisData] = useState(null); // Holds both inputType and moodAnalysis
+  const [analysisData, setAnalysisData] = useState(null);
   const [correlationCoefficient, setCorrelationCoefficient] = useState(null);
   const [feedback, setFeedback] = useState("");
   const [error, setError] = useState("");
@@ -22,7 +25,7 @@ const AnalysisPage = () => {
 
         const analysisDataResponse = await fetchMoodAnalysis(userId);
         setAnalysisData(analysisDataResponse); // Contains both inputType and moodAnalysis array
-        
+
         setLoading(false);
       } catch (err) {
         console.error("Error fetching analysis data:", err);
@@ -61,25 +64,32 @@ const AnalysisPage = () => {
           </div>
         </div>
       )}
-      {analysisData && analysisData.moodAnalysis && analysisData.moodAnalysis.map((data, index) => (
-        <div key={index} className="analysis-detail">
-          <div className="analysis-data-item">
-            <span className="data-title">{analysisData.inputType || 'Mood'} Value:</span> {data.moodValue}
+      {analysisData &&
+        analysisData.moodAnalysis &&
+        analysisData.moodAnalysis.map((data, index) => (
+          <div key={index} className="analysis-detail">
+            <div className="analysis-data-item">
+              <span className="data-title">
+                {analysisData.inputType || "Mood"} Value:
+              </span>{" "}
+              {data.moodValue}
+            </div>
+            <div className="analysis-data-item">
+              <span className="data-title">Average Steps:</span> {data.avgSteps}
+            </div>
+            <div className="analysis-data-item">
+              <span className="data-title">Average Exercise Time:</span>{" "}
+              {data.avgExerciseTime}
+            </div>
+            <div className="analysis-data-item">
+              <span className="data-title">Average Heart Rate:</span>{" "}
+              {data.avgHeartRate}
+            </div>
+            <div className="analysis-data-item">
+              <span className="data-title">Average BMI:</span> {data.avgBMI}
+            </div>
           </div>
-          <div className="analysis-data-item">
-            <span className="data-title">Average Steps:</span> {data.avgSteps}
-          </div>
-          <div className="analysis-data-item">
-            <span className="data-title">Average Exercise Time:</span> {data.avgExerciseTime}
-          </div>
-          <div className="analysis-data-item">
-            <span className="data-title">Average Heart Rate:</span> {data.avgHeartRate}
-          </div>
-          <div className="analysis-data-item">
-            <span className="data-title">Average BMI:</span> {data.avgBMI}
-          </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 };

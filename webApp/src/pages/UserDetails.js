@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { getUserHealthData } from '../services/getUserServices';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getUserHealthData } from "../services/getUserServices";
 import "../styles/UserDetails.css";
 
 const groupHealthDataByType = (healthData) => {
@@ -14,15 +14,14 @@ const groupHealthDataByType = (healthData) => {
   }, {});
 };
 
-
 const UserDetails = () => {
   const { userId } = useParams();
   const [groupedHealthData, setGroupedHealthData] = useState({});
   const [healthData, setHealthData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchHealthData = async () => {
       try {
         const data = await getUserHealthData(userId);
@@ -30,8 +29,8 @@ const UserDetails = () => {
         setGroupedHealthData(groupedData);
         setLoading(false);
       } catch (err) {
-        console.error('Failed to fetch health data:', err);
-        setError('Failed to fetch health data');
+        console.error("Failed to fetch health data:", err);
+        setError("Failed to fetch health data");
         setLoading(false);
       }
     };
@@ -48,7 +47,7 @@ const UserDetails = () => {
   }
 
   return (
-    <div className='user-details-container'>
+    <div className="user-details-container">
       <h1>User Details Page</h1>
       <p>User ID: {userId}</p>
       {Object.keys(groupedHealthData).map((type) => (
@@ -57,7 +56,8 @@ const UserDetails = () => {
           <ul>
             {groupedHealthData[type].map((data, index) => (
               <li key={index}>
-                Type: {data.type}, Value: {data.value} {data.unit}, Date: {new Date(data.date).toLocaleDateString()}
+                Type: {data.type}, Value: {data.value} {data.unit}, Date:{" "}
+                {new Date(data.date).toLocaleDateString()}
               </li>
             ))}
           </ul>

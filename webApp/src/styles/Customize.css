@@ -1,10 +1,10 @@
 body {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    background-color: #f4f7fa;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f7fa;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Projects Container */
@@ -12,13 +12,15 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Align content to the top */
+  justify-content: flex-start;
+  /* Align content to the top */
 }
 
 /* Grid of projects */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Create three columns */
+  grid-template-columns: repeat(3, 1fr);
+  /* Create three columns */
   gap: 40px;
   padding: 60px;
 }
@@ -31,28 +33,39 @@ body {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center content for the button */
+  justify-content: center;
+  /* Center content for the button */
 }
 
 .add-project-btn {
-  width: 100%; /* Button width matches the card */
-  height: auto; /* Height adjusts based on content */
-  padding: 20px; /* Match project card padding */
-  margin: 0; /* Reset any specific margins if set */
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* Match project card shadow */
-  border-radius: 8px; /* Match project card border radius */
-  text-align: center; /* Center button text horizontally */
+  width: 100%;
+  /* Button width matches the card */
+  height: auto;
+  /* Height adjusts based on content */
+  padding: 20px;
+  /* Match project card padding */
+  margin: 0;
+  /* Reset any specific margins if set */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  /* Match project card shadow */
+  border-radius: 8px;
+  /* Match project card border radius */
+  text-align: center;
+  /* Center button text horizontally */
   font-size: 5.5rem;
   color: white;
   background-color: #202e3c;
   display: flex;
-  justify-content: center; /* Center content horizontally */
-  align-items: center; /* Center content vertically */
+  justify-content: center;
+  /* Center content horizontally */
+  align-items: center;
+  /* Center content vertically */
   border: none;
 }
 
 .add-project-btn span {
-  white-space: nowrap; /* Prevent wrapping of button text */
+  white-space: nowrap;
+  /* Prevent wrapping of button text */
 }
 
 .add-project-btn:hover {
@@ -60,153 +73,189 @@ body {
 }
 
 .project-item h3 {
-    color: #202e3c;
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
+  color: #202e3c;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
 }
 
 .project-item p {
-    font-size: 0.9rem;
-    margin: 0.25rem 0;
+  font-size: 0.9rem;
+  margin: 0.25rem 0;
 }
 
 .sensors-info {
-    margin-top: 10px;
-    display: flex;
-    flex-wrap: wrap; /* Wrap the sensors to the next line if needed */
-    align-items: center;
-    gap: 5px; /* Space between sensor tags */
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  /* Wrap the sensors to the next line if needed */
+  align-items: center;
+  gap: 5px;
+  /* Space between sensor tags */
 }
 
 .sensor-enabled, .sensor-disabled {
-    padding: 5px 10px;
-    border-radius: 12px;
-    display: inline-block;
-    margin: 2px;
-    font-size: 0.8rem;
-    text-transform: capitalize; /* Capitalize sensor names */
+  padding: 5px 10px;
+  border-radius: 12px;
+  display: inline-block;
+  margin: 2px;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+  /* Capitalize sensor names */
 }
 
 .sensor-enabled {
-    background-color: #e7f5ee;
-    color: #34a853;
+  background-color: #e7f5ee;
+  color: #34a853;
 }
 
 .sensor-disabled {
-    background-color: #ffebee;
-    color: #ea4335;
+  background-color: #ffebee;
+  color: #ea4335;
 }
 
-  /* Modal Styles */
-  .modal.active {
-    display: flex; /* This will only apply when the modal is active */
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.6); /* Darker background for better focus */
-  }
-  
-  .modal-content {
-    background-color: #ffffff;
-    padding: 40px; /* More padding for a roomy feel */
-    border: none; /* Removing the border */
-    width: auto; /* Auto width based on content */
-    max-width: 600px; /* Max width to avoid too wide on large screens */
-    border-radius: 10px; /* Rounded corners for the modal */
-    box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.2); /* Heavier shadow for modal */
-    position: relative;
-  }
-  
-  /* Close button inside modal */
-  .close {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    color: #aaaaaa; /* Subtle color for the close button */
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .close:hover, .close:focus {
-    color: #888888; /* Darker color on hover/focus for the close button */
-  }
-  .modal-form span, .modal-form label {
-    font-size: 0.9rem;
+/* Modal Styles */
+.modal.active {
+  display: flex;
+  /* This will only apply when the modal is active */
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  /* Darker background for better focus */
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 40px;
+  /* More padding for a roomy feel */
+  border: none;
+  /* Removing the border */
+  width: auto;
+  /* Auto width based on content */
+  max-width: 600px;
+  /* Max width to avoid too wide on large screens */
+  border-radius: 10px;
+  /* Rounded corners for the modal */
+  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.2);
+  /* Heavier shadow for modal */
+  position: relative;
+}
+
+/* Close button inside modal */
+.close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  color: #aaaaaa;
+  /* Subtle color for the close button */
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover, .close:focus {
+  color: #888888;
+  /* Darker color on hover/focus for the close button */
+}
+
+.modal-form span, .modal-form label {
+  font-size: 0.9rem;
 }
 
 /* Adjust the size of the checkbox to make it more touch-friendly */
 input[type="checkbox"] {
-    width: 20px; /* Wider checkboxes */
-    height: 20px; /* Taller checkboxes */
+  width: 20px;
+  /* Wider checkboxes */
+  height: 20px;
+  /* Taller checkboxes */
 }
 
 /* Adjust margins for form elements for better alignment */
 input[type="text"], input[type="checkbox"], button[type="submit"], .modal-form label {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
-  
-  /* Inputs and buttons inside modal */
-  input[type="text"], input[type="checkbox"], button[type="submit"], input[type="number"] {
-    width: calc(100% - 50px); /* Accounting for padding */
-    margin-bottom: 15px; /* More space between elements */
-    padding: 12px 15px; /* Roomier padding for inputs */
-    border: 1px solid #dddddd; /* Lighter border for inputs */
-    border-radius: 6px; /* More rounded borders for inputs */
-    box-shadow: none; /* No inner shadow for a flatter design */
-  }
-  
-  input[type="text"]:hover, input[type="text"]:focus,
-  input[type="checkbox"]:hover, button[type="submit"]:hover {
-    border-color: #bbbbbb; /* Slightly darker border on hover/focus */
-  }
-  
-  /* Style for the submit button */
-  button[type="submit"] {
-    background-color: #202e3c; /* Brand color for submit button */
-    color: #ffffff; /* White text for submit button */
-    font-weight: bold; /* Bold font for button text */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Shadow for depth */
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #5e93cf; /* Darker background on hover for submit button */
-  }
-  
+
+/* Inputs and buttons inside modal */
+input[type="text"], input[type="checkbox"], button[type="submit"], input[type="number"] {
+  width: calc(100% - 50px);
+  /* Accounting for padding */
+  margin-bottom: 15px;
+  /* More space between elements */
+  padding: 12px 15px;
+  /* Roomier padding for inputs */
+  border: 1px solid #dddddd;
+  /* Lighter border for inputs */
+  border-radius: 6px;
+  /* More rounded borders for inputs */
+  box-shadow: none;
+  /* No inner shadow for a flatter design */
+}
+
+input[type="text"]:hover, input[type="text"]:focus,
+input[type="checkbox"]:hover, button[type="submit"]:hover {
+  border-color: #bbbbbb;
+  /* Slightly darker border on hover/focus */
+}
+
+/* Style for the submit button */
+button[type="submit"] {
+  background-color: #202e3c;
+  /* Brand color for submit button */
+  color: #ffffff;
+  /* White text for submit button */
+  font-weight: bold;
+  /* Bold font for button text */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  /* Shadow for depth */
+}
+
+button[type="submit"]:hover {
+  background-color: #5e93cf;
+  /* Darker background on hover for submit button */
+}
+
 /* Label and checkbox alignment */
 label {
   display: grid;
-  grid-template-columns: min-content auto; /* Allocate space for checkbox and label text */
-  gap: 20px; /* Increased space between checkbox and label text */
-  align-items: center; /* Center align the checkbox and label text vertically */
-  margin-bottom: 15px; /* Spacing between each label */
+  grid-template-columns: min-content auto;
+  /* Allocate space for checkbox and label text */
+  gap: 20px;
+  /* Increased space between checkbox and label text */
+  align-items: center;
+  /* Center align the checkbox and label text vertically */
+  margin-bottom: 15px;
+  /* Spacing between each label */
 }
 
 
 /* Bold label for sensor category */
 .modal-form span {
-    font-weight: 600;
-    margin-bottom: 10px; /* Space above the sensors */
+  font-weight: 600;
+  margin-bottom: 10px;
+  /* Space above the sensors */
 }
 
-  
-  /* Specific styles for checkboxes to make them more clickable */
-  input[type="checkbox"] {
-    cursor: pointer; /* Change cursor to pointer on hover for checkboxes */
-    margin: 0; /* Remove default margin */
-    width: 20px; /* Adjust width for checkboxes */
-    height: 20px; /* Adjust height for checkboxes */
+
+/* Specific styles for checkboxes to make them more clickable */
+input[type="checkbox"] {
+  cursor: pointer;
+  /* Change cursor to pointer on hover for checkboxes */
+  margin: 0;
+  /* Remove default margin */
+  width: 20px;
+  /* Adjust width for checkboxes */
+  height: 20px;
+  /* Adjust height for checkboxes */
 }
-  
-  /* Making the sensor labels more interactive */
-  label:hover {
-    color: #5e93cf; /* Change label text color on hover */
-  }
-  
-  
+
+/* Making the sensor labels more interactive */
+label:hover {
+  color: #5e93cf;
+  /* Change label text color on hover */
+}

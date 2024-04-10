@@ -15,7 +15,8 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     width: 100%;
-    margin: auto; /* This will take effect because .login-container is a flex container */
+    margin: auto;
+    /* This will take effect because .login-container is a flex container */
     z-index: 2;
 }
 
@@ -27,7 +28,8 @@
 
 .login-card input {
     display: block;
-    width: calc(100% - 20px); /* Adjusts width taking padding into account */
+    width: calc(100% - 20px);
+    /* Adjusts width taking padding into account */
     padding: 10px;
     margin: 10px 0;
     border-radius: 5px;
@@ -36,7 +38,8 @@
 }
 
 .login-card button {
-    width: calc(100% - 20px); /* Adjusts width taking padding into account */
+    width: calc(100% - 20px);
+    /* Adjusts width taking padding into account */
     padding: 10px;
     margin: 20px 0;
     background-color: #2f4b6b;
