@@ -11,8 +11,6 @@ Before proceeding, ensure the following software is installed on your system:
 - **Node.js** - [Download Node.js](https://nodejs.org/)
 - **MongoDB** - [Install MongoDB](https://www.mongodb.com/try/download/community)
 - **Flutter** - [Install Flutter](https://flutter.dev/docs/get-started/install)
-- **Git** - [Download & Install Git](https://git-scm.com/downloads)
-- **IDE/Editor** - Recommended: Visual Studio Code for all projects, Android Studio for Flutter.
 
 ## Local Development Setup
 
