@@ -66,47 +66,53 @@ class AuthServices {
     required String password,
   }) async {
     try {
-      http.Response res = await http.post(
-        Uri.parse("$uri/api/signin"),
+      final Uri signInUri = Uri.parse("$uri/api/signin");
+      final response = await http.post(
+        signInUri,
         body: jsonEncode({"email": email, "password": password}),
-        headers: <String, String>{'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json'},
       );
-      httpErrorHandling(
-        response: res,
-        context: context,
-        onSuccess: () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          final String userToken = jsonDecode(res.body)['token'];
-          await prefs.setString('auth-token', userToken);
+      final body = jsonDecode(response.body);
 
-          // setUser method now updates user with projectResponse
-          Provider.of<UserProvider>(context, listen: false).setUser(res.body);
-          final String userId =
-              Provider.of<UserProvider>(context, listen: false).user.id;
-          final String? projectResponse =
-              await fetchProjectResponse(context, userId);
+      if (response.statusCode == 200 && body['token'] != null) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('auth-token', body['token']);
 
-          // Conditional navigation based on projectResponse
-          switch (projectResponse) {
-            case "Accepted":
-              await Navigator.pushNamedAndRemoveUntil(
-                  context, MoodScreen.routeName, (route) => false);
-              break;
-            case "Declined":
-              await Navigator.pushNamedAndRemoveUntil(
-                  context, IfDeclinedScreen.routeName, (route) => false);
-              break;
-            case null:
-              await Navigator.pushNamedAndRemoveUntil(
-                  context, AcceptProjectScreen.routeName, (route) => false);
-              break;
-            default:
-              break;
-          }
-        },
-      );
+        Provider.of<UserProvider>(context, listen: false)
+            .setUser(response.body);
+        navigateBasedOnProjectResponse(context);
+      } else {
+        throw Exception('Failed to sign in. Please check your credentials.');
+      }
     } catch (e) {
-      showSnackBar(context, e.toString());
+      showSnackBar(context, 'Error signing in: ${e.toString()}');
+    }
+  }
+
+  void navigateBasedOnProjectResponse(BuildContext context) async {
+    try {
+      final userId = Provider.of<UserProvider>(context, listen: false).user.id;
+      final projectResponse = await fetchProjectResponse(context, userId);
+      switch (projectResponse) {
+        case 'Accepted':
+          Navigator.pushReplacementNamed(context, MoodScreen.routeName);
+          break;
+        case 'Declined':
+          Navigator.pushReplacementNamed(context, IfDeclinedScreen.routeName);
+          break;
+        case 'NotAnswered':
+          Navigator.pushReplacementNamed(
+              context, AcceptProjectScreen.routeName);
+          break;
+        case null:
+          Navigator.pushReplacementNamed(context, IfDeclinedScreen.routeName);
+          break;
+        default:
+          Navigator.pushReplacementNamed(context, AuthScreen.routeName);
+          break;
+      }
+    } catch (e) {
+      showSnackBar(context, 'Navigation error: ${e.toString()}');
     }
   }
 

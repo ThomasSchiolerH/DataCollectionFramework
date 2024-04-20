@@ -100,7 +100,7 @@ const userSchema = new mongoose.Schema(
       },
       projectResponse: { 
         type: String,
-        enum: ["Accepted", "Declined", null], 
+        enum: ["Accepted", "Declined", "NotAnswered", null], 
         default: null,
       },
       enabledSensors: {

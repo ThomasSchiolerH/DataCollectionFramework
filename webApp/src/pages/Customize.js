@@ -58,6 +58,7 @@ const Customize = () => {
           lowestValue,
           highestValue,
           enabledSensors,
+          projectResponse: "NotAnswered", 
           timeIntervalDays: parseInt(timeIntervalDays, 10),
         }
       : {
@@ -68,6 +69,7 @@ const Customize = () => {
           lowestValue,
           highestValue,
           enabledSensors,
+          projectResponse: "NotAnswered", 
           timeIntervalDays: parseInt(timeIntervalDays, 10),
         };
 

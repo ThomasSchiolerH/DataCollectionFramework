@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/features/auth/services/auth_services.dart';
+import 'package:mental_health_app/features/home/screens/mood_screen.dart';
+import 'package:mental_health_app/features/home/screens/if_declined.dart';
+import 'package:mental_health_app/features/home/screens/accept_decline_user_input_message.dart';
 
 class AuthScreen extends StatefulWidget {
   static const String routeName = '/auth-screen';
@@ -59,6 +62,23 @@ class _AuthScreenState extends State<AuthScreen> {
       password: _passwordController.text,
     );
   }
+
+  void navigateBasedOnProjectResponse(String? response) {
+  switch (response) {
+    case 'Accepted':
+      Navigator.pushReplacementNamed(context, MoodScreen.routeName);
+      break;
+    case 'Declined':
+      Navigator.pushReplacementNamed(context, IfDeclinedScreen.routeName);
+      break;
+    case 'NotAnswered':
+      Navigator.pushReplacementNamed(context, AcceptProjectScreen.routeName);
+      break;
+    default: 
+      Navigator.pushReplacementNamed(context, IfDeclinedScreen.routeName);
+      break;
+  }
+}
 
   String? _validateName(String? value) {
     if (value == null || value.trim().isEmpty) {
