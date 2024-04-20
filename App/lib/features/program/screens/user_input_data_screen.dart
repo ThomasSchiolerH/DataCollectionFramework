@@ -107,67 +107,71 @@ class _MoodScreenState extends State<MoodScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.black),
-          onPressed: () =>
-              Navigator.pushReplacementNamed(context, HomeScreen.routeName),
-        ),
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _customUserMessage ??
-                  'There are not given anything to answer for you today',
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemCount: (_highestValue != null && _lowestValue != null)
-                    ? (_highestValue! - _lowestValue! + 1)
-                    : 0,
-                itemBuilder: (context, index) {
-                  int moodValue = _lowestValue! + index;
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: _getColorForMood(
-                            moodValue, _lowestValue!, _highestValue!),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                      ),
-                      onPressed: () =>
-                          _selectMoodAndNavigate(context, moodValue),
-                      child: Text('$moodValue'),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+@override
+Widget build(BuildContext context) {
+  if (_isLoading) {
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text("User Input Data"),
+      elevation: 0,
+      leading: IconButton(
+        icon: const Icon(Icons.close, color: Colors.white),
+        onPressed: () => Navigator.pushReplacementNamed(context, HomeScreen.routeName),
+      ),
+    ),
+    body: Container(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _customUserMessage ?? 'There are not given anything to answer for you today',
+            style: const TextStyle(fontSize: 22),
+          ),
+          const SizedBox(height: 20),
+          Expanded(
+            child: ListView.builder(
+              itemCount: (_highestValue != null && _lowestValue != null)
+                  ? (_highestValue! - _lowestValue! + 1)
+                  : 0,
+              itemBuilder: (context, index) {
+                int moodValue = _lowestValue! + index;
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Container(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: _getColorForMood(moodValue, _lowestValue!, _highestValue!),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          minimumSize: Size(4000, 40), 
+                        ),
+                        onPressed: () => _selectMoodAndNavigate(context, moodValue),
+                        child: Text('$moodValue'),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
   Color _getColorForMood(int mood, int lowestValue, int highestValue) {
-    const Color startColor = Color.fromRGBO(155, 155, 155, 1);
-    const Color endColor = Color.fromRGBO(125, 238, 125, 1);
+    const Color startColor = Color.fromRGBO(180, 180, 180, 1);
+    const Color endColor = Color.fromRGBO(70, 220, 83, 1);
     double ratio =
         (mood - lowestValue) / (highestValue - lowestValue).toDouble();
     int r = startColor.red + ((endColor.red - startColor.red) * ratio).round();
