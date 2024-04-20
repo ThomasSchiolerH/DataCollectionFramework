@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class IfDeclinedScreen extends StatelessWidget {
   static const String routeName = '/ifDeclined';
 
+  const IfDeclinedScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

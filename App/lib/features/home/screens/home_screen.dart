@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
 import 'package:mental_health_app/constants/utilities.dart';
 import 'package:mental_health_app/features/auth/services/auth_services.dart';
-import 'package:mental_health_app/features/home/services/notification_services.dart';
 import 'package:mental_health_app/provider/health_data_providers/bmi_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/heart_rate_provider.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
@@ -15,7 +14,7 @@ import 'package:mental_health_app/provider/health_data_providers/exercise_time_p
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/home";
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -28,14 +27,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance
-        .addObserver(this as WidgetsBindingObserver);
+        .addObserver(this);
     checkConnectivityAndUploadData(); // check when the screen is first loaded
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance
-        .removeObserver(this as WidgetsBindingObserver); // Remove the observer
+        .removeObserver(this); // Remove the observer
     super.dispose();
   }
 
@@ -129,7 +128,7 @@ Widget build(BuildContext context) {
 }
 
 class HomeScreenContent extends StatefulWidget {
-  const HomeScreenContent({Key? key}) : super(key: key);
+  const HomeScreenContent({super.key});
   @override
   HomeScreenContentState createState() => HomeScreenContentState();
 }

@@ -10,7 +10,7 @@ import 'package:mental_health_app/provider/user_provider.dart';
 class CalendarScreen extends StatefulWidget {
   static const String routeName = "/calendar";
 
-  const CalendarScreen({Key? key}) : super(key: key);
+  const CalendarScreen({super.key});
 
   @override
   _CalendarScreenState createState() => _CalendarScreenState();
@@ -127,21 +127,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget buildHeatMap() {
     int? lowestMoodValue;
     int? highestMoodValue;
-    datasets.values.forEach((value) {
-      if (lowestMoodValue == null || value < lowestMoodValue!) {
+    for (var value in datasets.values) {
+      if (lowestMoodValue == null || value < lowestMoodValue) {
         lowestMoodValue = value;
       }
-      if (highestMoodValue == null || value > highestMoodValue!) {
+      if (highestMoodValue == null || value > highestMoodValue) {
         highestMoodValue = value;
       }
-    });
+    }
 
     Color defaultStartColor = const Color.fromARGB(255, 255, 255, 255);
     Color defaultEndColor = const Color.fromARGB(255, 255, 0, 0);
 
     Map<int, Color> colorsets = {};
     if (lowestMoodValue != null && highestMoodValue != null) {
-      for (int mood = lowestMoodValue!; mood <= highestMoodValue!; mood++) {
+      for (int mood = lowestMoodValue; mood <= highestMoodValue; mood++) {
         Color color =
             _getColorForMood(mood, _lowestValue ?? 1, _highestValue ?? 6);
         colorsets[mood] = color;

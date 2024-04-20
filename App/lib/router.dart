@@ -8,10 +8,12 @@ import 'package:mental_health_app/features/home/screens/accept_decline_user_inpu
 import 'package:mental_health_app/features/home/screens/if_declined.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -39,7 +41,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         case IfDeclinedScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
-        builder: (_) => IfDeclinedScreen(),
+        builder: (_) => const IfDeclinedScreen(),
       );
     case MoodScreen.routeName:
       return MaterialPageRoute(

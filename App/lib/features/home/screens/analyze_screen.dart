@@ -4,7 +4,7 @@ import 'package:mental_health_app/features/home/services/analysis_services.dart'
 class AnalyseScreen extends StatefulWidget {
   static const String routeName = '/analyse';
 
-  const AnalyseScreen({Key? key}) : super(key: key);
+  const AnalyseScreen({super.key});
 
   @override
   _AnalyseScreenState createState() => _AnalyseScreenState();
@@ -82,7 +82,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                     ),
                   ),
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),

@@ -28,19 +28,19 @@ class HeartRateServices {
 
       List<HealthDataPoint> dataPoints =
           await health.getHealthDataFromTypes(currentTime, endOfHour, types);
-      num heart_rate = 0;
+      num heartRate = 0;
       for (var dataPoint in dataPoints) {
         if (dataPoint.type == HealthDataType.HEART_RATE) {
           NumericHealthValue numericValue =
               dataPoint.value as NumericHealthValue;
-          heart_rate += numericValue.numericValue;
+          heartRate += numericValue.numericValue;
         }
       }
 
-      if (heart_rate > 0) {
+      if (heartRate > 0) {
         hourlyHeartRateData.add(HealthData(
           type: 'HEART_RATE',
-          value: heart_rate,
+          value: heartRate,
           unit: 'BEATS_PER_MINUTE',
           date: currentTime,
         ));

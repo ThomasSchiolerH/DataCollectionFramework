@@ -11,7 +11,7 @@ import 'package:mental_health_app/provider/user_input_providers/mood_provider.da
 class MoodScreen extends StatefulWidget {
   static const String routeName = "/mood";
 
-  const MoodScreen({Key? key}) : super(key: key);
+  const MoodScreen({super.key});
 
   @override
   _MoodScreenState createState() => _MoodScreenState();

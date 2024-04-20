@@ -47,7 +47,7 @@ class UserInputMessage {
 class AcceptProjectScreen extends StatefulWidget {
   static const String routeName = '/acceptProject';
 
-  const AcceptProjectScreen({Key? key}) : super(key: key);
+  const AcceptProjectScreen({super.key});
 
   @override
   _AcceptProjectScreenState createState() => _AcceptProjectScreenState();
@@ -132,7 +132,7 @@ class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
   List<Widget> _buildSensorsList() {
     return _userInputMessage?.enabledSensors?.entries.map((entry) {
           return Text('${entry.key}: ${entry.value ? 'Enabled' : 'Disabled'}',
-              style: TextStyle(fontSize: 16));
+              style: const TextStyle(fontSize: 16));
         }).toList() ??
         [];
   }
@@ -157,20 +157,20 @@ class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
                       children: [
                         if (_userInputMessage?.projectName != null)
                           Text('Project: ${_userInputMessage!.projectName}',
-                              style: Theme.of(context).textTheme.headline6),
+                              style: Theme.of(context).textTheme.titleLarge),
                         if (_userInputMessage?.message != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
                                 'Message: ${_userInputMessage!.message}',
-                                style: Theme.of(context).textTheme.bodyText1),
+                                style: Theme.of(context).textTheme.bodyLarge),
                           ),
                         if (_userInputMessage?.inputType != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
                                 'Input Type: ${_userInputMessage!.inputType}',
-                                style: Theme.of(context).textTheme.bodyText1),
+                                style: Theme.of(context).textTheme.bodyLarge),
                           ),
                         if (_userInputMessage?.lowestValue != null &&
                             _userInputMessage?.highestValue != null)
@@ -178,14 +178,14 @@ class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
                                 'Values Range: ${_userInputMessage!.lowestValue} - ${_userInputMessage!.highestValue}',
-                                style: Theme.of(context).textTheme.bodyText1),
+                                style: Theme.of(context).textTheme.bodyLarge),
                           ),
                         if (_userInputMessage?.messageExpiration != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
                                 'Expires On: ${_userInputMessage!.messageExpiration!.toIso8601String()}',
-                                style: Theme.of(context).textTheme.bodyText1),
+                                style: Theme.of(context).textTheme.bodyLarge),
                           ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20.0),
