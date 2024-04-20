@@ -58,7 +58,7 @@ const Customize = () => {
           lowestValue,
           highestValue,
           enabledSensors,
-          projectResponse: "NotAnswered", 
+          projectResponse: "NotAnswered",
           timeIntervalDays: parseInt(timeIntervalDays, 10),
         }
       : {
@@ -69,12 +69,15 @@ const Customize = () => {
           lowestValue,
           highestValue,
           enabledSensors,
-          projectResponse: "NotAnswered", 
+          projectResponse: "NotAnswered",
           timeIntervalDays: parseInt(timeIntervalDays, 10),
         };
 
+    console.log("Payload being sent:", payload); // Add this line to check payload
+
     try {
-      await axios.post(`${serverURL}/api/users/customInput`, payload);
+      const response = await axios.post(`${serverURL}/api/users/customInput`, payload);
+      console.log("Response from server:", response.data); // Log server response
       console.log("User input message updated successfully");
       setProjectName("");
       setUsernames("");
@@ -93,7 +96,8 @@ const Customize = () => {
       console.error("Error updating user input message:", error);
     }
     setIsModalOpen(false);
-  };
+};
+
 
   return (
     <div className="customize-container">

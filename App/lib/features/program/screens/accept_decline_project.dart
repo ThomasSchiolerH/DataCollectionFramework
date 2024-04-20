@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
-import 'package:mental_health_app/features/home/screens/mood_screen.dart';
-import 'package:mental_health_app/features/home/screens/if_declined.dart';
+import 'package:mental_health_app/features/program/screens/user_input_data_screen.dart';
+import 'package:mental_health_app/features/program/screens/no_project_screen.dart';
 
 class UserInputMessage {
   final String? projectName;

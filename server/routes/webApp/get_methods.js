@@ -117,7 +117,7 @@ getUserRouter.post("/api/users/customInput", async (req, res) => {
                     "userInputMessage.highestValue": highestValue,
                     "userInputMessage.enabledSensors": enabledSensors,
                     "userInputMessage.messageExpiration": messageExpiration,
-                    "userInputMessage.projectResponse": null, 
+                    "userInputMessage.projectResponse": "NotAnswered", 
                 },
             });
         } else {
@@ -136,7 +136,7 @@ getUserRouter.post("/api/users/customInput", async (req, res) => {
                     highestValue,
                     enabledSensors,
                     messageExpiration,
-                    projectResponse: null,
+                    projectResponse: "NotAnswered",
                 };
 
                 return user.save();

@@ -7,7 +7,7 @@ import 'package:mental_health_app/provider/health_data_providers/bmi_provider.da
 import 'package:mental_health_app/provider/health_data_providers/heart_rate_provider.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'calendar_screen.dart';
+import 'heatmap_screen.dart';
 import 'analyze_screen.dart';
 import 'package:mental_health_app/provider/health_data_providers/step_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/exercise_time_provider.dart';

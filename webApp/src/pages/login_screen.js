@@ -30,7 +30,7 @@ const LoginPage = ({ onLoginSuccess }) => {
 
       onLoginSuccess(token);
 
-      navigate("/home");
+      navigate("/dashboard");
     } catch (err) {
       setError("Failed to login. Please check your credentials.");
     }

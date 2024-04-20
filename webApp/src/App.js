@@ -5,13 +5,12 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Dashboard from "./pages/Dashboard";
-import HomePage from "./pages/HomePage";
-import UserDetails from "./pages/UserDetails";
-import LoginPage from "./pages/LoginPage";
-import Analysis from "./pages/Analysis";
-import Customize from "./pages/Customize";
+import Navbar from "./components/Navigationbar";
+import Dashboard from "./pages/dashboard_screen";
+import UserDetails from "./pages/user_details";
+import LoginPage from "./pages/login_screen";
+import Analysis from "./pages/analysis_screen";
+import Customize from "./pages/project_screen";
 import "./styles/App.css";
 
 function App() {
@@ -36,13 +35,7 @@ function App() {
           <Route
             path="/"
             element={
-              authToken ? <Navigate to="/home" /> : <Navigate to="/login" />
-            }
-          />
-          <Route
-            path="/home"
-            element={
-              authToken ? <HomePage /> : <Navigate to="/login" replace />
+              authToken ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
             }
           />
           <Route

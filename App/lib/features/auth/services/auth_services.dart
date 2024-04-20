@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:mental_health_app/constants/error_handle.dart';
+import 'package:mental_health_app/constants/error_handling.dart';
 import 'package:mental_health_app/constants/utilities.dart';
 import 'package:mental_health_app/features/auth/screens/auth_screen.dart';
-import 'package:mental_health_app/features/home/screens/accept_decline_user_input_message.dart';
-import 'package:mental_health_app/features/home/screens/if_declined.dart';
-import 'package:mental_health_app/features/home/screens/mood_screen.dart';
+import 'package:mental_health_app/features/program/screens/accept_decline_project.dart';
+import 'package:mental_health_app/features/program/screens/no_project_screen.dart';
+import 'package:mental_health_app/features/program/screens/user_input_data_screen.dart';
 import 'package:mental_health_app/models/user.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
 import 'package:http/http.dart' as http;

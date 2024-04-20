@@ -101,7 +101,7 @@ const userSchema = new mongoose.Schema(
       projectResponse: { 
         type: String,
         enum: ["Accepted", "Declined", "NotAnswered", null], 
-        default: null,
+        required: false,
       },
       enabledSensors: {
         type: Map,
