@@ -214,11 +214,11 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                             2));
               },
             ),
-            ElevatedButton(
-              onPressed: () => NotificationService.showNotification(
-                  id: 0, title: "Test", body: "It works"),
-              child: const Text('Notification'),
-            ),
+            // ElevatedButton(
+            //   onPressed: () => NotificationService.showNotification(
+            //       id: 0, title: "Test", body: "It works"),
+            //   child: const Text('Notification'),
+            // ),
           ],
         ),
       ),
