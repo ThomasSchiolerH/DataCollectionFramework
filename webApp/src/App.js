@@ -5,7 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Navbar from "./components/Navigationbar";
+import Navbar from "./components/navigation_bar";
 import Dashboard from "./pages/dashboard_screen";
 import UserDetails from "./pages/user_details";
 import LoginPage from "./pages/login_screen";
