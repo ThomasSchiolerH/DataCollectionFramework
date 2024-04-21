@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../styles/LoginPage.css";
+import "../styles/login_screen.css";
 const serverURL = process.env.REACT_APP_SERVER_URL;
 
 const LoginPage = ({ onLoginSuccess }) => {

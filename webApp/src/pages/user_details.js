@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getUserHealthData } from "../services/get_user_services";
-import "../styles/UserDetails.css";
+import "../styles/user_details.css";
 
 const groupHealthDataByType = (healthData) => {
   return healthData.reduce((acc, data) => {

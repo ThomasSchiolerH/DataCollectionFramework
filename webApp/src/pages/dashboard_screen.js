@@ -7,7 +7,7 @@ import {
   getProjectCount,
 } from "../services/get_user_services";
 import { Pie } from "react-chartjs-2";
-import "../styles/Dashboard.css";
+import "../styles/dashboard_screen.css";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import UserTable from "../components/user_table";
 

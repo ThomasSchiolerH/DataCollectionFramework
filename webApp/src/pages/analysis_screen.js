@@ -5,7 +5,7 @@ import {
   fetchMoodAnalysis,
   fetchMoodFeedback,
 } from "../services/mood_analysis";
-import "../styles/AnalysisPage.css";
+import "../styles/analysis_page.css";
 
 const AnalysisPage = () => {
   const { userId } = useParams();

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/UserTable.css";
+import "../styles/user_table.css";
 
 const UserTable = ({ users }) => {
   const navigate = useNavigate();
