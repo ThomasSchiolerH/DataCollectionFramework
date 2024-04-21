@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mental_health_app/features/program/services/analysis_services.dart';
+import 'package:mental_health_app/features/analyze/services/analysis_services.dart';
 
 class AnalyseScreen extends StatefulWidget {
   static const String routeName = '/analyse';

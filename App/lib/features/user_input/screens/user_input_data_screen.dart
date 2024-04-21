@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'healthdata_screen.dart';
+import '../../healthdata/screens/healthdata_screen.dart';
 import 'package:mental_health_app/constants/global_variables.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:mental_health_app/provider/user_input_data_provider/user_inpit_data_provider.dart';

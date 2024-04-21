@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mental_health_app/features/program/services/health_data_services/steps_services.dart';
-import 'package:mental_health_app/features/program/services/health_data_services.dart';
+import 'package:mental_health_app/features/healthdata/services/sensor_services/steps_services.dart';
+import 'package:mental_health_app/features/healthdata/services/health_data_services.dart';
 import 'package:mental_health_app/models/health_data.dart';
-import 'package:mental_health_app/features/program/services/user_input_services.dart';
+import 'package:mental_health_app/features/user_input/services/user_input_services.dart';
 
 class StepProvider with ChangeNotifier {
   bool _isLoading = true;

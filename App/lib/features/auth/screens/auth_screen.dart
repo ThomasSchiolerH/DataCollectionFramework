@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/features/auth/services/auth_services.dart';
-import 'package:mental_health_app/features/program/screens/user_input_data_screen.dart';
-import 'package:mental_health_app/features/program/screens/no_project_screen.dart';
-import 'package:mental_health_app/features/program/screens/accept_decline_project.dart';
+import 'package:mental_health_app/features/user_input/screens/user_input_data_screen.dart';
+import 'package:mental_health_app/features/project/screens/no_project_screen.dart';
+import 'package:mental_health_app/features/project/screens/accept_decline_project.dart';
 
 class AuthScreen extends StatefulWidget {
   static const String routeName = '/auth-screen';
