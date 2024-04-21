@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:mental_health_app/constants/utilities.dart';
 
 class HealthDataService {
+  // Post single health data to the backend.
   Future<void> postSingleHealthData({
     required BuildContext context,
     required HealthData healthData,
@@ -38,6 +39,7 @@ class HealthDataService {
     }
   }
 
+  // Post bulk health data to the backend.
   Future<void> postBulkHealthData({
     required BuildContext context,
     required List<HealthData> healthDataPoints,
@@ -67,6 +69,7 @@ class HealthDataService {
     }
   }
 
+  // Upload health data using single or bulk based on the number of health data points.
   Future<void> uploadHealthData({
     required BuildContext context,
     required List<HealthData> healthDataPoints,

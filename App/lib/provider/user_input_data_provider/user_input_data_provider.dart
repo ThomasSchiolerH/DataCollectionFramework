@@ -16,6 +16,7 @@ class MoodProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Posts the user input to the backend
   Future<void> postUserInput(BuildContext context, String inputType) async {
     if (_moodValue == 0) {
       showSnackBar2(context, "Please select a mood before submitting.",

@@ -4,6 +4,7 @@ const User = require('../../models/user');
 const authenticate = require('../../middleware/authenticate');
 const dataAnalysisService = require('../../services/dataAnalysis');
 
+// Route to get the correlation between steps and mood data
 analysisRouter.get('/api/users/:userId/analyseStepsMoodWeekly', authenticate, async (req, res) => {
   const { userId } = req.params;
 

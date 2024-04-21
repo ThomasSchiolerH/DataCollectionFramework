@@ -20,6 +20,7 @@ const UserDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Fetch user health data on component mount
   useEffect(() => {
     const fetchHealthData = async () => {
       try {

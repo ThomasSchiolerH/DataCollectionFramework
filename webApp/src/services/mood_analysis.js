@@ -3,6 +3,7 @@ const serverURL = process.env.REACT_APP_SERVER_URL;
 
 const getToken = () => localStorage.getItem("token");
 
+// Get average mood data
 export const fetchMoodAnalysis = async (userId) => {
   try {
     const token = getToken();
@@ -21,6 +22,7 @@ export const fetchMoodAnalysis = async (userId) => {
   }
 };
 
+// Get feedback analysis
 export const fetchMoodFeedback = async (userId) => {
   try {
     const token = getToken();

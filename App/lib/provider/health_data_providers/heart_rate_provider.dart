@@ -12,11 +12,13 @@ class HeartRateProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   int get heart_rate => _heart_rate;
 
+  // Updates the last upload date in the shared preferences
   Future<void> _updateLastUploadDate(DateTime date) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('lastHeartRateUploadDate', date.toIso8601String());
   }
 
+  // Fetches the last upload date from the shared preferences
   Future<DateTime> _getLastUploadDate() async {
     final prefs = await SharedPreferences.getInstance();
     final String? lastUploadDateString =
@@ -28,6 +30,7 @@ class HeartRateProvider with ChangeNotifier {
     return DateTime.parse(lastUploadDateString);
   }
 
+  // Fetches the heart rate data from the backend and uploads it
   Future<void> fetchAndUploadHeartRate(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
@@ -63,6 +66,7 @@ class HeartRateProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Fetches the total heart rate for today
   Future<void> fetchTotalHeartRateForToday() async {
     _heart_rate = 0;
     await HeartRateServices.fetchTotalHeartRateForToday();

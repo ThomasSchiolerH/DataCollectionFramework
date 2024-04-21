@@ -5,6 +5,7 @@ const authRouter = express.Router();
 
 const capitaliseWords = (str) => str.toLowerCase().replace(/\b(\w)/g, s => s.toUpperCase());
 
+// Signup route
 authRouter.post("/api/signup", async (req, res) => {
   try {
     let { name, age, gender, email, password } = req.body;
@@ -32,6 +33,7 @@ authRouter.post("/api/signup", async (req, res) => {
   }
 });
 
+// Signin route
 authRouter.post("/api/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -58,6 +60,7 @@ authRouter.post("/api/signin", async (req, res) => {
   }
 });
 
+// Admin signin route
 authRouter.post("/api/admin/signin", async (req, res) => {
   try {
     const { email, password } = req.body;

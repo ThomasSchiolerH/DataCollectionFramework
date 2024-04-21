@@ -6,6 +6,7 @@ class GetExerciseTimeService {
   static int exerciseTimeInMinutes = 0;
   static DateTime? lastFetchedDate;
 
+  // Request permissions to access health data and fetch exercise time data from the device
   static Future<List<HealthData>> fetchHourlyExerciseTimeData(
       DateTime startDate, DateTime endDate) async {
     List<HealthData> hourlyExerciseData = [];
@@ -51,6 +52,7 @@ class GetExerciseTimeService {
     return hourlyExerciseData;
   }
 
+  // Fetches total exercise time for today
   static Future<int> fetchTotalExerciseTimeForToday() async {
     DateTime now = DateTime.now();
     DateTime startOfDay = DateTime(now.year, now.month, now.day);

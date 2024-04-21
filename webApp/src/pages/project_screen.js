@@ -20,6 +20,7 @@ const Customize = () => {
   const toggleModal = () => setIsModalOpen(!isModalOpen);
   const [projects, setProjects] = useState([]);
 
+  // Fetch all projects on component mount
   useEffect(() => {
     const fetchProjects = async () => {
       const serverURL = process.env.REACT_APP_SERVER_URL;
@@ -36,6 +37,7 @@ const Customize = () => {
     fetchProjects();
   }, []);
 
+  // Handle sensor checkbox change
   const handleSensorChange = (sensor) => {
     setEnabledSensors((prevSensors) => ({
       ...prevSensors,
@@ -43,6 +45,7 @@ const Customize = () => {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     const serverURL = process.env.REACT_APP_SERVER_URL;
@@ -138,6 +141,7 @@ const Customize = () => {
         </button>
       </div>
 
+      {/* Modal for adding a new project */}
       {isModalOpen && (
         <div className="modal active">
           {" "}

@@ -36,7 +36,7 @@ class AnalyseServices {
       return "Failed to fetch analysis. Please try again later.";
     }
   }
-
+  // Fetches mood analysis data from the backend.
   static Future<List<dynamic>> fetchMoodAnalysis(BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final userId = userProvider.user.id;

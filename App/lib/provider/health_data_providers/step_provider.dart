@@ -12,11 +12,13 @@ class StepProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   int get steps => _steps;
 
+  // Updates the last upload date in the shared preferences
   Future<void> _updateLastUploadDate(DateTime date) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('lastUploadDate', date.toIso8601String());
   }
 
+  // Fetches the last upload date from the shared preferences
   Future<DateTime> _getLastUploadDate() async {
     final prefs = await SharedPreferences.getInstance();
     final String? lastUploadDateString = prefs.getString('lastUploadDate');
@@ -27,6 +29,7 @@ class StepProvider with ChangeNotifier {
     return DateTime.parse(lastUploadDateString);
   }
 
+  // Fetches the step data from the backend and uploads it
   Future<void> fetchAndUploadSteps(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
@@ -64,6 +67,7 @@ class StepProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Fetches the total steps for today
   Future<void> fetchTotalStepsForToday() async {
     _steps = 0;
     await GetStepsService.fetchTotalStepsForToday();

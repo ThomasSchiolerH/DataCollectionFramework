@@ -3,6 +3,7 @@ const serverURL = process.env.REACT_APP_SERVER_URL;
 
 const getToken = () => localStorage.getItem("token");
 
+// Get all users
 export const getUsers = async () => {
   try {
     const token = getToken();
@@ -18,6 +19,7 @@ export const getUsers = async () => {
   }
 };
 
+// Get user health data
 export const getUserHealthData = async (userId) => {
   try {
     const token = getToken();
@@ -36,6 +38,7 @@ export const getUserHealthData = async (userId) => {
   }
 };
 
+// Get user count
 export const getUserCount = async () => {
   try {
     const token = getToken();
@@ -51,6 +54,7 @@ export const getUserCount = async () => {
   }
 };
 
+// Get project count
 export const getProjectCount = async () => {
   try {
     const token = getToken();
@@ -69,6 +73,7 @@ export const getProjectCount = async () => {
   }
 };
 
+// Get user age demographics
 export const getUserAgeDemographics = async () => {
   try {
     const token = getToken();
@@ -84,6 +89,7 @@ export const getUserAgeDemographics = async () => {
   }
 };
 
+// Get user gender demographics
 export const getUserGenderDemographics = async () => {
   try {
     const token = getToken();

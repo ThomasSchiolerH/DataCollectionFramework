@@ -6,6 +6,7 @@ class GetStepsService {
   static int totalStepsForToday = 0;
   static DateTime? lastFetchedDate;
 
+  // Request permissions to access health data and fetch hourly steps data from the device
   static Future<List<HealthData>> fetchHourlyStepsData(
       DateTime startDate, DateTime endDate) async {
     List<HealthData> hourlyStepsData = [];
@@ -51,6 +52,7 @@ class GetStepsService {
     return hourlyStepsData;
   }
 
+  // Fetches total steps for today
   static Future<void> fetchTotalStepsForToday() async {
     List<HealthDataType> types = [HealthDataType.STEPS];
 

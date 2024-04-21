@@ -10,6 +10,7 @@ const LoginPage = ({ onLoginSuccess }) => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // Handle login form submission
   const handleLogin = async (event) => {
     event.preventDefault();
     setError("");

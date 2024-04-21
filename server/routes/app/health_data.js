@@ -21,6 +21,7 @@ const validateData = (type, value, unit, date) => {
   return null;
 };
 
+// Route to add single health data
 healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res) => {
   const { userId } = req.params;
   const { type, value, unit, date } = req.body;
@@ -50,6 +51,7 @@ healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res
   }
 });
 
+// Route to add bulk health data
 healthRouter.post('/api/users/:userId/healthData/bulk', authenticate, async (req, res) => {
   const { userId } = req.params;
   const healthDataArray = req.body.data; 
@@ -88,6 +90,7 @@ healthRouter.post('/api/users/:userId/healthData/bulk', authenticate, async (req
   }
 });
 
+// Route to get all health data of a user
 healthRouter.get('/api/users/:userId/healthData', authenticate, async (req, res) => {
   const { userId } = req.params;
 

@@ -4,6 +4,7 @@ const User = require("../../models/user");
 const authenticate = require("../../middleware/authenticate");
 const avgHealthRouter = express.Router();
 
+// Route to get the average health data of a user
 avgHealthRouter.get(
   "/api/users/:userId/avgHealthData",
   authenticate,

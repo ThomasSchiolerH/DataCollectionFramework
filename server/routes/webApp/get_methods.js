@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../../models/user");
 const getUserRouter = express.Router();
 
+// Route to get all users
 getUserRouter.get("/api/getUser", async (req, res) => {
   try {
     const users = await User.find({}, "name email type");
@@ -16,6 +17,7 @@ getUserRouter.get("/api/getUser", async (req, res) => {
   }
 });
 
+// Route to get total user count
 getUserRouter.get("/api/getUserCount", async (req, res) => {
   try {
     const count = await User.countDocuments();
@@ -25,6 +27,7 @@ getUserRouter.get("/api/getUserCount", async (req, res) => {
   }
 });
 
+// Route to get user age demographics
 getUserRouter.get("/api/userDemographics/age", async (req, res) => {
   try {
     const ageDistribution = await User.aggregate([
@@ -81,6 +84,7 @@ getUserRouter.get("/api/userDemographics/age", async (req, res) => {
   }
 });
 
+// Route to get user gender demographics
 getUserRouter.get("/api/userDemographics/gender", async (req, res) => {
   try {
     const genderDistribution = await User.aggregate([
@@ -100,6 +104,7 @@ getUserRouter.get("/api/userDemographics/gender", async (req, res) => {
   }
 });
 
+// Route to get project for a user
 getUserRouter.get("/api/users/:userId/project", async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -120,6 +125,7 @@ getUserRouter.get("/api/users/:userId/project", async (req, res) => {
   }
 });
 
+// Route to upload custom user input message
 getUserRouter.post("/api/users/customInput", async (req, res) => {
   const {
     applyToAllUsers,
@@ -184,6 +190,7 @@ getUserRouter.post("/api/users/customInput", async (req, res) => {
   }
 });
 
+// Route to get all different projects
 getUserRouter.get("/api/getDifferentProjects", async (req, res) => {
   try {
     const projects = await User.aggregate([
@@ -231,6 +238,7 @@ getUserRouter.get("/api/getDifferentProjects", async (req, res) => {
   }
 });
 
+// Route to get count of different projects
 getUserRouter.get("/api/getDifferentProjectsCount", async (req, res) => {
   try {
     const projectCount = await User.aggregate([

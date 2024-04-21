@@ -47,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     final user = Provider.of<UserProvider>(context).user;
     final AuthServices authServices = AuthServices();
 
+    // Navigate screens based on index
     return Scaffold(
       appBar: _selectedIndex == 0
           ? AppBar(
@@ -102,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     }
   }
 
+  // Check connectivity to wi-fi and upload data
   void checkConnectivityAndUploadData() async {
     try {
       final connectivityResult = await Connectivity().checkConnectivity();
@@ -134,6 +136,7 @@ class HomeScreenContent extends StatefulWidget {
 
 class HomeScreenContentState extends State<HomeScreenContent> {
   @override
+  // Fetch data for today
   void initState() {
     super.initState();
     Future.microtask(() => Provider.of<StepProvider>(context, listen: false)
@@ -169,6 +172,7 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
+            // Card that displays total steps for today
             const SizedBox(height: 30),
             Consumer<StepProvider>(
               builder: (context, stepProvider, child) {
@@ -179,6 +183,7 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                 }
               },
             ),
+            // Card that displays average heart rate for today
             const SizedBox(height: 10),
             Consumer<HeartRateProvider>(
               builder: (context, heartRateProvider, child) {
@@ -190,6 +195,7 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                 }
               },
             ),
+            // Card that displays total exercise time for today
             const SizedBox(height: 10),
             Consumer<ExerciseTimeProvider>(
               builder: (context, exerciseTimeProvider, child) {
@@ -199,6 +205,7 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                         '${exerciseTimeProvider.totalExerciseTime} minutes');
               },
             ),
+            // Card that displays BMI for today
             const SizedBox(height: 10),
             Consumer<BMIProvider>(
               builder: (context, bmiProvider, child) {
@@ -214,6 +221,7 @@ class HomeScreenContentState extends State<HomeScreenContent> {
     );
   }
 
+  // Widget that creates a card
   Widget buildInfoCard(String title, String value) {
     return Card(
       color: Colors.white,

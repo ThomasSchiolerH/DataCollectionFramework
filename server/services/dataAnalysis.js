@@ -1,5 +1,6 @@
 const ss = require("simple-statistics");
 
+// Calculate the Peason correlation coefficient between weekly steps and mood scores
 const calculateCorrelation = (weeklySteps, weeklyMoodScores) => {
   if (weeklySteps.length < 2 || weeklyMoodScores.length < 2) {
     return null; 
@@ -48,6 +49,7 @@ const aggregateDataByWeek = (data) => {
   return weeklyData;
 };
 
+// Generate feedback based on the correlation coefficient
 const generateFeedback = (correlationCoefficient) => {
   let feedback = "Based on our analysis, ";
 

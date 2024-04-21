@@ -27,6 +27,7 @@ class project {
     this.enabledSensors,
   });
 
+  // Converts a project object into a JSON object
   factory project.fromJson(Map<String, dynamic> json) {
     return project(
       projectName: json['projectName'],
@@ -63,6 +64,7 @@ class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
     _fetchproject();
   }
 
+  // Fetches the project data from the backend and updates the state
   Future<void> _fetchproject() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final String userId = userProvider.user.id;
@@ -96,6 +98,7 @@ class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
     }
   }
 
+  // Updates the user response to the project
   Future<void> _updateUserResponse(String response) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final String userId = userProvider.user.id;
@@ -127,6 +130,7 @@ class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
     }
   }
 
+  // Builds the list of sensors and their status
   List<Widget> _buildSensorsList() {
     return _project?.enabledSensors?.entries.map((entry) {
           return Text('${entry.key}: ${entry.value ? 'Enabled' : 'Disabled'}',

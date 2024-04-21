@@ -31,6 +31,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     });
   }
 
+  // Fetches user inputs from the backend and updates the state
   Future<void> _fetchUserInputs() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final String userId = userProvider.user.id;
@@ -123,6 +124,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
+  // Builds the heatmap widget
   Widget buildHeatMap() {
     int? lowestMoodValue;
     int? highestMoodValue;
@@ -177,6 +179,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
+  // Returns the color for the mood value
   Color _getColorForMood(int mood, int lowestValue, int highestValue) {
     const Color startColor = Color.fromRGBO(180, 180, 180, 1);
     const Color endColor = Color.fromRGBO(70, 220, 83, 1);

@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:mental_health_app/constants/utilities.dart';
 
 class UserInputService {
+  // Post user input to the backend.
   Future<void> postUserInput({
     required BuildContext context,
     required String type,
@@ -47,6 +48,7 @@ class UserInputService {
     }
   }
 
+  // Fetches enabled and disabled sensors for the project.
   Future<Map<String, bool>> fetchUserSettings(BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final userId = userProvider.user.id;

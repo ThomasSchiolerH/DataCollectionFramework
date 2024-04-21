@@ -89,6 +89,7 @@ class AuthServices {
     }
   }
 
+  // Navigate to the correct screen based on project response
   void navigateBasedOnProjectResponse(BuildContext context) async {
     try {
       final userId = Provider.of<UserProvider>(context, listen: false).user.id;
@@ -116,6 +117,7 @@ class AuthServices {
     }
   }
 
+  // Fetches project response
   Future<String?> fetchProjectResponse(
       BuildContext context, String userId) async {
     try {

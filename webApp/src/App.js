@@ -18,6 +18,7 @@ function App() {
     sessionStorage.getItem("token") || ""
   );
 
+  // Set the auth token in the session storage and state
   const handleLoginSuccess = (token) => {
     setAuthToken(token);
     sessionStorage.setItem("token", token);

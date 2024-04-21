@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// Route generator
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
     case AuthScreen.routeName:

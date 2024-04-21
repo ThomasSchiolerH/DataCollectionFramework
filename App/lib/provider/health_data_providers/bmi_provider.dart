@@ -13,11 +13,13 @@ class BMIProvider with ChangeNotifier {
   double get bmi => _bmi;
   bool get isLoading => _isLoading;
 
+  // Updates the last upload date in the shared preferences
   Future<void> _updateLastUploadDate(DateTime date) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('lastBMIUploadDate', date.toIso8601String());
   }
 
+  // Fetches the last upload date from the shared preferences
   Future<DateTime> _getLastUploadDate() async {
     final prefs = await SharedPreferences.getInstance();
     final String? lastUploadDateString = prefs.getString('lastBMIUploadDate');
@@ -28,6 +30,7 @@ class BMIProvider with ChangeNotifier {
     return DateTime.parse(lastUploadDateString);
   }
 
+  // Fetches the BMI data from the backend and uploads it
   Future<void> fetchAndUploadBMI(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
@@ -66,6 +69,7 @@ class BMIProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Fetches the total BMI for today
   Future<void> fetchTotalBMIForToday() async {
     _isLoading = true;
     notifyListeners();

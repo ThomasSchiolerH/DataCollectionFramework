@@ -6,6 +6,7 @@ class HeartRateServices {
   static double averageHeartRateForToday = 0;
   static DateTime? lastFetchedDate;
 
+  // Request permissions to access health data and fetch hourly heart rate data from the device
   static Future<List<HealthData>> fetchHourlyHeartRate(
       DateTime startDate, DateTime endDate) async {
     List<HealthData> hourlyHeartRateData = [];
@@ -51,6 +52,7 @@ class HeartRateServices {
     return hourlyHeartRateData;
   }
 
+// Fetches total heart rate for today
 static Future<void> fetchTotalHeartRateForToday() async {
     List<HealthDataType> types = [HealthDataType.HEART_RATE];
 

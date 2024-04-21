@@ -43,6 +43,7 @@ const Dashboard = () => {
     ],
   });
 
+  // Fetch user count and user demographics on component mount
   useEffect(() => {
     const fetchUserCount = async () => {
       const count = await getUserCount();
@@ -91,6 +92,7 @@ const Dashboard = () => {
         ],
       });
 
+      // Process gender data
       setGenderData({
         labels: genderDemographics.map((demo) => demo._id),
         datasets: [

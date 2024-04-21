@@ -16,6 +16,7 @@ const validateInputData = (type, value, date) => {
   return null;
 };
 
+// Route to add user input data
 userInputRouter.post(
   "/api/users/:userId/userInput",
   authenticate,
@@ -61,6 +62,7 @@ userInputRouter.post(
   }
 );
 
+// Route to check if user has input for a specific date
 userInputRouter.get(
   "/api/users/:userId/hasInputForDate",
   authenticate,
@@ -92,6 +94,7 @@ userInputRouter.get(
   }
 );
 
+// Route to check if user has mood input for calendar
 userInputRouter.get(
   "/api/users/:userId/moodInputs",
   authenticate,
@@ -116,6 +119,7 @@ userInputRouter.get(
   }
 );
 
+// Route to update user project response
 userInputRouter.patch(
   "/api/users/:userId/updateResponse",
   authenticate,

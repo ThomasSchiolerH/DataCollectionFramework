@@ -13,11 +13,13 @@ class ExerciseTimeProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   int get totalExerciseTime => _totalExerciseTime;
 
+  // Updates the last upload date in the shared preferences
   Future<void> _updateLastUploadDate(DateTime date) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('lastExerciseUploadDate', date.toIso8601String());
   }
 
+  // Fetches the last upload date from the shared preferences
   Future<DateTime> _getLastUploadDate() async {
     final prefs = await SharedPreferences.getInstance();
     final String? lastUploadDateString =
@@ -28,6 +30,7 @@ class ExerciseTimeProvider with ChangeNotifier {
     return DateTime.parse(lastUploadDateString);
   }
 
+  // Fetches the exercise time data from the backend and uploads it
   Future<void> fetchAndUploadExerciseTime(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
@@ -62,6 +65,7 @@ class ExerciseTimeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Fetches the total exercise time for today
   Future<void> fetchTotalExerciseTimeForToday() async {
     _isLoading = true;
     notifyListeners();

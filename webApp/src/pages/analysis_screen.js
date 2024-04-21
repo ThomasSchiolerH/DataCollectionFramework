@@ -14,6 +14,7 @@ const AnalysisPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
+  // Fetch analysis data on component mount
   useEffect(() => {
     const fetchAnalysisData = async () => {
       setLoading(true);
@@ -52,6 +53,7 @@ const AnalysisPage = () => {
       <Link to={`/user/${userId}`} className="view-details-button">
         View User Details
       </Link>
+      {/* Display correlation coefficient and feedback if available */}
       {correlationCoefficient !== null && (
         <div className="correlation-feedback">
           <div className="analysis-data-item">
@@ -63,6 +65,7 @@ const AnalysisPage = () => {
           </div>
         </div>
       )}
+      {/* Display analysis data */}
       {analysisData &&
         analysisData.moodAnalysis &&
         analysisData.moodAnalysis.map((data, index) => (

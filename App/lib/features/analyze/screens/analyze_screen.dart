@@ -20,6 +20,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
     fetchAnalysisAndMoodData();
   }
 
+  // Fetches analysis data and mood data from the services and updates the state.
   Future<void> fetchAnalysisAndMoodData() async {
     String fetchedFeedback = await AnalyseServices.fetchAnalysis(context);
     List<dynamic> fetchedMoodAnalysis =
@@ -57,7 +58,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              ...moodAnalysisData.map((data) {
+              ...moodAnalysisData.map((data) { // Maps each mood analysis data entry to a card widget.
                 String inputTypeTitle = data['inputType'] ?? "Not Fetched";
                 int moodValue =
                     (data['moodValue'] is int) ? data['moodValue'] : 0;
@@ -88,6 +89,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
     );
   }
 
+  // Formats the number to a string with 2 decimal places if it is a double.
   String formatNumber(dynamic number) {
     double value = double.tryParse(number.toString()) ?? 0;
     return value == value.toInt()

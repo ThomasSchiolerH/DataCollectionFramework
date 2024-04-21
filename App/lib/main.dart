@@ -5,12 +5,13 @@ import 'package:mental_health_app/provider/health_data_providers/bmi_provider.da
 import 'package:mental_health_app/provider/health_data_providers/exercise_time_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/heart_rate_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/step_provider.dart';
-import 'package:mental_health_app/provider/user_input_data_provider/user_inpit_data_provider.dart';
+import 'package:mental_health_app/provider/user_input_data_provider/user_input_data_provider.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:mental_health_app/router.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  // Initialize the app
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(MultiProvider(providers: [
