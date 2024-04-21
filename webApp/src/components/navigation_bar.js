@@ -14,7 +14,7 @@ const Navbar = () => {
                 </li>
                 <li>
                   <NavLink to="/customize" className={({ isActive }) => isActive ? 'active' : undefined}>
-                    Customize
+                    Project
                   </NavLink>
                 </li>
             </ul>

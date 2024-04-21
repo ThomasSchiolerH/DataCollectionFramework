@@ -11,7 +11,7 @@ import UserDetails from "./pages/user_details";
 import LoginPage from "./pages/login_screen";
 import Analysis from "./pages/analysis_screen";
 import Customize from "./pages/project_screen";
-import "./styles/App.css";
+import "./styles/app.css";
 
 function App() {
   const [authToken, setAuthToken] = useState(
