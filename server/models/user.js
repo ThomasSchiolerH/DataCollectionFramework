@@ -73,7 +73,7 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
-    userInputMessage: {
+    project: {
       projectName: {
         type: String,
         required: false,

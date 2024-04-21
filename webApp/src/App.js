@@ -11,7 +11,7 @@ import UserDetails from "./pages/user_details";
 import LoginPage from "./pages/login_screen";
 import Analysis from "./pages/analysis_screen";
 import Customize from "./pages/project_screen";
-import "./styles/app.css";
+import "./styles/App.css";
 
 function App() {
   const [authToken, setAuthToken] = useState(
@@ -35,7 +35,11 @@ function App() {
           <Route
             path="/"
             element={
-              authToken ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
+              authToken ? (
+                <Navigate to="/dashboard" />
+              ) : (
+                <Navigate to="/login" />
+              )
             }
           />
           <Route

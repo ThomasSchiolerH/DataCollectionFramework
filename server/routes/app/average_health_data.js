@@ -18,15 +18,15 @@ avgHealthRouter.get(
       const objectId = new mongoose.Types.ObjectId(userId);
       const userData = await User.aggregate([
         { $match: { _id: objectId } },
-        { $project: { healthData: 1, userInputData: 1, userInputMessage: 1 } },
+        { $project: { healthData: 1, userInputData: 1, project: 1 } },
       ]);
 
       if (!userData || userData.length === 0) {
         return res.status(404).json({ msg: "User data not found." });
       }
 
-      const { healthData, userInputData, userInputMessage } = userData[0];
-      const { lowestValue, highestValue, inputType } = userInputMessage;
+      const { healthData, userInputData, project } = userData[0];
+      const { lowestValue, highestValue, inputType } = project;
 
       const filteredUserInputData = userInputData.filter(
         (input) => input.type === inputType
@@ -90,12 +90,16 @@ avgHealthRouter.get(
         inputType: inputType || "mood",
         moodValue: lowestValue + index,
         avgSteps: item.countSteps ? item.avgSteps / item.countSteps : 0,
-        avgExerciseTime: item.countExerciseTime ? item.avgExerciseTime / item.countExerciseTime : 0,
-        avgHeartRate: item.countHeartRate ? item.avgHeartRate / item.countHeartRate : 0,
+        avgExerciseTime: item.countExerciseTime
+          ? item.avgExerciseTime / item.countExerciseTime
+          : 0,
+        avgHeartRate: item.countHeartRate
+          ? item.avgHeartRate / item.countHeartRate
+          : 0,
         avgBMI: item.countBMI ? item.avgBMI / item.countBMI : 0,
-    }));
+      }));
 
-      res.json({ inputType, moodAnalysis }); 
+      res.json({ inputType, moodAnalysis });
     } catch (error) {
       console.error("Error at avgHealthData endpoint:", error);
       res.status(500).send("Internal Server Error");

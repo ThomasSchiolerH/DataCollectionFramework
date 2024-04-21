@@ -54,7 +54,7 @@ class UserInputService {
 
     try {
       http.Response res = await http.get(
-        Uri.parse("$uri/api/users/$userId/userInputMessage"),
+        Uri.parse("$uri/api/users/$userId/project"),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${userProvider.user.token}',

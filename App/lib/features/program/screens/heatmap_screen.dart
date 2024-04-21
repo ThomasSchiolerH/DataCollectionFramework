@@ -67,7 +67,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               } else {
                 print("Failed to parse date or value for input: $input");
               }
-            } else if (input['type'] == 'userInputMessage') {
+            } else if (input['type'] == 'project') {
               lowestValue = input['lowestValue'] != null
                   ? int.tryParse(input['lowestValue'].toString())
                   : null;

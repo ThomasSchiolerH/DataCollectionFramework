@@ -8,7 +8,7 @@ import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:mental_health_app/features/program/screens/user_input_data_screen.dart';
 import 'package:mental_health_app/features/program/screens/no_project_screen.dart';
 
-class UserInputMessage {
+class project {
   final String? projectName;
   final String? message;
   final String? inputType;
@@ -17,7 +17,7 @@ class UserInputMessage {
   final DateTime? messageExpiration;
   final Map<String, bool>? enabledSensors;
 
-  UserInputMessage({
+  project({
     this.projectName,
     this.message,
     this.inputType,
@@ -27,8 +27,8 @@ class UserInputMessage {
     this.enabledSensors,
   });
 
-  factory UserInputMessage.fromJson(Map<String, dynamic> json) {
-    return UserInputMessage(
+  factory project.fromJson(Map<String, dynamic> json) {
+    return project(
       projectName: json['projectName'],
       message: json['message'],
       inputType: json['inputType'],
@@ -55,21 +55,21 @@ class AcceptProjectScreen extends StatefulWidget {
 
 class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
   bool _isLoading = true;
-  UserInputMessage? _userInputMessage;
+  project? _project;
 
   @override
   void initState() {
     super.initState();
-    _fetchUserInputMessage();
+    _fetchproject();
   }
 
-  Future<void> _fetchUserInputMessage() async {
+  Future<void> _fetchproject() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final String userId = userProvider.user.id;
 
     try {
       final response = await http.get(
-        Uri.parse('$uri/api/users/$userId/userInputMessage'),
+        Uri.parse('$uri/api/users/$userId/project'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${userProvider.user.token}',
@@ -79,7 +79,7 @@ class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {
-          _userInputMessage = UserInputMessage.fromJson(data);
+          _project = project.fromJson(data);
           _isLoading = false;
         });
       } else {
@@ -128,7 +128,7 @@ class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
   }
 
   List<Widget> _buildSensorsList() {
-    return _userInputMessage?.enabledSensors?.entries.map((entry) {
+    return _project?.enabledSensors?.entries.map((entry) {
           return Text('${entry.key}: ${entry.value ? 'Enabled' : 'Disabled'}',
               style: const TextStyle(fontSize: 16));
         }).toList() ??
@@ -153,36 +153,34 @@ class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        if (_userInputMessage?.projectName != null)
-                          Text('Project: ${_userInputMessage!.projectName}',
+                        if (_project?.projectName != null)
+                          Text('Project: ${_project!.projectName}',
                               style: Theme.of(context).textTheme.titleLarge),
-                        if (_userInputMessage?.message != null)
+                        if (_project?.message != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                                'Message: ${_userInputMessage!.message}',
+                            child: Text('Message: ${_project!.message}',
                                 style: Theme.of(context).textTheme.bodyLarge),
                           ),
-                        if (_userInputMessage?.inputType != null)
+                        if (_project?.inputType != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                                'Input Type: ${_userInputMessage!.inputType}',
+                            child: Text('Input Type: ${_project!.inputType}',
                                 style: Theme.of(context).textTheme.bodyLarge),
                           ),
-                        if (_userInputMessage?.lowestValue != null &&
-                            _userInputMessage?.highestValue != null)
+                        if (_project?.lowestValue != null &&
+                            _project?.highestValue != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
-                                'Values Range: ${_userInputMessage!.lowestValue} - ${_userInputMessage!.highestValue}',
+                                'Values Range: ${_project!.lowestValue} - ${_project!.highestValue}',
                                 style: Theme.of(context).textTheme.bodyLarge),
                           ),
-                        if (_userInputMessage?.messageExpiration != null)
+                        if (_project?.messageExpiration != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
-                                'Expires On: ${_userInputMessage!.messageExpiration!.toIso8601String()}',
+                                'Expires On: ${_project!.messageExpiration!.toIso8601String()}',
                                 style: Theme.of(context).textTheme.bodyLarge),
                           ),
                         Padding(

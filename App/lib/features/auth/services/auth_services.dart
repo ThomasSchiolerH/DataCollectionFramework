@@ -24,7 +24,7 @@ class AuthServices {
     required String password,
   }) async {
     try {
-      final int? ageInt = int.tryParse(age); 
+      final int? ageInt = int.tryParse(age);
       if (ageInt == null) {
         showSnackBar2(context, 'Age must be a valid number.', isError: true);
         return;
@@ -120,7 +120,7 @@ class AuthServices {
       BuildContext context, String userId) async {
     try {
       final response = await http.get(
-        Uri.parse("$uri/api/users/$userId/userInputMessage"),
+        Uri.parse("$uri/api/users/$userId/project"),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization':
@@ -139,6 +139,7 @@ class AuthServices {
       return null;
     }
   }
+
   //LogOut
   void logoutUser(BuildContext context) async {
     try {
