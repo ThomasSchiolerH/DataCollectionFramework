@@ -39,24 +39,30 @@ const LoginPage = ({ onLoginSuccess }) => {
 
   return (
     <div className="login-container">
-      <div className="login-card">
+      <div class="login-card">
         <h2>Admin Login</h2>
         <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-          />
-          <button type="submit">Login</button>
+          <div class="center-wrapper">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div class="center-wrapper">
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+            />
+          </div>
+          <div class="center-wrapper">
+            <button type="submit">Login</button>
+          </div>
           {error && <p>{error}</p>}
         </form>
       </div>
