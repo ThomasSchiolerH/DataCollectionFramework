@@ -2,7 +2,7 @@ class HealthData {
   final String type;
   final num value;
   final String unit;
-  final DateTime date; // Storing the date for measurement recorded
+  final DateTime date; 
 
   HealthData({
     required this.type,

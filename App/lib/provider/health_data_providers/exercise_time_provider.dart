@@ -34,11 +34,9 @@ class ExerciseTimeProvider with ChangeNotifier {
 
     UserInputService userInputService = UserInputService();
 
-    // Fetch user settings to determine enabled sensors/data types for upload
     final Map<String, bool> enabledSensors =
         await userInputService.fetchUserSettings(context);
 
-    // Check if data is enabled for upload
     if (enabledSensors['exerciseTime'] ?? false) {
       DateTime lastUploadDate = await _getLastUploadDate();
       DateTime now = DateTime.now();

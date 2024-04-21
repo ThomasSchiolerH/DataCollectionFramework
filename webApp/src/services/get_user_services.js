@@ -3,7 +3,6 @@ const serverURL = process.env.REACT_APP_SERVER_URL;
 
 const getToken = () => localStorage.getItem("token");
 
-// Get user's name and email
 export const getUsers = async () => {
   try {
     const token = getToken();
@@ -19,7 +18,6 @@ export const getUsers = async () => {
   }
 };
 
-// Get data for each user
 export const getUserHealthData = async (userId) => {
   try {
     const token = getToken();
@@ -34,11 +32,10 @@ export const getUserHealthData = async (userId) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching health data:", error);
-    throw error; // re-throw the error for handling by the caller
+    throw error; 
   }
 };
 
-// Get user count
 export const getUserCount = async () => {
   try {
     const token = getToken();
@@ -54,7 +51,6 @@ export const getUserCount = async () => {
   }
 };
 
-// Get project count
 export const getProjectCount = async () => {
   try {
     const token = getToken();
@@ -73,7 +69,6 @@ export const getProjectCount = async () => {
   }
 };
 
-// Fetch age demographic data
 export const getUserAgeDemographics = async () => {
   try {
     const token = getToken();
@@ -89,7 +84,6 @@ export const getUserAgeDemographics = async () => {
   }
 };
 
-// Fetch gender demographic data
 export const getUserGenderDemographics = async () => {
   try {
     const token = getToken();

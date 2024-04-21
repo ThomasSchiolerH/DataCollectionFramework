@@ -1,7 +1,7 @@
 class UserInput {
   final String type;
   final num value;
-  final DateTime date; // Storing the date for measurement recorded
+  final DateTime date; 
 
   UserInput({
     required this.type,

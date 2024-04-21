@@ -91,7 +91,6 @@ const Dashboard = () => {
         ],
       });
 
-      // Process and set gender demographic data
       setGenderData({
         labels: genderDemographics.map((demo) => demo._id),
         datasets: [

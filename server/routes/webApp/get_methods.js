@@ -2,7 +2,6 @@ const express = require("express");
 const User = require("../../models/user");
 const getUserRouter = express.Router();
 
-// Get users route
 getUserRouter.get("/api/getUser", async (req, res) => {
     try {
         const users = await User.find({}, 'name email type');
@@ -18,7 +17,6 @@ getUserRouter.get("/api/getUser", async (req, res) => {
     }
 });
 
-// Get user count route
 getUserRouter.get("/api/getUserCount", async (req, res) => {
     try {
         const count = await User.countDocuments();
@@ -59,7 +57,6 @@ getUserRouter.get("/api/userDemographics/age", async (req, res) => {
     }
 });
 
-// Get users demographic by gender
 getUserRouter.get("/api/userDemographics/gender", async (req, res) => {
     try {
         const genderDistribution = await User.aggregate([
@@ -151,7 +148,7 @@ getUserRouter.post("/api/users/customInput", async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-// Endpoint to get different projects and its information
+
 getUserRouter.get("/api/getDifferentProjects", async (req, res) => {
     try {
         const projects = await User.aggregate([

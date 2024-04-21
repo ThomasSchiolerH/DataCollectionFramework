@@ -21,19 +21,16 @@ const validateData = (type, value, unit, date) => {
   return null;
 };
 
-// Upload health data
 healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res) => {
   const { userId } = req.params;
   const { type, value, unit, date } = req.body;
   console.log(req.body);
-  // Validation
   const validationError = validateData(type, value, unit, date);
   if (validationError) {
     return res.status(400).json({ msg: validationError });
   }
 
   try {
-    // Authorization check
     if (req.userId !== userId) {
       return res.status(403).json({ msg: 'Access denied.' });
     }
@@ -43,7 +40,6 @@ healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res
       return res.status(404).json({ msg: 'User not found' });
     }
 
-    // Add the new health data
     user.healthData.push({ type, value, unit, date: new Date(date) });
     await user.save();
 
@@ -54,7 +50,6 @@ healthRouter.post('/api/users/:userId/healthData', authenticate, async (req, res
   }
 });
 
-// Bulk upload
 healthRouter.post('/api/users/:userId/healthData/bulk', authenticate, async (req, res) => {
   const { userId } = req.params;
   const healthDataArray = req.body.data; 
@@ -74,7 +69,7 @@ healthRouter.post('/api/users/:userId/healthData/bulk', authenticate, async (req
       const validationError = validateData(type, value, unit, date);
       if (validationError) {
         errors.push(validationError);
-        continue; // Skip invalid entries
+        continue; 
       }
 
       user.healthData.push({ type, value, unit, date: new Date(date) });
@@ -93,13 +88,10 @@ healthRouter.post('/api/users/:userId/healthData/bulk', authenticate, async (req
   }
 });
 
-
-// Fetch health data
 healthRouter.get('/api/users/:userId/healthData', authenticate, async (req, res) => {
   const { userId } = req.params;
 
   try {
-    // Only allow admins
     if (req.userId !== userId && req.userRole !== 'admin') {
       return res.status(403).json({ msg: 'Access denied.' });
     }
@@ -116,6 +108,5 @@ healthRouter.get('/api/users/:userId/healthData', authenticate, async (req, res)
   }
 });
 
-// Make public
 module.exports = healthRouter;
   

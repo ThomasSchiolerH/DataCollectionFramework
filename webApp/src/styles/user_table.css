@@ -6,12 +6,10 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
-    /* This ensures the border-radius is applied correctly */
 }
 
 .user-table {
     width: 100%;
-    /* Adjusted to fill the wrapper */
     border-collapse: collapse;
     background-color: #fff;
 }

@@ -5,7 +5,6 @@ import "../styles/user_details.css";
 
 const groupHealthDataByType = (healthData) => {
   return healthData.reduce((acc, data) => {
-    // If the accumulator already has the type, push to it, else create a new array
     if (!acc[data.type]) {
       acc[data.type] = [];
     }
@@ -36,7 +35,7 @@ const UserDetails = () => {
     };
 
     fetchHealthData();
-  }, [userId]); // Depend on userId so it refetches if that changes
+  }, [userId]); 
 
   if (loading) {
     return <div>Loading...</div>;

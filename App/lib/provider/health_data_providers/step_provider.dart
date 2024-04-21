@@ -22,7 +22,7 @@ class StepProvider with ChangeNotifier {
     final String? lastUploadDateString = prefs.getString('lastUploadDate');
     if (lastUploadDateString == null) {
       return DateTime.now()
-          .subtract(const Duration(days: 1)); // Default to 1 day ago if not set
+          .subtract(const Duration(days: 1)); 
     }
     return DateTime.parse(lastUploadDateString);
   }
@@ -33,11 +33,9 @@ class StepProvider with ChangeNotifier {
 
     UserInputService userInputService = UserInputService();
 
-    // Fetch user settings to determine enabled sensors/data types for upload
     final Map<String, bool> enabledSensors =
         await userInputService.fetchUserSettings(context);
 
-    // Check if steps data is enabled for upload
     if (enabledSensors['steps'] ?? false) {
       DateTime lastUploadDate = await _getLastUploadDate();
       DateTime now = DateTime.now();
@@ -70,7 +68,7 @@ class StepProvider with ChangeNotifier {
     _steps = 0;
     await GetStepsService.fetchTotalStepsForToday();
     _steps = GetStepsService
-        .totalStepsForToday; // Get the total steps from GetStepsService
-    notifyListeners(); // Notify listeners to update the UI
+        .totalStepsForToday; 
+    notifyListeners(); 
   }
 }

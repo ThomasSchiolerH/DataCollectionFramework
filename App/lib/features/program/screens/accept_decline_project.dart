@@ -120,12 +120,10 @@ class _AcceptProjectScreenState extends State<AcceptProjectScreen> {
       } else {
         showSnackBar2(context, 'Failed to update response: ${res.body}',
             isError: true);
-        //print('Failed to update response: ${res.body}');
       }
     } catch (e) {
       showSnackBar2(context, 'Exception caught during update: $e',
           isError: true);
-      //print('Exception caught during update: $e');
     }
   }
 

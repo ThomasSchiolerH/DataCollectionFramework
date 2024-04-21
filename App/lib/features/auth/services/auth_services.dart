@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
 class AuthServices {
-  // Sign up
+  // SignUp
   void signUpUser({
     required BuildContext context,
     required String name,
@@ -24,7 +24,7 @@ class AuthServices {
     required String password,
   }) async {
     try {
-      final int? ageInt = int.tryParse(age); // Convert age to an int
+      final int? ageInt = int.tryParse(age); 
       if (ageInt == null) {
         showSnackBar2(context, 'Age must be a valid number.', isError: true);
         return;
@@ -59,7 +59,7 @@ class AuthServices {
     }
   }
 
-  // Sign in
+  // SignIn
   void signInUser({
     required BuildContext context,
     required String email,
@@ -132,7 +132,6 @@ class AuthServices {
         final data = jsonDecode(response.body);
         return data['projectResponse'];
       } else {
-        // Handle non-200 responses
         throw Exception('Failed to fetch project response');
       }
     } catch (e) {
@@ -140,10 +139,9 @@ class AuthServices {
       return null;
     }
   }
-
+  //LogOut
   void logoutUser(BuildContext context) async {
     try {
-      // Clear the authentication token from SharedPreferences
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.remove('auth-token');
 

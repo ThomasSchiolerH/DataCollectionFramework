@@ -21,7 +21,6 @@ class HeartRateServices {
       DateTime endOfHour = DateTime(currentTime.year, currentTime.month,
               currentTime.day, currentTime.hour)
           .add(const Duration(hours: 1));
-      // Adjust endOfHour if it exceeds endDate
       if (endOfHour.isAfter(endDate)) {
         endOfHour = endDate;
       }
@@ -73,16 +72,14 @@ static Future<void> fetchTotalHeartRateForToday() async {
         if (dataPoint.type == HealthDataType.HEART_RATE) {
           NumericHealthValue numericValue = dataPoint.value as NumericHealthValue;
           sumHeartRate += numericValue.numericValue.toInt();
-          count++; // Increment count for each heart rate data point
+          count++; 
         }
       }
 
-      // Calculate average if count is greater than 0 to avoid division by zero
       averageHeartRateForToday = count > 0 ? sumHeartRate / count : 0;
       lastFetchedDate = DateTime.now();
     } catch (error) {
       print("An error occurred fetching health data: $error");
-      // Handle error, possibly resetting averageHeartRateForToday or setting it to a specific error value
     }
   }
 }

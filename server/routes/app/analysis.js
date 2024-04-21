@@ -4,7 +4,6 @@ const User = require('../../models/user');
 const authenticate = require('../../middleware/authenticate');
 const dataAnalysisService = require('../../services/dataAnalysis');
 
-// Weekly correlation between steps and mood
 analysisRouter.get('/api/users/:userId/analyseStepsMoodWeekly', authenticate, async (req, res) => {
   const { userId } = req.params;
 
@@ -28,21 +27,16 @@ analysisRouter.get('/api/users/:userId/analyseStepsMoodWeekly', authenticate, as
       value: d.value
     }));
 
-    // Aggregate data by week
     const weeklySteps = dataAnalysisService.aggregateDataByWeek(stepsData);
     const weeklyMood = dataAnalysisService.aggregateDataByWeek(moodData);
 
-    // Align weekly data
     const alignedWeeklyData = dataAnalysisService.alignWeeklyData(weeklySteps, weeklyMood);
 
-    // Calculate correlation
     const correlationCoefficient = dataAnalysisService.calculateCorrelation(alignedWeeklyData.steps, alignedWeeklyData.mood);
 
     if (correlationCoefficient === null) {
-      // Not enough data to calculate correlation
       return res.status(400).json({ msg: "Not enough data to calculate a correlation. Please log more steps and mood data." });
     }
-    // Find feedback
     const feedback = dataAnalysisService.generateFeedback(correlationCoefficient);
 
     res.status(200).json({ correlationCoefficient, feedback });

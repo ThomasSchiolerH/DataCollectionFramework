@@ -61,7 +61,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
               final int? value = int.tryParse(input['value'].toString());
 
               if (date != null && value != null) {
-                // Ensure the date is in the correct format without the time part
                 final DateTime dateWithoutTime =
                     DateTime(date.year, date.month, date.day);
                 newDatasets[dateWithoutTime] = value;
@@ -161,17 +160,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
           ? colorsets
           : {1: defaultStartColor, 6: defaultEndColor},
       onClick: (DateTime date) {
-        // Here we look up the mood for the clicked date
         final mood = datasets[date];
         if (mood != null) {
-          // If we have a mood for that date, show it in a Snackbar
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content:
                     Text('Your mood on ${formatter.format(date)} was "$mood"')),
           );
         } else {
-          // If we don't have a mood for that date, you might want to handle it differently
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content: Text('No mood data for ${formatter.format(date)}')),
@@ -181,13 +177,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-Color _getColorForMood(int mood, int lowestValue, int highestValue) {
-  Color startColor = const Color.fromARGB(255, 255, 255, 255); 
-  Color endColor = const Color.fromARGB(255, 255, 45, 30); 
-  double ratio = (mood - lowestValue) / (highestValue - lowestValue).toDouble();
-  int r = startColor.red + ((endColor.red - startColor.red) * ratio).round();
-  int g = startColor.green + ((endColor.green - startColor.green) * ratio).round();
-  int b = startColor.blue + ((endColor.blue - startColor.blue) * ratio).round();
-  return Color.fromRGBO(r, g, b, 1);
-}
+  Color _getColorForMood(int mood, int lowestValue, int highestValue) {
+    const Color startColor = Color.fromRGBO(180, 180, 180, 1);
+    const Color endColor = Color.fromRGBO(70, 220, 83, 1);
+    double ratio =
+        (mood - lowestValue) / (highestValue - lowestValue).toDouble();
+    int r = startColor.red + ((endColor.red - startColor.red) * ratio).round();
+    int g = startColor.green +
+        ((endColor.green - startColor.green) * ratio).round();
+    int b =
+        startColor.blue + ((endColor.blue - startColor.blue) * ratio).round();
+    return Color.fromRGBO(r, g, b, 1);
+  }
 }

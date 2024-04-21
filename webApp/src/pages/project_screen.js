@@ -73,11 +73,11 @@ const Customize = () => {
           timeIntervalDays: parseInt(timeIntervalDays, 10),
         };
 
-    console.log("Payload being sent:", payload); // Add this line to check payload
+    console.log("Payload being sent:", payload); 
 
     try {
       const response = await axios.post(`${serverURL}/api/users/customInput`, payload);
-      console.log("Response from server:", response.data); // Log server response
+      console.log("Response from server:", response.data); 
       console.log("User input message updated successfully");
       setProjectName("");
       setUsernames("");
@@ -145,7 +145,7 @@ const Customize = () => {
             <span className="close" onClick={toggleModal}>
               &times;
             </span>
-            {/* Form inside modal */}
+            {}
             <form onSubmit={handleSubmit} className="modal-form">
               {" "}
               <input

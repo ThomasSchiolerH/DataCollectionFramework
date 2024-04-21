@@ -69,7 +69,6 @@ class UserInputService {
           if (data['enabledSensors'] != null) {
             enabledSensors = Map<String, bool>.from(data['enabledSensors']);
           }
-          //showSnackBar2(context, 'User settings fetched successfully');
         },
       );
     } catch (e) {

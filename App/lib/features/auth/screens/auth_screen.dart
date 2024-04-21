@@ -111,7 +111,6 @@ class _AuthScreenState extends State<AuthScreen> {
     if (value == null || value.isEmpty) {
       return 'Password cannot be empty';
     }
-    // add more conditions for password validation here if needed
     return null;
   }
 

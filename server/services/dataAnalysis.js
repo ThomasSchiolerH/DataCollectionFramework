@@ -1,9 +1,8 @@
 const ss = require("simple-statistics");
 
 const calculateCorrelation = (weeklySteps, weeklyMoodScores) => {
-  // Ensure both arrays have at least two data points
   if (weeklySteps.length < 2 || weeklyMoodScores.length < 2) {
-    return null; // Indicating not enough data
+    return null; 
   }
   return ss.sampleCorrelation(weeklySteps, weeklyMoodScores);
 };
@@ -42,7 +41,6 @@ const aggregateDataByWeek = (data) => {
     weeklyData[weekNum].count += 1;
   });
 
-  // Convert totals to averages for mood and keep total for steps
   Object.keys(weeklyData).forEach((week) => {
     weeklyData[week] = weeklyData[week].total / weeklyData[week].count;
   });

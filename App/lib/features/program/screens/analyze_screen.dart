@@ -12,7 +12,7 @@ class AnalyseScreen extends StatefulWidget {
 
 class _AnalyseScreenState extends State<AnalyseScreen> {
   String feedback = "Fetching analysis...";
-  List<dynamic> moodAnalysisData = []; // Store mood analysis data
+  List<dynamic> moodAnalysisData = []; 
 
   @override
   void initState() {
@@ -21,9 +21,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
   }
 
   Future<void> fetchAnalysisAndMoodData() async {
-    // Fetch analysis feedback
     String fetchedFeedback = await AnalyseServices.fetchAnalysis(context);
-    // Fetch mood analysis data
     List<dynamic> fetchedMoodAnalysis =
         await AnalyseServices.fetchMoodAnalysis(context);
     setState(() {
@@ -90,7 +88,6 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
     );
   }
 
-  // Helper function to format numbers
   String formatNumber(dynamic number) {
     double value = double.tryParse(number.toString()) ?? 0;
     return value == value.toInt()

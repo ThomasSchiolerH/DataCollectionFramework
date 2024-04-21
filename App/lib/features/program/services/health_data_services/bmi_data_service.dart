@@ -4,7 +4,6 @@ class BMIDataService {
   static final HealthFactory health = HealthFactory();
   static DateTime? lastFetchedDate;
 
-  // Add a method to request permissions for all data types at once
   static Future<bool> requestPermissions() async {
     List<HealthDataType> types = [
       HealthDataType.HEIGHT,
@@ -27,7 +26,6 @@ class BMIDataService {
   }
 
   static Future<double?> fetchHealthData(HealthDataType dataType) async {
-    // Ensure permissions are requested before attempting to fetch data
     bool accessGranted = await requestPermissions();
     if (accessGranted) {
       DateTime now = DateTime.now();
@@ -47,12 +45,9 @@ class BMIDataService {
   }
 
   static double? _convertToDouble(dynamic value) {
-    // Check if the value is a NumericHealthValue and convert accordingly
     if (value is NumericHealthValue) {
-      // Access the numericValue property, which is of type num, and convert it to double
       return value.numericValue.toDouble();
     }
-    // return the value if it is already a double
     else if (value is double) {
       return value;
     }

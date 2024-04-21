@@ -28,7 +28,6 @@ avgHealthRouter.get(
       const { healthData, userInputData, userInputMessage } = userData[0];
       const { lowestValue, highestValue, inputType } = userInputMessage;
 
-      // Filter user input data for the specified type
       const filteredUserInputData = userInputData.filter(
         (input) => input.type === inputType
       );
@@ -52,7 +51,6 @@ avgHealthRouter.get(
         const moodIndex = moodInput.value - lowestValue;
         if (moodIndex >= 0 && moodIndex < moodAnalysis.length) {
           healthData.forEach((healthItem) => {
-            // Only aggregate health data if there's a corresponding user input on that day
             if (
               filteredUserInputData.some(
                 (input) =>

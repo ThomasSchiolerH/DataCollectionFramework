@@ -14,7 +14,7 @@ class NotificationService {
 
     const InitializationSettings initializationSettings =
         InitializationSettings(
-      iOS: initializationSettingsDarwin, // Note the change to Darwin settings
+      iOS: initializationSettingsDarwin, 
     );
 
     await _notificationsPlugin.initialize(
@@ -25,31 +25,11 @@ class NotificationService {
 
   static void onDidReceiveLocalNotification(
       int id, String? title, String? body, String? payload) async {
-    // This is where you can show a dialog or navigate the user to a different screen based on the notification details.
-    // showDialog(
-    //   context: context, // Make sure to pass your BuildContext correctly
-    //   builder: (BuildContext context) => AlertDialog(
-    //     title: Text(title ?? ''),
-    //     content: Text(body ?? ''),
-    //     actions: <Widget>[
-    //       TextButton(
-    //         child: Text('Ok'),
-    //         onPressed: () {
-    //           Navigator.of(context, rootNavigator: true).pop();
-    //           // Optionally navigate to a different screen
-    //         },
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 
   static void onDidReceiveNotificationResponse(
       NotificationResponse response) async {
-    // Handle the user's interaction with the notification
-    // You can use the response.payload to decide what to do
     if (response.payload != null) {
-      // Navigate to the desired screen or perform actions based on payload
     }
   }
 

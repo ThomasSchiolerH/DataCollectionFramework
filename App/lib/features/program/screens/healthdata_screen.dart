@@ -26,15 +26,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        .addObserver(this);
-    checkConnectivityAndUploadData(); // check when the screen is first loaded
+    WidgetsBinding.instance.addObserver(this);
+    checkConnectivityAndUploadData();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance
-        .removeObserver(this); // Remove the observer
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -45,45 +43,47 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   ];
 
   @override
-Widget build(BuildContext context) {
-  final user = Provider.of<UserProvider>(context).user;
-  final AuthServices authServices = AuthServices();
+  Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context).user;
+    final AuthServices authServices = AuthServices();
 
-  return Scaffold(
-    appBar: _selectedIndex == 0 ? AppBar( // Conditional rendering based on _selectedIndex
-      title: Text('Welcome ${user.name}!'),
-      actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.logout),
-          onPressed: () => authServices.logoutUser(context),
-          tooltip: 'Logout',
-        ),
-      ],
-    ) : null,
-    body: _screens[_selectedIndex],
-    bottomNavigationBar: BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.dashboard),
-          label: 'Overview',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.calendar_today),
-          label: 'Calendar',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.analytics),
-          label: 'Analyse',
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      onTap: _onItemTapped,
-      selectedItemColor: GlobalVariables.selectedNavBarColor,
-      unselectedItemColor: GlobalVariables.unselectedNavBarColor,
-      backgroundColor: Colors.white,
-    ),
-  );
-}
+    return Scaffold(
+      appBar: _selectedIndex == 0
+          ? AppBar(
+              title: Text('Welcome ${user.name}!'),
+              actions: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.logout),
+                  onPressed: () => authServices.logoutUser(context),
+                  tooltip: 'Logout',
+                ),
+              ],
+            )
+          : null,
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Overview',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: 'Calendar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.analytics),
+            label: 'Analyse',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        selectedItemColor: GlobalVariables.selectedNavBarColor,
+        unselectedItemColor: GlobalVariables.unselectedNavBarColor,
+        backgroundColor: Colors.white,
+      ),
+    );
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -96,7 +96,6 @@ Widget build(BuildContext context) {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      // Adding a delay before checking connectivity and updating data
       Future.delayed(const Duration(seconds: 1), () {
         checkConnectivityAndUploadData();
       });
@@ -137,7 +136,6 @@ class HomeScreenContentState extends State<HomeScreenContent> {
   @override
   void initState() {
     super.initState();
-    // Use Future.microtask to ensure provider methods are called after the build method
     Future.microtask(() => Provider.of<StepProvider>(context, listen: false)
         .fetchTotalStepsForToday());
     Future.microtask(() =>
@@ -207,17 +205,9 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                 var bmiValue = bmiProvider.bmi;
                 return bmiValue == null
                     ? const CircularProgressIndicator()
-                    : buildInfoCard(
-                        'Current BMI',
-                        bmiValue.toStringAsFixed(
-                            2));
+                    : buildInfoCard('Current BMI', bmiValue.toStringAsFixed(2));
               },
             ),
-            // ElevatedButton(
-            //   onPressed: () => NotificationService.showNotification(
-            //       id: 0, title: "Test", body: "It works"),
-            //   child: const Text('Notification'),
-            // ),
           ],
         ),
       ),

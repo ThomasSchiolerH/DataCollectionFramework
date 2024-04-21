@@ -1,4 +1,3 @@
-// Importing dependencies
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
@@ -24,7 +23,7 @@ const AnalysisPage = () => {
         setFeedback(feedbackData.feedback);
 
         const analysisDataResponse = await fetchMoodAnalysis(userId);
-        setAnalysisData(analysisDataResponse); // Contains both inputType and moodAnalysis array
+        setAnalysisData(analysisDataResponse);
 
         setLoading(false);
       } catch (err) {

@@ -3,7 +3,6 @@ const serverURL = process.env.REACT_APP_SERVER_URL;
 
 const getToken = () => localStorage.getItem("token");
 
-// Fetching the average health data values for each type - compare it to mood
 export const fetchMoodAnalysis = async (userId) => {
   try {
     const token = getToken();
@@ -18,11 +17,10 @@ export const fetchMoodAnalysis = async (userId) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching health data:", error);
-    throw error; // re-throw the error for handling by the caller
+    throw error; 
   }
 };
 
-// Fetch the analysis feedback
 export const fetchMoodFeedback = async (userId) => {
   try {
     const token = getToken();
@@ -37,6 +35,6 @@ export const fetchMoodFeedback = async (userId) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching health data:", error);
-    throw error; // re-throw the error for handling by the caller
+    throw error; 
   }
 };

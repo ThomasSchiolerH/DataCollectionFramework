@@ -1,12 +1,10 @@
 const express = require("express");
 const User = require("../../models/user");
-//const bcryptjs = require("bcryptjs");
 const jWebToken = require("jsonwebtoken");
 const authRouter = express.Router();
 
 const capitaliseWords = (str) => str.toLowerCase().replace(/\b(\w)/g, s => s.toUpperCase());
 
-// Sign up route
 authRouter.post("/api/signup", async (req, res) => {
   try {
     let { name, age, gender, email, password } = req.body;
@@ -34,7 +32,6 @@ authRouter.post("/api/signup", async (req, res) => {
   }
 });
 
-// // Sign in route
 authRouter.post("/api/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -61,7 +58,6 @@ authRouter.post("/api/signin", async (req, res) => {
   }
 });
 
-// Admin sign in route
 authRouter.post("/api/admin/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -98,5 +94,4 @@ authRouter.post("/api/admin/signin", async (req, res) => {
   }
 });
 
-// Make public
 module.exports = authRouter;
