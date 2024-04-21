@@ -50,7 +50,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
         final List<dynamic>? inputs = data['moodInputs'] as List<dynamic>?;
         final Map<DateTime, int> newDatasets = {};
-
         int? lowestValue;
         int? highestValue;
 
@@ -59,34 +58,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
             if (input['type'] == 'mood') {
               final DateTime? date = DateTime.tryParse(input['date']);
               final int? value = int.tryParse(input['value'].toString());
-
               if (date != null && value != null) {
-                final DateTime dateWithoutTime =
-                    DateTime(date.year, date.month, date.day);
+                final DateTime dateWithoutTime = DateTime(date.year, date.month, date.day);
                 newDatasets[dateWithoutTime] = value;
-              } else {
-                print("Failed to parse date or value for input: $input");
+                lowestValue = lowestValue == null || value < lowestValue ? value : lowestValue;
+                highestValue = highestValue == null || value > highestValue ? value : highestValue;
               }
-            } else if (input['type'] == 'project') {
-              lowestValue = input['lowestValue'] != null
-                  ? int.tryParse(input['lowestValue'].toString())
-                  : null;
-              highestValue = input['highestValue'] != null
-                  ? int.tryParse(input['highestValue'].toString())
-                  : null;
             }
           }
         }
 
         setState(() {
           datasets = newDatasets;
-          _isLoading = false;
           _lowestValue = lowestValue;
           _highestValue = highestValue;
+          _isLoading = false;
         });
       } else {
-        print(
-            'Failed to fetch mood inputs with status code ${response.statusCode}: ${response.body}');
+        print('Failed to fetch mood inputs with status code ${response.statusCode}: ${response.body}');
         setState(() => _isLoading = false);
       }
     } catch (e) {
@@ -114,7 +103,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                    children: [
+                      TextSpan(text: "Heatmap: ", style: TextStyle(fontWeight: FontWeight.bold)),
+                      TextSpan(text: "Here you can explore your user input data over time. You can click a field to see the exact value."),
+                    ],
+                  ),
+                ),
+              ),
               buildHeatMap(),
             ],
           ),
@@ -124,30 +126,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget buildHeatMap() {
-    int? lowestMoodValue;
-    int? highestMoodValue;
-    for (var value in datasets.values) {
-      if (lowestMoodValue == null || value < lowestMoodValue) {
-        lowestMoodValue = value;
-      }
-      if (highestMoodValue == null || value > highestMoodValue) {
-        highestMoodValue = value;
-      }
-    }
-
-    Color defaultStartColor = const Color.fromARGB(255, 255, 255, 255);
-    Color defaultEndColor = const Color.fromARGB(255, 255, 0, 0);
-
     Map<int, Color> colorsets = {};
-    if (lowestMoodValue != null && highestMoodValue != null) {
-      for (int mood = lowestMoodValue; mood <= highestMoodValue; mood++) {
-        Color color =
-            _getColorForMood(mood, _lowestValue ?? 1, _highestValue ?? 6);
-        colorsets[mood] = color;
-      }
-    } else {
-      for (int mood = 1; mood <= 6; mood++) {
-        colorsets[mood] = _getColorForMood(mood, 1, 6);
+    if (_lowestValue != null && _highestValue != null) {
+      for (int i = _lowestValue!; i <= _highestValue!; i++) {
+        colorsets[i] = _getColorForMood(i, _lowestValue!, _highestValue!);
       }
     }
 
@@ -156,21 +138,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
       colorMode: ColorMode.opacity,
       showText: false,
       scrollable: true,
-      colorsets: colorsets.isNotEmpty
-          ? colorsets
-          : {1: defaultStartColor, 6: defaultEndColor},
+      colorsets: colorsets,
       onClick: (DateTime date) {
         final mood = datasets[date];
         if (mood != null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content:
-                    Text('Your mood on ${formatter.format(date)} was "$mood"')),
+            SnackBar(content: Text('Your mood on ${formatter.format(date)} was "$mood"')),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text('No mood data for ${formatter.format(date)}')),
+            SnackBar(content: Text('No mood data for ${formatter.format(date)}')),
           );
         }
       },
@@ -178,15 +155,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Color _getColorForMood(int mood, int lowestValue, int highestValue) {
-    const Color startColor = Color.fromRGBO(180, 180, 180, 1);
-    const Color endColor = Color.fromRGBO(70, 220, 83, 1);
-    double ratio =
-        (mood - lowestValue) / (highestValue - lowestValue).toDouble();
+    const Color startColor = Color.fromARGB(255, 47, 75, 107);
+    const Color endColor = Color.fromARGB(255, 47, 75, 107);
+    //const Color startColor = Color.fromRGBO(180, 180, 180, 1);
+    //const Color endColor = Color.fromRGBO(70, 220, 83, 1);
+    double ratio = (mood - lowestValue) / (highestValue - lowestValue).toDouble();
     int r = startColor.red + ((endColor.red - startColor.red) * ratio).round();
-    int g = startColor.green +
-        ((endColor.green - startColor.green) * ratio).round();
-    int b =
-        startColor.blue + ((endColor.blue - startColor.blue) * ratio).round();
+    int g = startColor.green + ((endColor.green - startColor.green) * ratio).round();
+    int b = startColor.blue + ((endColor.blue - startColor.blue) * ratio).round();
     return Color.fromRGBO(r, g, b, 1);
   }
 }
