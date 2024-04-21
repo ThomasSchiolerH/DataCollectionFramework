@@ -25,11 +25,15 @@
     margin-bottom: 20px;
 }
 
+.login-card .center-wrapper {
+    display: flex;
+    justify-content: center; /* Centering horizontally */
+    margin: 10px 0; /* Spacing on top and bottom, adjust as needed */
+}
+
 .login-card input {
-    display: block;
-    width: calc(100% - 20px);
+    width: calc(100% - 20px); /* Width adjusted to match button width */
     padding: 10px;
-    margin: 10px 0;
     border-radius: 5px;
     border: 1px solid #ccc;
     box-sizing: border-box;
@@ -38,7 +42,6 @@
 .login-card button {
     width: calc(100% - 20px);
     padding: 10px;
-    margin: 20px 0;
     background-color: #2f4b6b;
     color: white;
     border: none;
