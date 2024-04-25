@@ -9,6 +9,15 @@ import 'package:provider/provider.dart';
 import 'package:mental_health_app/constants/utilities.dart';
 
 class HealthDataService {
+    // For testing purposes
+  final http.Client client;
+
+  HealthDataService({http.Client? client})
+    : this.client = client ?? HealthDataService.createDefaultClient();
+
+  static http.Client createDefaultClient() {
+    return http.Client();
+  }
   // Post single health data to the backend.
   Future<void> postSingleHealthData({
     required BuildContext context,

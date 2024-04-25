@@ -14,6 +14,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
 class AuthServices {
+  // For testing purposes
+  final http.Client client;
+
+  AuthServices({http.Client? client})
+    : this.client = client ?? AuthServices.createDefaultClient();
+
+  static http.Client createDefaultClient() {
+    return http.Client();
+  }
+  
   // SignUp
   void signUpUser({
     required BuildContext context,
@@ -73,6 +83,7 @@ class AuthServices {
         headers: {'Content-Type': 'application/json'},
       );
       final body = jsonDecode(response.body);
+      print(body);
 
       if (response.statusCode == 200 && body['token'] != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
