@@ -1,30 +1,28 @@
 const express = require("express");
 const User = require("../../models/user");
+const bcryptjs = require("bcryptjs");
 const jWebToken = require("jsonwebtoken");
 const authRouter = express.Router();
 
-const capitaliseWords = (str) => str.toLowerCase().replace(/\b(\w)/g, s => s.toUpperCase());
-
-// Signup route
+// Sign up route
 authRouter.post("/api/signup", async (req, res) => {
   try {
-    let { name, age, gender, email, password } = req.body;
+    const { name, age, gender, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ msg: "Another user is using this email" });
     }
 
-    name = capitaliseWords(name);
-    //const hashedPassword = await bcryptjs.hash(password, 8);
+    const hashedPassword = await bcryptjs.hash(password, 8);
 
     let user = new User({
       name,
       age,
       gender,
       email,
-      password,
-      //password: hashedPassword,
+      //password,
+      password: hashedPassword,
     });
     user = await user.save();
     res.json(user);
@@ -33,7 +31,7 @@ authRouter.post("/api/signup", async (req, res) => {
   }
 });
 
-// Signin route
+// // Sign in route
 authRouter.post("/api/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -43,16 +41,14 @@ authRouter.post("/api/signin", async (req, res) => {
       return res.status(400).json({ msg: "User does not exist." });
     }
     //TODO: Add password encryption
-    //const isPwMatch = await bcryptjs.compare(password, user.password);
+    const isPwMatch = await bcryptjs.compare(password, user.password);
     console.log(password);
     console.log(user.password);
-    //console.log(isPwMatch);
-    // if (!isPwMatch) {
-    //   return res.status(400).json({ msg: "Incorrect password!" });
-    // }
-    if (password !== user.password) {
+    console.log(isPwMatch);
+    if (!isPwMatch) {
       return res.status(400).json({ msg: "Incorrect password!" });
     }
+
     const token = jWebToken.sign({id: user._id}, "pwKey");
     res.json({token, ...user._doc});
   } catch (e) {
@@ -60,7 +56,7 @@ authRouter.post("/api/signin", async (req, res) => {
   }
 });
 
-// Admin signin route
+// Admin sign in route
 authRouter.post("/api/admin/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -71,15 +67,11 @@ authRouter.post("/api/admin/signin", async (req, res) => {
     }
 
     //TODO: Add password encryption
-    //const isPwMatch = await bcryptjs.compare(password, user.password);
+    const isPwMatch = await bcryptjs.compare(password, user.password);
     console.log(password);
     console.log(user.password);
-    //console.log(isPwMatch);
-    // if (!isPwMatch) {
-    //   return res.status(400).json({ msg: "Incorrect password!" });
-    // }
-
-    if (password !== user.password) {
+    console.log(isPwMatch);
+    if (!isPwMatch) {
       return res.status(400).json({ msg: "Incorrect password!" });
     }
 
@@ -97,4 +89,5 @@ authRouter.post("/api/admin/signin", async (req, res) => {
   }
 });
 
+// Make public
 module.exports = authRouter;
