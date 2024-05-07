@@ -29,7 +29,7 @@ class StepProvider with ChangeNotifier {
     return DateTime.parse(lastUploadDateString);
   }
 
-  // Fetches the step data from the backend and uploads it
+  // Fetches the step data and uploads it
   Future<void> fetchAndUploadSteps(BuildContext context) async {
     _isLoading = true;
     notifyListeners();

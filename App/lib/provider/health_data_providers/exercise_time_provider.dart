@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mental_health_app/features/healthdata/services/sensor_services/get_exercise_time_service.dart';
+import 'package:mental_health_app/features/healthdata/services/sensor_services/exercise_time_service.dart';
 import 'package:mental_health_app/features/healthdata/services/health_data_services.dart';
 import 'package:mental_health_app/features/user_input/services/user_input_services.dart';
 import 'package:mental_health_app/models/health_data.dart';
@@ -30,7 +30,7 @@ class ExerciseTimeProvider with ChangeNotifier {
     return DateTime.parse(lastUploadDateString);
   }
 
-  // Fetches the exercise time data from the backend and uploads it
+  // Fetches the exercise time data and uploads it
   Future<void> fetchAndUploadExerciseTime(BuildContext context) async {
     _isLoading = true;
     notifyListeners();

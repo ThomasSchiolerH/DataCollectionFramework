@@ -30,7 +30,7 @@ class BMIProvider with ChangeNotifier {
     return DateTime.parse(lastUploadDateString);
   }
 
-  // Fetches the BMI data from the backend and uploads it
+  // Fetches the BMI data and uploads it
   Future<void> fetchAndUploadBMI(BuildContext context) async {
     _isLoading = true;
     notifyListeners();

@@ -30,7 +30,7 @@ class HeartRateProvider with ChangeNotifier {
     return DateTime.parse(lastUploadDateString);
   }
 
-  // Fetches the heart rate data from the backend and uploads it
+  // Fetches the heart rate data and uploads it
   Future<void> fetchAndUploadHeartRate(BuildContext context) async {
     _isLoading = true;
     notifyListeners();
