@@ -4,6 +4,7 @@ import 'package:mental_health_app/constants/global_variables.dart';
 import 'package:mental_health_app/constants/utilities.dart';
 import 'package:mental_health_app/features/auth/services/auth_services.dart';
 import 'package:mental_health_app/provider/health_data_providers/bmi_provider.dart';
+import 'package:mental_health_app/provider/health_data_providers/energy_provider.dart';
 import 'package:mental_health_app/provider/health_data_providers/heart_rate_provider.dart';
 import 'package:mental_health_app/provider/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -116,6 +117,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             .fetchAndUploadBMI(context);
         await Provider.of<HeartRateProvider>(context, listen: false)
             .fetchAndUploadHeartRate(context);
+        await Provider.of<EnergyProvider>(context, listen: false)
+            .fetchAndUploadEnergy(context);
       } else {
         showSnackBar2(context, 'Data will upload once connected to Wi-Fi.',
             isError: true);
@@ -149,6 +152,8 @@ class HomeScreenContentState extends State<HomeScreenContent> {
     Future.microtask(() =>
         Provider.of<HeartRateProvider>(context, listen: false)
             .fetchTotalHeartRateForToday());
+    Future.microtask(() => Provider.of<EnergyProvider>(context, listen: false)
+        .fetchTotalEnergyForToday());
   }
 
   @override
@@ -157,6 +162,7 @@ class HomeScreenContentState extends State<HomeScreenContent> {
     final exerciseTimeProvider = Provider.of<ExerciseTimeProvider>(context);
     final bmiProvider = Provider.of<BMIProvider>(context);
     final heartRateProvider = Provider.of<HeartRateProvider>(context);
+    final energyProvider = Provider.of<EnergyProvider>(context);
 
     return SingleChildScrollView(
       child: Padding(
@@ -213,6 +219,17 @@ class HomeScreenContentState extends State<HomeScreenContent> {
                 return bmiValue == null
                     ? const CircularProgressIndicator()
                     : buildInfoCard('Current BMI', bmiValue.toStringAsFixed(2));
+              },
+            ),
+            const SizedBox(height: 10),
+            Consumer<EnergyProvider>(
+              builder: (context, energyProvider, child) {
+                if (energyProvider.isLoading) {
+                  return const CircularProgressIndicator();
+                } else {
+                  return buildInfoCard(
+                      'Active Energy', '${energyProvider.energy}');
+                }
               },
             ),
           ],
